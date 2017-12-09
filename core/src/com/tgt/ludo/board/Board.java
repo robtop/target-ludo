@@ -1,5 +1,9 @@
 package com.tgt.ludo.board;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 public class Board {
 
 	// length of one arm of the board
@@ -15,7 +19,57 @@ public class Board {
 		GREEN, YELLOW, RED, BLUE
 	}
 
-	public void setup() {
+	private List<Square> squares;
 
+	private Map<COLOR, List<Square>> homeSquares;
+
+	public void setup() {
+		createSquares();
 	}
+
+	private void createSquares() {
+		int totalOuterSqrs = DIMENSION * 4 * 3 + 4;
+		int numHomeSqrsPerColor = DIMENSION - 1;
+		squares = new ArrayList<Square>();
+		for (int i = 0; i < totalOuterSqrs; i++) {
+			Square sq = new Square();
+			sq.setIndex(i);
+
+			if (i % JAIL_INDEX == 0) {
+				sq.setJail(true);
+			}
+
+			if (i == HOME_INDEX) {
+				sq.setHome(true);
+			}
+			squares.add(sq);
+		}
+
+		squares.get(0).setColor(COLOR.GREEN);
+		squares.get(DIMENSION * 2 + 2).setColor(COLOR.YELLOW);
+		squares.get(DIMENSION * 4 + 2).setColor(COLOR.RED);
+		squares.get(DIMENSION * 6 + 2).setColor(COLOR.BLUE);
+	}
+	
+	private void createHomeSquares(COLOR color){
+		
+	}
+
+	public List<Square> getSquares() {
+		return squares;
+	}
+
+	public void setSquares(List<Square> squares) {
+		this.squares = squares;
+	}
+
+	public Map<COLOR, List<Square>> getHomeSquares() {
+		return homeSquares;
+	}
+
+	public void setHomeSquares(Map<COLOR, List<Square>> homeSquares) {
+		this.homeSquares = homeSquares;
+	}
+	
+	
 }

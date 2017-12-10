@@ -1,6 +1,7 @@
 package com.tgt.ludo.board;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,16 +20,24 @@ public class Board {
 		GREEN, YELLOW, RED, BLUE
 	}
 
+	// outer track squares
 	private List<Square> squares;
 
-	private Map<COLOR, List<Square>> homeSquares;
+	private Map<COLOR, List<Square>> homeSquaresMap;
+
+	private Map<COLOR, List<Square>> restSquaresMap;
+
+	private Map<COLOR, List<Piece>> piecesMap;
 
 	public void setup() {
 		createSquares();
+		createHomeSquares();
+		createRestSquares();
+		createPieces();
 	}
 
 	private void createSquares() {
-		int totalOuterSqrs = DIMENSION * 4 *2 + 4;
+		int totalOuterSqrs = DIMENSION * 4 * 2 + 4;
 		int numHomeSqrsPerColor = DIMENSION - 1;
 		squares = new ArrayList<Square>();
 		for (int i = 0; i < totalOuterSqrs; i++) {
@@ -45,16 +54,81 @@ public class Board {
 			squares.add(sq);
 		}
 
-//		squares.get(0).setColor(COLOR.GREEN);
-//		squares.get(DIMENSION * 2 + 2).setColor(COLOR.YELLOW);
-//		squares.get(DIMENSION * 4 + 2).setColor(COLOR.RED);
-//		squares.get(DIMENSION * 6 + 2).setColor(COLOR.BLUE);
-	}
-	
-	private void createHomeSquares(COLOR color){
-		
+		// squares.get(0).setColor(COLOR.GREEN);
+		// squares.get(DIMENSION * 2 + 2).setColor(COLOR.YELLOW);
+		// squares.get(DIMENSION * 4 + 2).setColor(COLOR.RED);
+		// squares.get(DIMENSION * 6 + 2).setColor(COLOR.BLUE);
 	}
 
+	private void createHomeSquares() {
+		homeSquaresMap = new HashMap<Board.COLOR, List<Square>>();
+		homeSquaresMap.put(COLOR.GREEN, createHomeSquareList(COLOR.GREEN));
+		homeSquaresMap.put(COLOR.YELLOW, createHomeSquareList(COLOR.YELLOW));
+		homeSquaresMap.put(COLOR.RED, createHomeSquareList(COLOR.RED));
+		homeSquaresMap.put(COLOR.BLUE, createHomeSquareList(COLOR.BLUE));
+	}
+
+	private void createRestSquares() {
+		restSquaresMap = new HashMap<Board.COLOR, List<Square>>();
+		restSquaresMap.put(COLOR.GREEN, createRestSquareList(COLOR.GREEN));
+		restSquaresMap.put(COLOR.YELLOW, createRestSquareList(COLOR.YELLOW));
+		restSquaresMap.put(COLOR.RED, createRestSquareList(COLOR.RED));
+		restSquaresMap.put(COLOR.BLUE, createRestSquareList(COLOR.BLUE));
+	}
+
+	private List<Square> createHomeSquareList(Board.COLOR color) {
+		List<Square> list = new ArrayList<Square>();
+		for (int i = 0; i < DIMENSION - 1; i++) {
+			Square sq = new Square();
+			sq.setHome(true);
+			sq.setColor(color);
+			list.add(sq);
+		}
+		return list;
+	}
+
+	private List<Square> createRestSquareList(Board.COLOR color) {
+		List<Square> list = new ArrayList<Square>();
+		for (int i = 0; i < 4; i++) {
+			Square sq = new Square();
+			sq.setHome(true);
+			sq.setColor(color);
+			list.add(sq);
+		}
+		return list;
+	}
+
+	private void createPieces() {
+		piecesMap = new HashMap<Board.COLOR, List<Piece>>();
+		piecesMap.put(COLOR.GREEN, createPiecesList(COLOR.GREEN));
+		piecesMap.put(COLOR.YELLOW, createPiecesList(COLOR.YELLOW));
+		piecesMap.put(COLOR.RED, createPiecesList(COLOR.RED));
+		piecesMap.put(COLOR.BLUE, createPiecesList(COLOR.BLUE));
+	}
+	
+	private List<Piece> createPiecesList(Board.COLOR color) {
+		List<Piece> list = new ArrayList<Piece>();
+		for (int i = 0; i < 4; i++) {
+			Piece piece = new Piece();
+			piece.setColor(color);
+			list.add(piece);
+			placePieceInRestSq(piece, color);
+		}
+		return list;
+	}
+	
+	private void placePieceInRestSq(Piece piece,COLOR color){
+		//find empty square and place
+		for(Square sq:restSquaresMap.get(color)){
+			if(sq.getPieces()==null || sq.getPieces().isEmpty()){
+				List<Piece> list = new ArrayList<Piece>();
+				list.add(piece);
+				piece.setSittingSuare(sq);
+				sq.setPieces(list);
+				return;
+			}
+		}
+	}
 	public List<Square> getSquares() {
 		return squares;
 	}
@@ -63,13 +137,11 @@ public class Board {
 		this.squares = squares;
 	}
 
-	public Map<COLOR, List<Square>> getHomeSquares() {
-		return homeSquares;
+	public Map<COLOR, List<Square>> getHomeSquaresMap() {
+		return homeSquaresMap;
 	}
 
-	public void setHomeSquares(Map<COLOR, List<Square>> homeSquares) {
-		this.homeSquares = homeSquares;
+	public Map<COLOR, List<Square>> getRestSquaresMap() {
+		return restSquaresMap;
 	}
-	
-	
 }

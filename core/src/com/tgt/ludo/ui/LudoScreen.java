@@ -71,7 +71,7 @@ public class LudoScreen {
 	}
 
 	public void dispose() {
-
+		boardRenderer.dispose();
 	}
 
 }

@@ -15,7 +15,6 @@ public class Square {
 	private boolean startSquare;
 	private Board.COLOR color;
 	private List<Piece> pieces;
-	private  ModelInstance instance;
 	
 	public boolean isBlock() {
 		int colorCount = 0;
@@ -93,14 +92,6 @@ public class Square {
 
 	public void setStartSquare(boolean startSquare) {
 		this.startSquare = startSquare;
-	}
-
-	public ModelInstance getInstance() {
-		return instance;
-	}
-
-	public void setInstance(ModelInstance instance) {
-		this.instance = instance;
 	}
 
 }

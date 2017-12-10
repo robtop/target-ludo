@@ -103,21 +103,31 @@ public class BoardRenderer {
 		for (Square sq : board.getRestSquaresMap().get(COLOR.GREEN)) {
 			renderSquare(sq);
 		}
+		for (Square sq : board.getRestSquaresMap().get(COLOR.YELLOW)) {
+			renderSquare(sq);
+		}
+		for (Square sq : board.getRestSquaresMap().get(COLOR.RED)) {
+			renderSquare(sq);
+		}
+		for (Square sq : board.getRestSquaresMap().get(COLOR.BLUE)) {
+			renderSquare(sq);
+		}
 	}
 
 	ModelInstance pieceInstance;
+
 	public void renderMovingPiece(float delta) {
-		if (moveTempIndex == moveFinalIndex+1) {
+		if (moveTempIndex == moveFinalIndex + 1) {
 			Vector3 trans = new Vector3();
 			squareInstMap.get(board.getSquares().get(moveFinalIndex)).transform.getTranslation(trans);
-			//set the destination squares translation to the piece
+			// set the destination squares translation to the piece
 			pieceInstance.transform.setTranslation(trans);
 			pieceMoved = true;
 		}
-		
+
 		Vector3 currentTranslation = new Vector3();
 		Vector3 finalTranslation = new Vector3();
-		pieceInstance= pieceInstMap.get(pieceMove.getPiece());
+		pieceInstance = pieceInstMap.get(pieceMove.getPiece());
 		pieceInstance.transform.getTranslation(currentTranslation);
 		squareInstMap.get(board.getSquares().get(moveTempIndex)).transform.getTranslation(finalTranslation);
 
@@ -127,7 +137,7 @@ public class BoardRenderer {
 			moveTempIndex++;
 		} else {
 
-			pieceInstance.transform.translate(diff.scl(delta*2));
+			pieceInstance.transform.translate(diff.scl(delta * 2));
 		}
 
 	}
@@ -242,7 +252,9 @@ public class BoardRenderer {
 	private void createRestSquares() {
 
 		createRestSquares(COLOR.GREEN, new Vector3(2 * SQUARE_LENGTH, 0, -5 * SQUARE_LENGTH));
-		createRestSquares(COLOR.YELLOW, new Vector3(0, 0, 1 * SQUARE_LENGTH));
+		createRestSquares(COLOR.YELLOW, new Vector3(2*Board.DIMENSION * SQUARE_LENGTH, 0, -5 * SQUARE_LENGTH));
+		createRestSquares(COLOR.RED, new Vector3(2*Board.DIMENSION * SQUARE_LENGTH, 0,5 * SQUARE_LENGTH));
+		createRestSquares(COLOR.BLUE, new Vector3(2 * SQUARE_LENGTH, 0, 5  * SQUARE_LENGTH));
 	}
 
 	private void createRestSquares(COLOR color, Vector3 translation) {

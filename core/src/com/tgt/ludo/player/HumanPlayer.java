@@ -34,7 +34,9 @@ public class HumanPlayer extends Player {
 			touchPoint.set(Gdx.input.getX(), Gdx.input.getY(),0);
 			//guiCam.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
 			Piece piece = getSelectedPiece();
-			
+			if(piece == null){
+				return null;
+			}
 			//assuming single dice
 			//check if valid move and move
 			System.out.println("Touched: "+piece);

@@ -69,13 +69,13 @@ public class Board {
 	private void createHomeSquares() {
 		homeSquaresMap = new HashMap<Board.COLOR, List<Square>>();
 		homeSquaresMap.put(COLOR.GREEN, createHomeSquareList(COLOR.GREEN));
-		if (players > 2) {
-			homeSquaresMap.put(COLOR.YELLOW, createHomeSquareList(COLOR.YELLOW));
-		}
+
+		homeSquaresMap.put(COLOR.YELLOW, createHomeSquareList(COLOR.YELLOW));
+
 		homeSquaresMap.put(COLOR.RED, createHomeSquareList(COLOR.RED));
-		if (players > 3) {
-			homeSquaresMap.put(COLOR.BLUE, createHomeSquareList(COLOR.BLUE));
-		}
+
+		homeSquaresMap.put(COLOR.BLUE, createHomeSquareList(COLOR.BLUE));
+
 	}
 
 	private void createRestSquares() {
@@ -111,9 +111,13 @@ public class Board {
 	private void createPieces() {
 		piecesMap = new HashMap<Board.COLOR, List<Piece>>();
 		piecesMap.put(COLOR.GREEN, createPiecesList(COLOR.GREEN));
-		piecesMap.put(COLOR.YELLOW, createPiecesList(COLOR.YELLOW));
+		if (players > 2) {
+			piecesMap.put(COLOR.YELLOW, createPiecesList(COLOR.YELLOW));
+		}
 		piecesMap.put(COLOR.RED, createPiecesList(COLOR.RED));
-		piecesMap.put(COLOR.BLUE, createPiecesList(COLOR.BLUE));
+		if (players > 3) {
+			piecesMap.put(COLOR.BLUE, createPiecesList(COLOR.BLUE));
+		}
 	}
 
 	private List<Piece> createPiecesList(Board.COLOR color) {

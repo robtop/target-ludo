@@ -1,6 +1,5 @@
 package com.tgt.ludo;
 
-import com.badlogic.gdx.Gdx;
 import com.tgt.ludo.board.Piece;
 
 /**

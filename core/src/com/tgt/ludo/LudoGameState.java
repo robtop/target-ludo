@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.badlogic.gdx.Screen;
 import com.tgt.ludo.board.Board;
+import com.tgt.ludo.board.Piece;
 import com.tgt.ludo.board.Board.COLOR;
 import com.tgt.ludo.player.HumanPlayer;
 import com.tgt.ludo.player.Move;
@@ -25,6 +26,7 @@ public class LudoGameState {
 	public LudoGameState(Screen screen) {
 		board = new Board();
 		board.setup();
+		this.screen = screen;
 		players = new ArrayList<Player>();
 		greenPlayer = new HumanPlayer(((LudoScreen) screen));
 		greenPlayer.setTurn(true);
@@ -32,21 +34,37 @@ public class LudoGameState {
 		players.add(greenPlayer);
 	}
 
-	public void update() {
 	
-		for (int i=0;i<players.size();i++) {
+	private boolean moving =false;
+	public void update() {
+		//wait for animation to complete
+        if(moving){
+        	if(((LudoScreen)screen).getBoardRenderer().isPieceMoved())
+        	{
+        		moving = false;
+        		//set to final square
+        		return;
+        	}
+        	System.out.println("Moving");
+        	return;
+        }
+       // board.movePiece(move);
+		for (int i = 0; i < players.size(); i++) {
 			Player player = players.get(i);
-			
+
 			if (player.isTurn()) {
 				Move move = player.play();
 				if (move != null) {
-					//do the actual move
-					//check game state
+					// do the actual move
+					moving = true;
+					((LudoScreen)screen).getBoardRenderer().setPieceMove(move);
+                    move.getPiece().getSittingSuare().getPieces().remove( move.getPiece());
+					// check game state
 					player.setTurn(false);
-					if(i+1<players.size()){
-						players.get(i+1).setTurn(true);
+					if (i + 1 < players.size()) {
+						players.get(i + 1).setTurn(true);
 					} else {
-						players.get(0).setTurn(true);	
+						players.get(0).setTurn(true);
 					}
 				} else {
 					// ignore others
@@ -55,6 +73,8 @@ public class LudoGameState {
 			}
 		}
 	}
+
+	
 
 	public Board getBoard() {
 		return board;

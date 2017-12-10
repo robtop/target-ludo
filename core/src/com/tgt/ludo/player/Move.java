@@ -11,4 +11,21 @@ public class Move {
 		this.piece = piece;
 		this.squares = squares;
 	}
+
+	public Piece getPiece() {
+		return piece;
+	}
+
+	public void setPiece(Piece piece) {
+		this.piece = piece;
+	}
+
+	public int getSquares() {
+		return squares;
+	}
+
+	public void setSquares(int squares) {
+		this.squares = squares;
+	}
+	
 }

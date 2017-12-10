@@ -13,6 +13,8 @@ public class Square {
 	private boolean jail;
 	private boolean specialHome;
 	private boolean startSquare;
+	private boolean restSquare;
+	
 	private Board.COLOR color;
 	private List<Piece> pieces;
 	
@@ -92,6 +94,14 @@ public class Square {
 
 	public void setStartSquare(boolean startSquare) {
 		this.startSquare = startSquare;
+	}
+
+	public boolean isRestSquare() {
+		return restSquare;
+	}
+
+	public void setRestSquare(boolean restSquare) {
+		this.restSquare = restSquare;
 	}
 
 }

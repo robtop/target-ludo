@@ -31,7 +31,7 @@ public class BoardRenderer {
 		assetsManager.load("meshes/square.g3db", Model.class);
 		assetsManager.finishLoading();
 		squareModel = (Model) assetsManager.get("meshes/square.g3db");
-
+		createOuterTrack();
 	}
 
 	public void renderSquares() {
@@ -45,7 +45,19 @@ public class BoardRenderer {
 		
 	}
 
-	private void renderOuterTrack() {
+	private void renderOuterTrack(){
+		for (Square sq : board.getSquares()) {
+			modelBatch.render(sq.getInstance(), environment);
+		}
+	}
+	
+	private void renderHomeSquares() {
+
+	}
+	/**
+	 * Create the 3D models of the individual squares and translate them to their positions
+	 */
+	private void createOuterTrack() {
 		int xTranslation = 0;
 		int yTranslation = 0;
 		int xControl = 1;
@@ -60,31 +72,60 @@ public class BoardRenderer {
 				xControl = 0;
 				yControl = -1;
 			}
+			//left wing end
 			if (sq.getIndex() == Board.DIMENSION * 2) {
 				xControl = 1;
 				yControl = 0;
 			}
+			//left wing top
 			if (sq.getIndex() == Board.DIMENSION * 2 + 2) {
 				xControl = 0;
 				yControl = 1;
 			}
+			//top wing start
 			if (sq.getIndex() == Board.DIMENSION * 3 + 1) {
 				yTranslation += yControl * SQUARE_LENGTH;
 				xControl = 1;
 				yControl = 0;
 			}
-			if (sq.getIndex() == Board.DIMENSION * 4) {
+			//top wing end
+			if (sq.getIndex() == Board.DIMENSION * 4 +1) {
 				xControl = 0;
 				yControl = 1;
 			}
+			
+			if (sq.getIndex() == Board.DIMENSION * 4+1+2) {
+				xControl = -1;
+				yControl = 0;
+			}
+			//right wing start
+			if (sq.getIndex() == Board.DIMENSION * 5 +1+1) {
+				xTranslation += xControl * SQUARE_LENGTH;
+				xControl = 0;
+				yControl = 1;
+			}
+			//right wing top
+			if (sq.getIndex() == Board.DIMENSION * 6 + 2) {
+				xControl = -1;
+				yControl = 0;
+			}
+			if (sq.getIndex() == Board.DIMENSION * 6+2+2) {
+				xControl = 0;
+				yControl = -1;
+			}
+			if (sq.getIndex() == Board.DIMENSION * 7 +3) {
+				yTranslation += yControl * SQUARE_LENGTH;
+				xControl = -1;
+				yControl = 0;
+			}
+		
 			xTranslation += xControl * SQUARE_LENGTH;
 			yTranslation += yControl * SQUARE_LENGTH;
 			instance.transform.translate(new Vector3(xTranslation, 0, yTranslation));
-			modelBatch.render(instance, environment);
+			sq.setInstance(instance);
+			
 		}
 	}
 
-	private void renderHomeSquares() {
-
-	}
+	
 }

@@ -2,6 +2,8 @@ package com.tgt.ludo.board;
 
 import java.util.List;
 
+import com.badlogic.gdx.graphics.g3d.ModelInstance;
+
 public class Square {
 
 	// maintain the index of the main outer track, home squares have
@@ -13,7 +15,8 @@ public class Square {
 	private boolean startSquare;
 	private Board.COLOR color;
 	private List<Piece> pieces;
-
+	private  ModelInstance instance;
+	
 	public boolean isBlock() {
 		int colorCount = 0;
 		Piece oldPiece = null;
@@ -90,6 +93,14 @@ public class Square {
 
 	public void setStartSquare(boolean startSquare) {
 		this.startSquare = startSquare;
+	}
+
+	public ModelInstance getInstance() {
+		return instance;
+	}
+
+	public void setInstance(ModelInstance instance) {
+		this.instance = instance;
 	}
 
 }

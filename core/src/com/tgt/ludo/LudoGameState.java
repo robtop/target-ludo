@@ -34,31 +34,35 @@ public class LudoGameState {
 		players.add(greenPlayer);
 	}
 
-	
-	private boolean moving =false;
+	private boolean moving = false;
+	Move move;
+	int sittingSquareIndex = 0;
+
 	public void update() {
-		//wait for animation to complete
-        if(moving){
-        	if(((LudoScreen)screen).getBoardRenderer().isPieceMoved())
-        	{
-        		moving = false;
-        		//set to final square
-        		return;
-        	}
-        	System.out.println("Moving");
-        	return;
-        }
-       // board.movePiece(move);
+		// wait for animation to complete
+		if (moving) {
+			if (((LudoScreen) screen).getBoardRenderer().isPieceMoved()) {
+				moving = false;
+				board.getSquares().get(sittingSquareIndex + move.getSquares()).getPieces().add(move.getPiece());
+	
+				// set to final square
+				return;
+			}
+			System.out.println("Moving");
+			return;
+		}
+		// board.movePiece(move);
 		for (int i = 0; i < players.size(); i++) {
 			Player player = players.get(i);
 
 			if (player.isTurn()) {
-				Move move = player.play();
+				move = player.play();
 				if (move != null) {
 					// do the actual move
 					moving = true;
-					((LudoScreen)screen).getBoardRenderer().setPieceMove(move);
-                    move.getPiece().getSittingSuare().getPieces().remove( move.getPiece());
+					((LudoScreen) screen).getBoardRenderer().setPieceMove(move);
+					move.getPiece().getSittingSuare().getPieces().remove(move.getPiece());
+					sittingSquareIndex = move.getPiece().getSittingSuare().getIndex();
 					// check game state
 					player.setTurn(false);
 					if (i + 1 < players.size()) {
@@ -73,8 +77,6 @@ public class LudoGameState {
 			}
 		}
 	}
-
-	
 
 	public Board getBoard() {
 		return board;

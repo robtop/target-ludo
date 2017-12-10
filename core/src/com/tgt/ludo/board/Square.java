@@ -1,5 +1,6 @@
 package com.tgt.ludo.board;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
@@ -81,6 +82,9 @@ public class Square {
 	}
 
 	public List<Piece> getPieces() {
+		if(pieces==null){
+			pieces = new ArrayList<Piece>();
+		}
 		return pieces;
 	}
 

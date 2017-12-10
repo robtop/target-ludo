@@ -105,14 +105,19 @@ public class BoardRenderer {
 		}
 	}
 
+	ModelInstance pieceInstance;
 	public void renderMovingPiece(float delta) {
 		if (moveTempIndex == moveFinalIndex+1) {
+			Vector3 trans = new Vector3();
+			squareInstMap.get(board.getSquares().get(moveFinalIndex)).transform.getTranslation(trans);
+			//set the destination squares translation to the piece
+			pieceInstance.transform.setTranslation(trans);
 			pieceMoved = true;
 		}
 		
 		Vector3 currentTranslation = new Vector3();
 		Vector3 finalTranslation = new Vector3();
-		ModelInstance pieceInstance = pieceInstMap.get(pieceMove.getPiece());
+		pieceInstance= pieceInstMap.get(pieceMove.getPiece());
 		pieceInstance.transform.getTranslation(currentTranslation);
 		squareInstMap.get(board.getSquares().get(moveTempIndex)).transform.getTranslation(finalTranslation);
 

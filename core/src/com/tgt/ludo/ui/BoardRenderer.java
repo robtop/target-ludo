@@ -118,6 +118,10 @@ public class BoardRenderer {
 				xControl = -1;
 				yControl = 0;
 			}
+			if (sq.getIndex() == Board.DIMENSION * 8 +3) {
+     			xControl = 0;
+				yControl = -1;
+			}
 		
 			xTranslation += xControl * SQUARE_LENGTH;
 			yTranslation += yControl * SQUARE_LENGTH;

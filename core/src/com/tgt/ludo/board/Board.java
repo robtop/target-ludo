@@ -28,7 +28,7 @@ public class Board {
 	}
 
 	private void createSquares() {
-		int totalOuterSqrs = DIMENSION * 4 * 3 + 4;
+		int totalOuterSqrs = DIMENSION * 4 *2 + 4;
 		int numHomeSqrsPerColor = DIMENSION - 1;
 		squares = new ArrayList<Square>();
 		for (int i = 0; i < totalOuterSqrs; i++) {
@@ -45,10 +45,10 @@ public class Board {
 			squares.add(sq);
 		}
 
-		squares.get(0).setColor(COLOR.GREEN);
-		squares.get(DIMENSION * 2 + 2).setColor(COLOR.YELLOW);
-		squares.get(DIMENSION * 4 + 2).setColor(COLOR.RED);
-		squares.get(DIMENSION * 6 + 2).setColor(COLOR.BLUE);
+//		squares.get(0).setColor(COLOR.GREEN);
+//		squares.get(DIMENSION * 2 + 2).setColor(COLOR.YELLOW);
+//		squares.get(DIMENSION * 4 + 2).setColor(COLOR.RED);
+//		squares.get(DIMENSION * 6 + 2).setColor(COLOR.BLUE);
 	}
 	
 	private void createHomeSquares(COLOR color){

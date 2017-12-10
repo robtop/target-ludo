@@ -22,7 +22,7 @@ public class BoardRenderer {
 	private PerspectiveCamera cam;
 	private Board board;
 	public static AssetManager assetsManager = new AssetManager();
-	private static final int SQUARE_LENGTH = 3;
+	public static final int SQUARE_LENGTH = 3;
 	private Model squareModel;
 	private Model pieceModel;
 	private ModelInstance instance;
@@ -54,7 +54,7 @@ public class BoardRenderer {
 	}
 
 	public void renderSquares() {
-		
+
 		renderContext.begin();
 		modelBatch.begin(cam);
 		renderOuterTrack();
@@ -210,11 +210,12 @@ public class BoardRenderer {
 			int temp = xControl;
 			xControl = yControl;
 			yControl = temp;
-			// must have one piece at start of game
-			ModelInstance pieceInstance = createPieceInstance(sq.getPieces().get(0), color);
-			Vector3 translationTemp = translation.cpy();
-			translationTemp.y = translationTemp.y + 1;
-			pieceInstance.transform.translate(translationTemp);
+			if (sq.getPieces()!=null && !sq.getPieces().isEmpty()) {
+				ModelInstance pieceInstance = createPieceInstance(sq.getPieces().get(0), color);
+				Vector3 translationTemp = translation.cpy();
+				translationTemp.y = translationTemp.y + 1;
+				pieceInstance.transform.translate(translationTemp);
+			}
 
 			translation.x += xControl * SQUARE_LENGTH * 2;
 			translation.z += yControl * SQUARE_LENGTH * 2;
@@ -227,16 +228,22 @@ public class BoardRenderer {
 		pieceInstMap.put(piece, instance);
 		return instance;
 	}
-	
-	public void dispose(){
-		for(Square sq:squareInstMap.keySet()){
+
+	public void dispose() {
+		for (Square sq : squareInstMap.keySet()) {
 			squareInstMap.get(sq).model.dispose();
 		}
-		for(Piece pc:pieceInstMap.keySet()){
+		for (Piece pc : pieceInstMap.keySet()) {
 			squareInstMap.get(pc).model.dispose();
 		}
 		assetsManager.clear();
 		assetsManager.dispose();
 	}
+
+	public Map<Piece, ModelInstance> getPieceInstMap() {
+		return pieceInstMap;
+	}
+	
+	
 
 }

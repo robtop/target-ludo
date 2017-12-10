@@ -1,24 +1,25 @@
 package com.tgt.ludo.ui;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.Environment;
-import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.Renderable;
 import com.badlogic.gdx.graphics.g3d.Shader;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.graphics.g3d.utils.DefaultTextureBinder;
 import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
-import com.tgt.ludo.board.Board;
+import com.badlogic.gdx.math.Vector3;
+import com.tgt.ludo.LudoGameState;
 
-public class LudoScreen {
+public class LudoScreen implements Screen {
 
 	public PerspectiveCamera cam;
-
-
-	
+	// for 2D
+	OrthographicCamera guiCam;
 	public Environment environment;
 	public CameraInputController camController;
 	public Shader shader;
@@ -27,9 +28,10 @@ public class LudoScreen {
 
 	private float i = 0;
 	protected GL20 gl20 = null;
-	private Board board;
-	private BoardRenderer boardRenderer;
 
+	private BoardRenderer boardRenderer;
+	protected Vector3 touchPoint;
+	LudoGameState ludoGameState;
 
 	public void create() {
 
@@ -44,6 +46,9 @@ public class LudoScreen {
 		cam.lookAt(100, -50, 0);
 		cam.update();
 
+		guiCam = new OrthographicCamera(320, 480);
+		guiCam.position.set(320 / 2, 480 / 2, 0);
+
 		// allow to move the camera with the mouse
 		camController = new CameraInputController(cam);
 		Gdx.input.setInputProcessor(camController);
@@ -51,15 +56,16 @@ public class LudoScreen {
 		renderContext = new RenderContext(new DefaultTextureBinder(DefaultTextureBinder.WEIGHTED, 1));
 		Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-		board = new Board();
-		board.setup();
-		 boardRenderer = new BoardRenderer(board, renderContext, cam, environment);
+		touchPoint = new Vector3();
+
+		ludoGameState = new LudoGameState((Screen) this);
+		boardRenderer = new BoardRenderer(ludoGameState.getBoard(), renderContext, cam, environment);
 
 	}
 
-	public void render() {
+	public void render(float delta) {
 		camController.update();
-
+		update();
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 		float deltaTime = Gdx.graphics.getDeltaTime();
 		i = i + deltaTime * 200;
@@ -74,4 +80,53 @@ public class LudoScreen {
 		boardRenderer.dispose();
 	}
 
+	public void update() {
+		ludoGameState.update();
+		if (Gdx.input.justTouched()) {
+			guiCam.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
+		}
+		// any screen inputs?
+	}
+
+	public PerspectiveCamera getCam() {
+		return cam;
+	}
+
+	public void setCam(PerspectiveCamera cam) {
+		this.cam = cam;
+	}
+
+	public OrthographicCamera getGuiCam() {
+		return guiCam;
+	}
+
+	public void setGuiCam(OrthographicCamera guiCam) {
+		this.guiCam = guiCam;
+	}
+
+	public void resume() {
+
+	}
+
+	@Override
+	public void resize(int x, int y) {
+
+	}
+
+	public void hide() {
+
+	}
+
+	public void show() {
+
+	}
+
+	public void pause() {
+
+	}
+
+	public BoardRenderer getBoardRenderer() {
+		return boardRenderer;
+	}
+	
 }

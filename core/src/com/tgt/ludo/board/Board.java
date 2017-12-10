@@ -28,6 +28,12 @@ public class Board {
 	private Map<COLOR, List<Square>> restSquaresMap;
 
 	private Map<COLOR, List<Piece>> piecesMap;
+	private int players = 4;
+
+	public void setup(int players) {
+		this.players = players;
+		setup();
+	}
 
 	public void setup() {
 		createSquares();
@@ -63,9 +69,13 @@ public class Board {
 	private void createHomeSquares() {
 		homeSquaresMap = new HashMap<Board.COLOR, List<Square>>();
 		homeSquaresMap.put(COLOR.GREEN, createHomeSquareList(COLOR.GREEN));
+
 		homeSquaresMap.put(COLOR.YELLOW, createHomeSquareList(COLOR.YELLOW));
+
 		homeSquaresMap.put(COLOR.RED, createHomeSquareList(COLOR.RED));
+
 		homeSquaresMap.put(COLOR.BLUE, createHomeSquareList(COLOR.BLUE));
+
 	}
 
 	private void createRestSquares() {
@@ -101,11 +111,15 @@ public class Board {
 	private void createPieces() {
 		piecesMap = new HashMap<Board.COLOR, List<Piece>>();
 		piecesMap.put(COLOR.GREEN, createPiecesList(COLOR.GREEN));
-		piecesMap.put(COLOR.YELLOW, createPiecesList(COLOR.YELLOW));
+		if (players > 2) {
+			piecesMap.put(COLOR.YELLOW, createPiecesList(COLOR.YELLOW));
+		}
 		piecesMap.put(COLOR.RED, createPiecesList(COLOR.RED));
-		piecesMap.put(COLOR.BLUE, createPiecesList(COLOR.BLUE));
+		if (players > 3) {
+			piecesMap.put(COLOR.BLUE, createPiecesList(COLOR.BLUE));
+		}
 	}
-	
+
 	private List<Piece> createPiecesList(Board.COLOR color) {
 		List<Piece> list = new ArrayList<Piece>();
 		for (int i = 0; i < 4; i++) {
@@ -116,11 +130,11 @@ public class Board {
 		}
 		return list;
 	}
-	
-	private void placePieceInRestSq(Piece piece,COLOR color){
-		//find empty square and place
-		for(Square sq:restSquaresMap.get(color)){
-			if(sq.getPieces()==null || sq.getPieces().isEmpty()){
+
+	private void placePieceInRestSq(Piece piece, COLOR color) {
+		// find empty square and place
+		for (Square sq : restSquaresMap.get(color)) {
+			if (sq.getPieces() == null || sq.getPieces().isEmpty()) {
 				List<Piece> list = new ArrayList<Piece>();
 				list.add(piece);
 				piece.setSittingSuare(sq);
@@ -129,6 +143,7 @@ public class Board {
 			}
 		}
 	}
+
 	public List<Square> getSquares() {
 		return squares;
 	}
@@ -144,4 +159,9 @@ public class Board {
 	public Map<COLOR, List<Square>> getRestSquaresMap() {
 		return restSquaresMap;
 	}
+
+	public Map<COLOR, List<Piece>> getPiecesMap() {
+		return piecesMap;
+	}
+	
 }

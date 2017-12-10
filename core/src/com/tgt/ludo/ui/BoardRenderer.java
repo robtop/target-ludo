@@ -42,6 +42,7 @@ public class BoardRenderer {
 		squareInstMap = new HashMap<Square, ModelInstance>();
 		createOuterTrack();
 		createHomeSquares();
+		createRestSquares();
 	}
 
 	public void renderSquares() {
@@ -50,6 +51,7 @@ public class BoardRenderer {
 		modelBatch.begin(cam);
 		renderOuterTrack();
 		renderHomeSquares();
+		renderRestSquares();
 		modelBatch.end();
 		renderContext.end();
 
@@ -67,6 +69,11 @@ public class BoardRenderer {
 		}
 	}
 
+	private void renderRestSquares() {
+		for (Square sq : board.getRestSquares().get(COLOR.GREEN)) {
+			modelBatch.render(squareInstMap.get(sq), environment);
+		}
+	}
 	/**
 	 * Create the 3D models of the individual squares and translate them to
 	 * their positions
@@ -159,6 +166,29 @@ public class BoardRenderer {
 			instance.transform.translate(translation);
 			translation.x+=xControl*SQUARE_LENGTH;
 			translation.z+=yControl*SQUARE_LENGTH;
+		}
+		
+	}
+	
+private void createRestSquares() {
+		
+	createRestSquares(COLOR.GREEN, new Vector3(2*SQUARE_LENGTH,1,-5*SQUARE_LENGTH));
+	createRestSquares(COLOR.YELLOW, new Vector3(0,0,1*SQUARE_LENGTH));
+	}
+
+	private void createRestSquares(COLOR color, Vector3 translation) {
+		int xControl=1;
+		int yControl=0;
+		
+		for (Square sq : board.getRestSquares().get(color)) {
+			instance = new ModelInstance(squareModel);
+			squareInstMap.put(sq, instance);
+			instance.transform.translate(translation);
+			translation.x+=xControl*SQUARE_LENGTH*2;
+			translation.z+=yControl*SQUARE_LENGTH*2;
+			int temp=xControl;
+			xControl=yControl;
+			yControl=temp;
 		}
 		
 	}

@@ -20,13 +20,17 @@ public class Board {
 		GREEN, YELLOW, RED, BLUE
 	}
 
+	//outer track squares
 	private List<Square> squares;
 
 	private Map<COLOR, List<Square>> homeSquares;
+	
+	private Map<COLOR, List<Square>> restSquares;
 
 	public void setup() {
 		createSquares();
 		createHomeSquares();
+		createRestSquares();
 	}
 
 	private void createSquares() {
@@ -60,10 +64,29 @@ public class Board {
 		homeSquares.put(COLOR.RED, createHomeSquareList(COLOR.RED));
 		homeSquares.put(COLOR.BLUE, createHomeSquareList(COLOR.BLUE));
 	}
+	
+	private void createRestSquares(){
+		restSquares = new HashMap<Board.COLOR, List<Square>>();
+		restSquares.put(COLOR.GREEN, createRestSquareList(COLOR.GREEN));
+		restSquares.put(COLOR.YELLOW, createRestSquareList(COLOR.YELLOW));
+		restSquares.put(COLOR.RED, createRestSquareList(COLOR.RED));
+		restSquares.put(COLOR.BLUE, createRestSquareList(COLOR.BLUE));
+	}
 
 	private List<Square> createHomeSquareList(Board.COLOR color) {
 		List<Square> list = new ArrayList<Square>();
-		for (int i = 0; i < DIMENSION-1; i++) {
+		for (int i = 0; i <  DIMENSION-1; i++) {
+			Square sq = new Square();
+			sq.setHome(true);
+			sq.setColor(color);
+			list.add(sq);
+		}
+		return list;
+	}
+	
+	private List<Square> createRestSquareList(Board.COLOR color) {
+		List<Square> list = new ArrayList<Square>();
+		for (int i = 0; i < 4; i++) {
 			Square sq = new Square();
 			sq.setHome(true);
 			sq.setColor(color);
@@ -86,6 +109,14 @@ public class Board {
 
 	public void setHomeSquares(Map<COLOR, List<Square>> homeSquares) {
 		this.homeSquares = homeSquares;
+	}
+
+	public Map<COLOR, List<Square>> getRestSquares() {
+		return restSquares;
+	}
+
+	public void setRestSquares(Map<COLOR, List<Square>> restSquares) {
+		this.restSquares = restSquares;
 	}
 
 }

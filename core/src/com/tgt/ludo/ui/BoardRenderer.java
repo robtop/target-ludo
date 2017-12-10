@@ -235,6 +235,8 @@ public class BoardRenderer {
 		for(Piece pc:pieceInstMap.keySet()){
 			squareInstMap.get(pc).model.dispose();
 		}
+		assetsManager.clear();
+		assetsManager.dispose();
 	}
 
 }

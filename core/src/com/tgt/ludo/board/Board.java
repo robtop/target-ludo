@@ -1,6 +1,7 @@
 package com.tgt.ludo.board;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,10 +26,11 @@ public class Board {
 
 	public void setup() {
 		createSquares();
+		createHomeSquares();
 	}
 
 	private void createSquares() {
-		int totalOuterSqrs = DIMENSION * 4 *2 + 4;
+		int totalOuterSqrs = DIMENSION * 4 * 2 + 4;
 		int numHomeSqrsPerColor = DIMENSION - 1;
 		squares = new ArrayList<Square>();
 		for (int i = 0; i < totalOuterSqrs; i++) {
@@ -45,14 +47,29 @@ public class Board {
 			squares.add(sq);
 		}
 
-//		squares.get(0).setColor(COLOR.GREEN);
-//		squares.get(DIMENSION * 2 + 2).setColor(COLOR.YELLOW);
-//		squares.get(DIMENSION * 4 + 2).setColor(COLOR.RED);
-//		squares.get(DIMENSION * 6 + 2).setColor(COLOR.BLUE);
+		// squares.get(0).setColor(COLOR.GREEN);
+		// squares.get(DIMENSION * 2 + 2).setColor(COLOR.YELLOW);
+		// squares.get(DIMENSION * 4 + 2).setColor(COLOR.RED);
+		// squares.get(DIMENSION * 6 + 2).setColor(COLOR.BLUE);
 	}
-	
-	private void createHomeSquares(COLOR color){
-		
+
+	private void createHomeSquares(){
+		homeSquares = new HashMap<Board.COLOR, List<Square>>();
+		homeSquares.put(COLOR.GREEN, createHomeSquareList(COLOR.GREEN));
+		homeSquares.put(COLOR.YELLOW, createHomeSquareList(COLOR.YELLOW));
+		homeSquares.put(COLOR.RED, createHomeSquareList(COLOR.RED));
+		homeSquares.put(COLOR.BLUE, createHomeSquareList(COLOR.BLUE));
+	}
+
+	private List<Square> createHomeSquareList(Board.COLOR color) {
+		List<Square> list = new ArrayList<Square>();
+		for (int i = 0; i < DIMENSION-1; i++) {
+			Square sq = new Square();
+			sq.setHome(true);
+			sq.setColor(color);
+			list.add(sq);
+		}
+		return list;
 	}
 
 	public List<Square> getSquares() {
@@ -70,6 +87,5 @@ public class Board {
 	public void setHomeSquares(Map<COLOR, List<Square>> homeSquares) {
 		this.homeSquares = homeSquares;
 	}
-	
-	
+
 }

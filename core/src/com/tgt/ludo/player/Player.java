@@ -7,7 +7,7 @@ import com.tgt.ludo.board.Piece;
 public abstract class Player {
 
 	private boolean turn = false;
-	private List<Piece> pieces;
+	protected List<Piece> pieces;
 
 	// main game loop
 	public abstract void play();

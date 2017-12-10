@@ -159,4 +159,9 @@ public class Board {
 	public Map<COLOR, List<Square>> getRestSquaresMap() {
 		return restSquaresMap;
 	}
+
+	public Map<COLOR, List<Piece>> getPiecesMap() {
+		return piecesMap;
+	}
+	
 }

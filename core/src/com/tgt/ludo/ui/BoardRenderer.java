@@ -22,7 +22,7 @@ public class BoardRenderer {
 	private PerspectiveCamera cam;
 	private Board board;
 	public static AssetManager assetsManager = new AssetManager();
-	private static final int SQUARE_LENGTH = 3;
+	public static final int SQUARE_LENGTH = 3;
 	private Model squareModel;
 	private Model pieceModel;
 	private ModelInstance instance;
@@ -239,5 +239,11 @@ public class BoardRenderer {
 		assetsManager.clear();
 		assetsManager.dispose();
 	}
+
+	public Map<Piece, ModelInstance> getPieceInstMap() {
+		return pieceInstMap;
+	}
+	
+	
 
 }

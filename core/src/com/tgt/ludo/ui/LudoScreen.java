@@ -81,6 +81,7 @@ public class LudoScreen implements Screen {
 	}
 
 	public void update() {
+		ludoGameState.update();
 		if (Gdx.input.justTouched()) {
 			guiCam.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
 		}
@@ -123,4 +124,9 @@ public class LudoScreen implements Screen {
 	public void pause() {
 
 	}
+
+	public BoardRenderer getBoardRenderer() {
+		return boardRenderer;
+	}
+	
 }

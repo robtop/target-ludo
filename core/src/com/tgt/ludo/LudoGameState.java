@@ -5,8 +5,8 @@ import java.util.List;
 
 import com.badlogic.gdx.Screen;
 import com.tgt.ludo.board.Board;
-import com.tgt.ludo.board.Piece;
 import com.tgt.ludo.board.Board.COLOR;
+import com.tgt.ludo.board.Square;
 import com.tgt.ludo.player.HumanPlayer;
 import com.tgt.ludo.player.Move;
 import com.tgt.ludo.player.Player;
@@ -43,15 +43,15 @@ public class LudoGameState {
 		if (moving) {
 			if (((LudoScreen) screen).getBoardRenderer().isPieceMoved()) {
 				moving = false;
-				board.getSquares().get(sittingSquareIndex + move.getSquares()).getPieces().add(move.getPiece());
-	
-				// set to final square
+				Square finalSquare = board.getSquares().get(sittingSquareIndex + move.getSquares());
+				finalSquare.getPieces().add(move.getPiece());
+				move.getPiece().setSittingSuare(finalSquare);
 				return;
 			}
-			System.out.println("Moving");
+			
 			return;
 		}
-		// board.movePiece(move);
+
 		for (int i = 0; i < players.size(); i++) {
 			Player player = players.get(i);
 

@@ -15,6 +15,7 @@ import com.tgt.ludo.board.Board;
 import com.tgt.ludo.board.Board.COLOR;
 import com.tgt.ludo.board.Piece;
 import com.tgt.ludo.board.Square;
+import com.tgt.ludo.player.Move;
 
 public class BoardRenderer {
 	private RenderContext renderContext;
@@ -32,6 +33,11 @@ public class BoardRenderer {
 	// independent of the UI
 	private Map<Square, ModelInstance> squareInstMap;
 	private Map<Piece, ModelInstance> pieceInstMap;
+
+	private boolean pieceMoved = true;
+	private Move pieceMove;
+	private int moveFinalIndex;
+	private int moveTempIndex;
 
 	public BoardRenderer(Board board, RenderContext renderContext, PerspectiveCamera cam, Environment environment) {
 		this.board = board;
@@ -53,13 +59,16 @@ public class BoardRenderer {
 		modelBatch = new ModelBatch();
 	}
 
-	public void renderSquares() {
+	public void renderSquares(float delta) {
 
 		renderContext.begin();
 		modelBatch.begin(cam);
 		renderOuterTrack();
 		renderHomeSquares();
 		renderRestSquares();
+		if (!pieceMoved) {
+			renderMovingPiece(delta);
+		}
 		modelBatch.end();
 		renderContext.end();
 
@@ -94,6 +103,54 @@ public class BoardRenderer {
 		for (Square sq : board.getRestSquaresMap().get(COLOR.GREEN)) {
 			renderSquare(sq);
 		}
+		for (Square sq : board.getRestSquaresMap().get(COLOR.YELLOW)) {
+			renderSquare(sq);
+		}
+		for (Square sq : board.getRestSquaresMap().get(COLOR.RED)) {
+			renderSquare(sq);
+		}
+		for (Square sq : board.getRestSquaresMap().get(COLOR.BLUE)) {
+			renderSquare(sq);
+		}
+	}
+
+	ModelInstance pieceInstance;
+
+	public void renderMovingPiece(float delta) {
+		if (moveTempIndex == moveFinalIndex + 1) {
+			Vector3 trans = new Vector3();
+			squareInstMap.get(board.getSquares().get(moveFinalIndex)).transform.getTranslation(trans);
+			// set the destination squares translation to the piece
+			pieceInstance.transform.setTranslation(trans);
+			pieceMoved = true;
+		}
+
+		Vector3 currentTranslation = new Vector3();
+		Vector3 finalTranslation = new Vector3();
+		pieceInstance = pieceInstMap.get(pieceMove.getPiece());
+		pieceInstance.transform.getTranslation(currentTranslation);
+		squareInstMap.get(board.getSquares().get(moveTempIndex)).transform.getTranslation(finalTranslation);
+
+		Vector3 diff = finalTranslation.sub(currentTranslation);
+		modelBatch.render(pieceInstance, environment);
+		if (diff.len() < .1f) {
+			moveTempIndex++;
+		} else {
+
+			pieceInstance.transform.translate(diff.scl(delta * 2));
+		}
+
+	}
+
+	public void setPieceMove(Move move) {
+		pieceMove = move;
+		pieceMoved = false;
+		moveFinalIndex = move.getPiece().getSittingSuare().getIndex() + move.getSquares();
+		moveTempIndex = move.getPiece().getSittingSuare().getIndex() + 1;
+	}
+
+	public boolean isPieceMoved() {
+		return pieceMoved;
 	}
 
 	/**
@@ -195,7 +252,9 @@ public class BoardRenderer {
 	private void createRestSquares() {
 
 		createRestSquares(COLOR.GREEN, new Vector3(2 * SQUARE_LENGTH, 0, -5 * SQUARE_LENGTH));
-		createRestSquares(COLOR.YELLOW, new Vector3(0, 0, 1 * SQUARE_LENGTH));
+		createRestSquares(COLOR.YELLOW, new Vector3(2*Board.DIMENSION * SQUARE_LENGTH, 0, -5 * SQUARE_LENGTH));
+		createRestSquares(COLOR.RED, new Vector3(2*Board.DIMENSION * SQUARE_LENGTH, 0,5 * SQUARE_LENGTH));
+		createRestSquares(COLOR.BLUE, new Vector3(2 * SQUARE_LENGTH, 0, 5  * SQUARE_LENGTH));
 	}
 
 	private void createRestSquares(COLOR color, Vector3 translation) {
@@ -210,7 +269,7 @@ public class BoardRenderer {
 			int temp = xControl;
 			xControl = yControl;
 			yControl = temp;
-			if (sq.getPieces()!=null && !sq.getPieces().isEmpty()) {
+			if (sq.getPieces() != null && !sq.getPieces().isEmpty()) {
 				ModelInstance pieceInstance = createPieceInstance(sq.getPieces().get(0), color);
 				Vector3 translationTemp = translation.cpy();
 				translationTemp.y = translationTemp.y + 1;
@@ -243,7 +302,5 @@ public class BoardRenderer {
 	public Map<Piece, ModelInstance> getPieceInstMap() {
 		return pieceInstMap;
 	}
-	
-	
 
 }

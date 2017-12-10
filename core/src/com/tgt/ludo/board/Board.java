@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.tgt.ludo.player.Move;
+
 public class Board {
 
 	// length of one arm of the board
@@ -101,6 +103,7 @@ public class Board {
 		List<Square> list = new ArrayList<Square>();
 		for (int i = 0; i < 4; i++) {
 			Square sq = new Square();
+			sq.setRestSquare(true);
 			sq.setHome(true);
 			sq.setColor(color);
 			list.add(sq);
@@ -144,6 +147,25 @@ public class Board {
 		}
 	}
 
+	public void movePiece(Move move) {
+		Piece piece = move.getPiece();
+		
+		if(piece.getSittingSuare().isRestSquare()){
+			
+			//get stat of this color
+			Square startSquare = squares.get(0);
+			if(startSquare.getPieces() == null){
+				startSquare.setPieces(new ArrayList<Piece>());
+			}
+			startSquare.getPieces().add(piece);
+			return;
+		}
+		
+		int index = piece.getSittingSuare().getIndex();
+		piece.getSittingSuare().getPieces().remove(piece);
+		squares.get(index).getPieces().add(piece);
+	}
+
 	public List<Square> getSquares() {
 		return squares;
 	}
@@ -163,5 +185,5 @@ public class Board {
 	public Map<COLOR, List<Piece>> getPiecesMap() {
 		return piecesMap;
 	}
-	
+
 }

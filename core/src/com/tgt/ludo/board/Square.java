@@ -1,5 +1,6 @@
 package com.tgt.ludo.board;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
@@ -13,6 +14,8 @@ public class Square {
 	private boolean jail;
 	private boolean specialHome;
 	private boolean startSquare;
+	private boolean restSquare;
+	
 	private Board.COLOR color;
 	private List<Piece> pieces;
 	
@@ -79,6 +82,9 @@ public class Square {
 	}
 
 	public List<Piece> getPieces() {
+		if(pieces==null){
+			pieces = new ArrayList<Piece>();
+		}
 		return pieces;
 	}
 
@@ -92,6 +98,14 @@ public class Square {
 
 	public void setStartSquare(boolean startSquare) {
 		this.startSquare = startSquare;
+	}
+
+	public boolean isRestSquare() {
+		return restSquare;
+	}
+
+	public void setRestSquare(boolean restSquare) {
+		this.restSquare = restSquare;
 	}
 
 }

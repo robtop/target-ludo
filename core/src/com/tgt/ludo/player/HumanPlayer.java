@@ -28,7 +28,7 @@ public class HumanPlayer extends Player {
 	}
 
 	@Override
-	public void play() {
+	public Move play() {
 		
 		if (Gdx.input.justTouched()) {
 			touchPoint.set(Gdx.input.getX(), Gdx.input.getY(),0);
@@ -38,7 +38,9 @@ public class HumanPlayer extends Player {
 			//assuming single dice
 			//check if valid move and move
 			System.out.println("Touched: "+piece);
+			return new Move(piece,3);
 		}
+		return null;
 	}
 
 	private Piece getSelectedPiece() {

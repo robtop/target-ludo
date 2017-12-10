@@ -12,5 +12,4 @@ public class DesktopLauncher {
 		new LwjglApplication(new LudoGame(), config);
 	}
 
-
 }

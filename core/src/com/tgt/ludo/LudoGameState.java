@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.badlogic.gdx.Screen;
 import com.tgt.ludo.board.Board;
+import com.tgt.ludo.board.Dice;
 import com.tgt.ludo.board.Board.COLOR;
 import com.tgt.ludo.board.Square;
 import com.tgt.ludo.player.HumanPlayer;
@@ -22,13 +23,16 @@ public class LudoGameState {
 	// needed by human players to get inputs
 	private Screen screen;
 	private List<Player> players;
+	List<Dice> dice;
+	// if online the current dice and player turn should be sent to the server
+	private boolean onlineGame = false;
 
 	public LudoGameState(Screen screen) {
 		board = new Board();
 		board.setup();
 		this.screen = screen;
 		players = new ArrayList<Player>();
-		greenPlayer = new HumanPlayer(((LudoScreen) screen));
+		greenPlayer = new HumanPlayer(((LudoScreen) screen),dice);
 		greenPlayer.setTurn(true);
 		greenPlayer.setPieces(board.getPiecesMap().get(COLOR.GREEN));
 		players.add(greenPlayer);
@@ -48,7 +52,7 @@ public class LudoGameState {
 				move.getPiece().setSittingSuare(finalSquare);
 				return;
 			}
-			
+
 			return;
 		}
 
@@ -76,6 +80,13 @@ public class LudoGameState {
 				}
 			}
 		}
+		if (onlineGame) {
+			updateServer();
+		}
+	}
+
+	private void updateServer() {
+
 	}
 
 	public Board getBoard() {

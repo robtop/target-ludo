@@ -2,6 +2,8 @@ package com.tgt.ludo.board;
 
 public class Piece {
 	
+	//keep a copy for convenience :(
+	//private ModelInstance pieceInstance;
 	private Board.COLOR color;
 	private boolean rest;
 	private boolean home;

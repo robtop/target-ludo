@@ -36,6 +36,87 @@ public class StaticBoardRenderer {
 	protected Map<Square, ModelInstance> squareInstMap;
 	protected Map<Piece, ModelInstance> pieceInstMap;
 
+	public StaticBoardRenderer(Board board, RenderContext renderContext, PerspectiveCamera cam, Environment environment) {
+		this.board = board;
+		this.renderContext = renderContext;
+		this.cam = cam;
+		this.environment = environment;
+
+		assetsManager.load("meshes/square.g3db", Model.class);
+		//assetsManager.load("meshes/piece.g3db", Model.class);
+		assetsManager.load("meshes/pawnGreen.g3dj", Model.class);
+		assetsManager.load("meshes/pawnYellow.g3dj", Model.class);
+		assetsManager.load("meshes/pawnRed.g3dj", Model.class);
+		assetsManager.load("meshes/pawnBlue.g3dj", Model.class);
+		assetsManager.finishLoading();
+		squareModel = (Model) assetsManager.get("meshes/square.g3db");
+		// pieceModel = (Model) assetsManager.get("meshes/piece.g3db");
+
+		greenPawnModel = (Model) assetsManager.get("meshes/pawnGreen.g3dj");
+		yellowPawnModel = (Model) assetsManager.get("meshes/pawnYellow.g3dj");
+		redPawnModel = (Model) assetsManager.get("meshes/pawnRed.g3dj");
+		bluePawnModel = (Model) assetsManager.get("meshes/pawnBlue.g3dj");
+
+		squareInstMap = new HashMap<Square, ModelInstance>();
+		pieceInstMap = new HashMap<Piece, ModelInstance>();
+		createOuterTrack();
+		createHomeSquares();
+		createRestSquares();
+		modelBatch = new ModelBatch();
+	}
+
+	protected void renderHomeSquares() {
+		for (Square sq : board.getHomeSquaresMap().get(COLOR.GREEN)) {
+			renderSquare(sq);
+		}
+	}
+
+	protected void renderRestSquares() {
+		for (Square sq : board.getRestSquaresMap().get(COLOR.GREEN)) {
+			renderSquare(sq);
+		}
+		for (Square sq : board.getRestSquaresMap().get(COLOR.YELLOW)) {
+			renderSquare(sq);
+		}
+		for (Square sq : board.getRestSquaresMap().get(COLOR.RED)) {
+			renderSquare(sq);
+		}
+		for (Square sq : board.getRestSquaresMap().get(COLOR.BLUE)) {
+			renderSquare(sq);
+		}
+	}
+	
+	public void render(float delta) {
+		  
+		renderContext.begin();
+		modelBatch.begin(cam);
+		renderOuterTrack();
+		renderHomeSquares();
+		renderRestSquares();
+		modelBatch.end();
+		renderContext.end();
+
+	}
+	
+	private void renderOuterTrack() {
+		for (Square sq : board.getSquares()) {
+			renderSquare(sq);
+		}
+	}
+	
+	protected void renderSquare(Square sq) {
+		modelBatch.render(squareInstMap.get(sq), environment);
+		if (sq.getPieces() != null && !sq.getPieces().isEmpty()) {
+			Vector3 translation = new Vector3();
+			for (Piece pc : sq.getPieces()) {
+				ModelInstance inst = pieceInstMap.get(pc);
+				inst.transform.translate(translation);
+				modelBatch.render(inst, environment);
+				translation.z = translation.z + 1;
+			}
+		}
+	}
+
 	/**
 	 * Create the 3D models of the individual squares and translate them to
 	 * their positions

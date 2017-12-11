@@ -76,7 +76,7 @@ public class LudoScreen implements Screen {
 			i = 0;
 		}
 
-		boardRenderer.renderSquares(delta);
+		boardRenderer.render(delta);
 	}
 
 	public void dispose() {

@@ -5,8 +5,8 @@ import java.util.List;
 
 import com.badlogic.gdx.Screen;
 import com.tgt.ludo.board.Board;
-import com.tgt.ludo.board.Dice;
 import com.tgt.ludo.board.Board.COLOR;
+import com.tgt.ludo.board.Dice;
 import com.tgt.ludo.board.Square;
 import com.tgt.ludo.player.HumanPlayer;
 import com.tgt.ludo.player.Move;
@@ -23,19 +23,37 @@ public class LudoGameState {
 	// needed by human players to get inputs
 	private Screen screen;
 	private List<Player> players;
-	List<Dice> dice;
-	// if online the current dice and player turn should be sent to the server
-	private boolean onlineGame = false;
+	List<Dice> diceList;
 
 	public LudoGameState(Screen screen) {
 		board = new Board();
 		board.setup();
 		this.screen = screen;
 		players = new ArrayList<Player>();
-		greenPlayer = new HumanPlayer(((LudoScreen) screen),dice);
+
+		greenPlayer = new HumanPlayer(((LudoScreen) screen), diceList);
+		greenPlayer.setColor(COLOR.GREEN);
 		greenPlayer.setTurn(true);
-		greenPlayer.setPieces(board.getPiecesMap().get(COLOR.GREEN));
+		greenPlayer.setPieces(board.getPiecesMap().get(greenPlayer.getColor()));
 		players.add(greenPlayer);
+
+		yellowPlayer = new HumanPlayer(((LudoScreen) screen), diceList);
+		yellowPlayer.setColor(COLOR.YELLOW);
+		yellowPlayer.setTurn(false);
+		yellowPlayer.setPieces(board.getPiecesMap().get(yellowPlayer.getColor()));
+		players.add(yellowPlayer);
+
+		redPlayer = new HumanPlayer(((LudoScreen) screen), diceList);
+		redPlayer.setColor(COLOR.RED);
+		redPlayer.setTurn(false);
+		redPlayer.setPieces(board.getPiecesMap().get(redPlayer.getColor()));
+		players.add(redPlayer);
+
+		bluePlayer = new HumanPlayer(((LudoScreen) screen), diceList);
+		bluePlayer.setColor(COLOR.BLUE);
+		bluePlayer.setTurn(false);
+		bluePlayer.setPieces(board.getPiecesMap().get(bluePlayer.getColor()));
+		players.add(bluePlayer);
 	}
 
 	private boolean moving = false;
@@ -74,18 +92,10 @@ public class LudoGameState {
 					} else {
 						players.get(0).setTurn(true);
 					}
-				} else {
-					// ignore others
-					break;
 				}
+				break;
 			}
 		}
-		if (onlineGame) {
-			updateServer();
-		}
-	}
-
-	private void updateServer() {
 
 	}
 

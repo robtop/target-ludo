@@ -32,8 +32,6 @@ public class Board {
 	private Map<COLOR, List<Piece>> piecesMap;
 	private int players = 4;
 	
-	private List<Dice> dice;
-
 	public void setup(int players) {
 		this.players = players;
 		setup();

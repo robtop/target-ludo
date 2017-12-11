@@ -1,5 +1,6 @@
 package com.tgt.ludo.player;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
@@ -21,8 +22,7 @@ public class HumanPlayer extends Player {
 	Ray pickRay;
 	// need screen details to capture inputs and get location of pieces
 	LudoScreen screen;
-    List<Dice> dice;
-	
+  	
 	public HumanPlayer(LudoScreen screen,List<Dice> dice) {
 		this.screen = screen;
 		//this.guiCam = screen.getGuiCam();
@@ -33,7 +33,11 @@ public class HumanPlayer extends Player {
 	@Override
 	public Move play() {
 		if(!diceRolled){
-			rollDice();
+			List<Integer> diceValList = rollDice();
+			if(!(diceValList==null)){
+				diceRolled = true;
+			}
+			return null;
 		}
 		
 		if (Gdx.input.justTouched()) {
@@ -46,6 +50,11 @@ public class HumanPlayer extends Player {
 			//assuming single dice
 			//check if valid move and move
 			System.out.println("Touched: "+piece);
+			List<Dice> diceList = screen.getBoardRenderer().getDiceList();
+			//TODO dispose instance 
+			diceList.clear();
+			//TODO: 2 variation
+			diceList.add(screen.getBoardRenderer().createDiceInstance());
 			return new Move(piece,3);
 		}
 		return null;
@@ -70,9 +79,38 @@ public class HumanPlayer extends Player {
 
 	@Override
 	protected List<Integer> rollDice() {
+		List<Dice> diceList = screen.getBoardRenderer().getDiceList();
+		//only last dice eligible to be touched - others should be six - //TODO: check variation with two dice
+		Dice dice = diceList.get(diceList.size()-1);
 		if (Gdx.input.justTouched()) {
-			
+			touchPoint.set(Gdx.input.getX(), Gdx.input.getY(),0);
+			pickRay = cam3D.getPickRay(touchPoint.x, touchPoint.y, 0, 0, Gdx.app.getGraphics().getWidth(),
+					Gdx.app.getGraphics().getHeight());
+			Vector3 intersection = new Vector3();
+			Vector3 tran = new Vector3();
+			dice.getDiceInstance().transform.getTranslation(tran);
+			if(Intersector.intersectRaySphere(pickRay, tran, BoardRenderer.SQUARE_LENGTH, intersection))
+			{
+				int value = (int) Math.floor((Math.random()*7));
+				dice.setDiceValue(value);
+				dice.setRolled(true);
+				value =6;
+				System.out.println("Dice Roll: "+value);
+				
+				if(value == 6){
+					diceList.add(screen.getBoardRenderer().createDiceInstance());
+				} else {
+					List<Integer> list = new ArrayList<Integer>();
+					for(Dice diceTemp:diceList){
+						list.add(dice.getDiceValue());
+					}
+					return list;
+				}
+				dice.setRolled(true);
+			}
 		}
 		return null;
 	}
+	
+
 }

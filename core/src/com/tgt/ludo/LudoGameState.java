@@ -23,34 +23,33 @@ public class LudoGameState {
 	// needed by human players to get inputs
 	private Screen screen;
 	private List<Player> players;
-	List<Dice> dice;
+	List<Dice> diceList;
 
 	public LudoGameState(Screen screen) {
-		dice = new ArrayList<Dice>();
 		board = new Board();
 		board.setup();
 		this.screen = screen;
 		players = new ArrayList<Player>();
-		
-		greenPlayer = new HumanPlayer(((LudoScreen) screen), dice);
+
+		greenPlayer = new HumanPlayer(((LudoScreen) screen), diceList);
 		greenPlayer.setColor(COLOR.GREEN);
 		greenPlayer.setTurn(true);
 		greenPlayer.setPieces(board.getPiecesMap().get(greenPlayer.getColor()));
 		players.add(greenPlayer);
-		
-		yellowPlayer = new HumanPlayer(((LudoScreen) screen), dice);
+
+		yellowPlayer = new HumanPlayer(((LudoScreen) screen), diceList);
 		yellowPlayer.setColor(COLOR.YELLOW);
 		yellowPlayer.setTurn(false);
 		yellowPlayer.setPieces(board.getPiecesMap().get(yellowPlayer.getColor()));
 		players.add(yellowPlayer);
-		
-		redPlayer = new HumanPlayer(((LudoScreen) screen), dice);
+
+		redPlayer = new HumanPlayer(((LudoScreen) screen), diceList);
 		redPlayer.setColor(COLOR.RED);
 		redPlayer.setTurn(false);
 		redPlayer.setPieces(board.getPiecesMap().get(redPlayer.getColor()));
 		players.add(redPlayer);
-		
-		bluePlayer = new HumanPlayer(((LudoScreen) screen), dice);
+
+		bluePlayer = new HumanPlayer(((LudoScreen) screen), diceList);
 		bluePlayer.setColor(COLOR.BLUE);
 		bluePlayer.setTurn(false);
 		bluePlayer.setPieces(board.getPiecesMap().get(bluePlayer.getColor()));
@@ -79,7 +78,6 @@ public class LudoGameState {
 			Player player = players.get(i);
 
 			if (player.isTurn()) {
-				System.out.println(player.getColor()+" Turn");
 				move = player.play();
 				if (move != null) {
 					// do the actual move

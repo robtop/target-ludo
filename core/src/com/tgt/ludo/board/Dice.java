@@ -40,6 +40,14 @@ public int getDiceValue() {
 public boolean isRolled() {
 	return rolled;
 }
+
+public void setDiceValue(int diceValue) {
+	this.diceValue = diceValue;
+}
+
+public void setRolled(boolean rolled) {
+	this.rolled = rolled;
+}
    
    
 }

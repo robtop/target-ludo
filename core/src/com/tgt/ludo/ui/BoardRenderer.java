@@ -1,23 +1,22 @@
 package com.tgt.ludo.ui;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.Environment;
+import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
 import com.badlogic.gdx.math.Vector3;
 import com.tgt.ludo.board.Board;
+import com.tgt.ludo.board.Dice;
 import com.tgt.ludo.board.Piece;
-import com.tgt.ludo.board.Square;
+import com.tgt.ludo.board.Board.COLOR;
 import com.tgt.ludo.player.Move;
 
 public class BoardRenderer extends StaticBoardRenderer {
-
-	public BoardRenderer(Board board, RenderContext renderContext, PerspectiveCamera cam, Environment environment) {
-		super(board, renderContext, cam, environment);
-
-	}
 
 	private boolean pieceMoved = true;
 	private Move pieceMove;
@@ -25,20 +24,32 @@ public class BoardRenderer extends StaticBoardRenderer {
 	private int moveTempIndex;
 	private static final int MOVE_SPEED = 10;
 	private ModelInstance pieceInstance;
+	private List<Dice> diceList;
+	protected Model diceModel;
+
+	public BoardRenderer(Board board, RenderContext renderContext, PerspectiveCamera cam, Environment environment) {
+		super(board, renderContext, cam, environment);
+		assetsManager.load("meshes/dice.g3db", Model.class);
+		assetsManager.finishLoading();
+		diceModel = (Model) assetsManager.get("meshes/dice.g3db");
+		diceList = new ArrayList<Dice>();
+		diceList.add(createDiceInstance());
+	}
 
 	public void render(float delta) {
 		super.render(delta);
-		if (!pieceMoved) {
+		
 			renderContext.begin();
 			modelBatch.begin(cam);
-
+			if (!pieceMoved) {
 			renderMovingPiece(delta);
-
+			}
+			renderDice();
 			modelBatch.end();
 			renderContext.end();
 		}
 
-	}
+	
 
 	public void renderMovingPiece(float delta) {
 		if (moveTempIndex == moveFinalIndex + 1) {
@@ -66,11 +77,34 @@ public class BoardRenderer extends StaticBoardRenderer {
 
 	}
 
+	public void renderDice() {
+		int count=0;
+		for (Dice dice : diceList) {
+			if(!dice.isRolled()){
+				dice.getDiceInstance().transform.setToRotation(new Vector3(1, 1,1),45);
+			} else {
+				// rotate according to number
+				dice.getDiceInstance().transform.setToRotation(new Vector3(0, 0,0),0);
+			}
+			dice.getDiceInstance().transform.translate(0, 0,count*SQUARE_LENGTH*2);
+			modelBatch.render(dice.getDiceInstance(), environment);
+			count++;
+		}
+	}
+
 	public void setPieceMove(Move move) {
 		pieceMove = move;
 		pieceMoved = false;
 		moveFinalIndex = move.getPiece().getSittingSuare().getIndex() + move.getSquares();
 		moveTempIndex = move.getPiece().getSittingSuare().getIndex() + 1;
+	}
+
+	public Dice createDiceInstance() {
+
+		instance = new ModelInstance(diceModel);
+		Dice dice = new Dice();
+		dice.setDiceInstance(instance);
+		return dice;
 	}
 
 	public boolean isPieceMoved() {
@@ -79,6 +113,14 @@ public class BoardRenderer extends StaticBoardRenderer {
 
 	public Map<Piece, ModelInstance> getPieceInstMap() {
 		return pieceInstMap;
+	}
+
+	public List<Dice> getDiceList() {
+		return diceList;
+	}
+
+	public void setDiceList(List<Dice> diceList) {
+		this.diceList = diceList;
 	}
 
 }

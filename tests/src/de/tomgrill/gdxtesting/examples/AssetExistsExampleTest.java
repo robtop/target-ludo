@@ -29,7 +29,7 @@ import de.tomgrill.gdxtesting.GdxTestRunner;
 public class AssetExistsExampleTest {
 
 	@Test
-	public void badlogicLogoFileExists() {
+	public void meshFileExists() {
 		assertTrue("This test will only pass when the piece.g3db file exists", Gdx.files
 				.internal("../core/assets/meshes/piece.g3db").exists());
 	}

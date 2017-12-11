@@ -26,6 +26,7 @@ public class LudoGameState {
 	List<Dice> dice;
 
 	public LudoGameState(Screen screen) {
+		dice = new ArrayList<Dice>();
 		board = new Board();
 		board.setup();
 		this.screen = screen;

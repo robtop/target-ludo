@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.tgt.ludo.RuleEngine;
+import com.tgt.ludo.board.Board.COLOR;
 import com.tgt.ludo.board.Piece;
 
 public abstract class Player {
@@ -11,7 +12,7 @@ public abstract class Player {
 	private boolean turn = false;
 	protected List<Piece> pieces;
     protected RuleEngine ruleEngine;
-
+    protected COLOR color;
     protected boolean diceRolled = false;
     
     //Extending Players should set this
@@ -66,4 +67,13 @@ public abstract class Player {
 	public void setDiceRolls(List<Integer> diceRolls) {
 		this.diceRolls = diceRolls;
 	}
+
+	public COLOR getColor() {
+		return color;
+	}
+
+	public void setColor(COLOR color) {
+		this.color = color;
+	}
+	
 }

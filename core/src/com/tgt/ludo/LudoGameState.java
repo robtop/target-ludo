@@ -5,8 +5,8 @@ import java.util.List;
 
 import com.badlogic.gdx.Screen;
 import com.tgt.ludo.board.Board;
-import com.tgt.ludo.board.Dice;
 import com.tgt.ludo.board.Board.COLOR;
+import com.tgt.ludo.board.Dice;
 import com.tgt.ludo.board.Square;
 import com.tgt.ludo.player.HumanPlayer;
 import com.tgt.ludo.player.Move;
@@ -24,17 +24,35 @@ public class LudoGameState {
 	private Screen screen;
 	private List<Player> players;
 	List<Dice> dice;
-	// if online the current dice and player turn should be sent to the server
-	private boolean onlineGame = false;
 
 	public LudoGameState(Screen screen) {
 		board = new Board();
 		board.setup();
 		this.screen = screen;
 		players = new ArrayList<Player>();
-		greenPlayer = new HumanPlayer(((LudoScreen) screen),dice);
+		
+		greenPlayer = new HumanPlayer(((LudoScreen) screen), dice);
+		greenPlayer.setColor(COLOR.GREEN);
 		greenPlayer.setTurn(true);
-		greenPlayer.setPieces(board.getPiecesMap().get(COLOR.GREEN));
+		greenPlayer.setPieces(board.getPiecesMap().get(greenPlayer.getColor()));
+		players.add(greenPlayer);
+		
+		yellowPlayer = new HumanPlayer(((LudoScreen) screen), dice);
+		yellowPlayer.setColor(COLOR.YELLOW);
+		yellowPlayer.setTurn(false);
+		yellowPlayer.setPieces(board.getPiecesMap().get(greenPlayer.getColor()));
+		players.add(yellowPlayer);
+		
+		redPlayer = new HumanPlayer(((LudoScreen) screen), dice);
+		redPlayer.setColor(COLOR.RED);
+		redPlayer.setTurn(true);
+		redPlayer.setPieces(board.getPiecesMap().get(greenPlayer.getColor()));
+		players.add(greenPlayer);
+		
+		redPlayer = new HumanPlayer(((LudoScreen) screen), dice);
+		redPlayer.setColor(COLOR.BLUE);
+		redPlayer.setTurn(true);
+		redPlayer.setPieces(board.getPiecesMap().get(greenPlayer.getColor()));
 		players.add(greenPlayer);
 	}
 
@@ -80,12 +98,6 @@ public class LudoGameState {
 				}
 			}
 		}
-		if (onlineGame) {
-			updateServer();
-		}
-	}
-
-	private void updateServer() {
 
 	}
 

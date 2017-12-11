@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.Renderable;
 import com.badlogic.gdx.graphics.g3d.Shader;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
+import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.graphics.g3d.utils.DefaultTextureBinder;
 import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
@@ -32,14 +33,16 @@ public class LudoScreen implements Screen {
 	private BoardRenderer boardRenderer;
 	protected Vector3 touchPoint;
 	LudoGameState ludoGameState;
-
+	public static final Vector3 LIGHT_DIRECTION = new Vector3(-1f, 1f, 3f);
 	public void create() {
 
 		gl20 = Gdx.app.getGraphics().getGL20();
 		gl20.glEnable(GL20.GL_TEXTURE_2D);
 		environment = new Environment();
-		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, .8f, .8f, .8f, 1f));
-
+		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.9f,
+				0.9f, 0.9f, 1f));
+		environment.add(new DirectionalLight().set(.6f, .6f, .6f,
+				LIGHT_DIRECTION.x, LIGHT_DIRECTION.y, LIGHT_DIRECTION.z));
 		// 3d Camera setup
 		cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		cam.position.set(-30f, 30f, -5f);

@@ -25,7 +25,10 @@ public class BoardRenderer {
 	public static AssetManager assetsManager = new AssetManager();
 	public static final int SQUARE_LENGTH = 3;
 	private Model squareModel;
-	private Model pieceModel;
+	private Model greenPawnModel;
+	private Model yellowPawnModel;
+	private Model redPawnModel;
+	private Model bluePawnModel;
 	private ModelInstance instance;
 	public Environment environment;
 
@@ -38,6 +41,7 @@ public class BoardRenderer {
 	private Move pieceMove;
 	private int moveFinalIndex;
 	private int moveTempIndex;
+	private static final int MOVE_SPEED = 10;
 
 	public BoardRenderer(Board board, RenderContext renderContext, PerspectiveCamera cam, Environment environment) {
 		this.board = board;
@@ -46,10 +50,19 @@ public class BoardRenderer {
 		this.environment = environment;
 
 		assetsManager.load("meshes/square.g3db", Model.class);
-		assetsManager.load("meshes/piece.g3db", Model.class);
+		//assetsManager.load("meshes/piece.g3db", Model.class);
+		assetsManager.load("meshes/pawnGreen.g3dj", Model.class);
+		assetsManager.load("meshes/pawnYellow.g3dj", Model.class);
+		assetsManager.load("meshes/pawnRed.g3dj", Model.class);
+		assetsManager.load("meshes/pawnBlue.g3dj", Model.class);
 		assetsManager.finishLoading();
 		squareModel = (Model) assetsManager.get("meshes/square.g3db");
-		pieceModel = (Model) assetsManager.get("meshes/piece.g3db");
+		// pieceModel = (Model) assetsManager.get("meshes/piece.g3db");
+
+		greenPawnModel = (Model) assetsManager.get("meshes/pawnGreen.g3dj");
+		yellowPawnModel = (Model) assetsManager.get("meshes/pawnYellow.g3dj");
+		redPawnModel = (Model) assetsManager.get("meshes/pawnRed.g3dj");
+		bluePawnModel = (Model) assetsManager.get("meshes/pawnBlue.g3dj");
 
 		squareInstMap = new HashMap<Square, ModelInstance>();
 		pieceInstMap = new HashMap<Piece, ModelInstance>();
@@ -137,7 +150,7 @@ public class BoardRenderer {
 			moveTempIndex++;
 		} else {
 
-			pieceInstance.transform.translate(diff.scl(delta * 2));
+			pieceInstance.transform.translate(diff.scl(delta * MOVE_SPEED));
 		}
 
 	}
@@ -252,9 +265,9 @@ public class BoardRenderer {
 	private void createRestSquares() {
 
 		createRestSquares(COLOR.GREEN, new Vector3(2 * SQUARE_LENGTH, 0, -5 * SQUARE_LENGTH));
-		createRestSquares(COLOR.YELLOW, new Vector3(2*Board.DIMENSION * SQUARE_LENGTH, 0, -5 * SQUARE_LENGTH));
-		createRestSquares(COLOR.RED, new Vector3(2*Board.DIMENSION * SQUARE_LENGTH, 0,5 * SQUARE_LENGTH));
-		createRestSquares(COLOR.BLUE, new Vector3(2 * SQUARE_LENGTH, 0, 5  * SQUARE_LENGTH));
+		createRestSquares(COLOR.YELLOW, new Vector3(2 * Board.DIMENSION * SQUARE_LENGTH, 0, -5 * SQUARE_LENGTH));
+		createRestSquares(COLOR.RED, new Vector3(2 * Board.DIMENSION * SQUARE_LENGTH, 0, 5 * SQUARE_LENGTH));
+		createRestSquares(COLOR.BLUE, new Vector3(2 * SQUARE_LENGTH, 0, 5 * SQUARE_LENGTH));
 	}
 
 	private void createRestSquares(COLOR color, Vector3 translation) {
@@ -283,7 +296,24 @@ public class BoardRenderer {
 	}
 
 	private ModelInstance createPieceInstance(Piece piece, COLOR color) {
-		instance = new ModelInstance(pieceModel);
+
+		switch (color) {
+		case GREEN:
+			instance = new ModelInstance(greenPawnModel);
+			break;
+
+		case YELLOW:
+			instance = new ModelInstance(yellowPawnModel);
+			break;
+
+		case RED:
+			instance = new ModelInstance(redPawnModel);
+			break;
+		case BLUE:
+			instance = new ModelInstance(bluePawnModel);
+			break;
+		}
+
 		pieceInstMap.put(piece, instance);
 		return instance;
 	}

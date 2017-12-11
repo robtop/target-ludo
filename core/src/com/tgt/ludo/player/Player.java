@@ -1,5 +1,6 @@
 package com.tgt.ludo.player;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.tgt.ludo.RuleEngine;
@@ -10,14 +11,26 @@ public abstract class Player {
 	private boolean turn = false;
 	protected List<Piece> pieces;
     protected RuleEngine ruleEngine;
+
+    protected boolean diceRolled = false;
     
+    //Extending Players should set this
+    protected List<Integer> diceRolls = new ArrayList<Integer>();
+
 	// main game loop
-	public abstract Move play();
+	public Move play(){
+		if(diceRolled){
+			rollDice();
+		}
+		return null;
+	}
 
 	public boolean isTurn() {
 		return turn;
 	}
 
+	protected abstract  List<Integer> rollDice();
+	
 	public void setTurn(boolean turn) {
 		this.turn = turn;
 	}
@@ -37,6 +50,20 @@ public abstract class Player {
 	public void setRuleEngine(RuleEngine ruleEngine) {
 		this.ruleEngine = ruleEngine;
 	}
-	
 
+	public boolean isDiceRolled() {
+		return diceRolled;
+	}
+
+	public void setDiceRolled(boolean diceRolled) {
+		this.diceRolled = diceRolled;
+	}
+
+	public List<Integer> getDiceRolls() {
+		return diceRolls;
+	}
+
+	public void setDiceRolls(List<Integer> diceRolls) {
+		this.diceRolls = diceRolls;
+	}
 }

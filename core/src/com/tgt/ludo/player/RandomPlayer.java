@@ -1,6 +1,6 @@
 package com.tgt.ludo.player;
 
-public class RandomPlayer extends Player{
+public class RandomPlayer extends ComputerPlayer{
 
 	@Override
 	public Move play() {

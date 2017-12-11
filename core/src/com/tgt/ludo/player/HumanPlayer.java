@@ -1,17 +1,19 @@
 package com.tgt.ludo.player;
 
+import java.util.List;
+
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
+import com.tgt.ludo.board.Dice;
 import com.tgt.ludo.board.Piece;
 import com.tgt.ludo.ui.BoardRenderer;
 import com.tgt.ludo.ui.LudoScreen;
 
 public class HumanPlayer extends Player {
-
+	
 	// human player needs eyes to capture inputs from the screen
 	//OrthographicCamera guiCam;
 	PerspectiveCamera cam3D;
@@ -19,8 +21,9 @@ public class HumanPlayer extends Player {
 	Ray pickRay;
 	// need screen details to capture inputs and get location of pieces
 	LudoScreen screen;
-
-	public HumanPlayer(LudoScreen screen) {
+    List<Dice> dice;
+	
+	public HumanPlayer(LudoScreen screen,List<Dice> dice) {
 		this.screen = screen;
 		//this.guiCam = screen.getGuiCam();
 		this.cam3D = screen.getCam();
@@ -29,6 +32,9 @@ public class HumanPlayer extends Player {
 
 	@Override
 	public Move play() {
+		if(!diceRolled){
+			rollDice();
+		}
 		
 		if (Gdx.input.justTouched()) {
 			touchPoint.set(Gdx.input.getX(), Gdx.input.getY(),0);
@@ -57,6 +63,14 @@ public class HumanPlayer extends Player {
 			{
 				return piece;
 			}
+			
+		}
+		return null;
+	}
+
+	@Override
+	protected List<Integer> rollDice() {
+		if (Gdx.input.justTouched()) {
 			
 		}
 		return null;

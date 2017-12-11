@@ -1,6 +1,6 @@
 package com.tgt.ludo.player;
 
-public class MinMaxPlayer extends Player{
+public class MinMaxPlayer extends ComputerPlayer{
 
 	@Override
 	public Move play() {

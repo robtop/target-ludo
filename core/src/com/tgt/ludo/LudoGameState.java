@@ -40,20 +40,20 @@ public class LudoGameState {
 		yellowPlayer = new HumanPlayer(((LudoScreen) screen), dice);
 		yellowPlayer.setColor(COLOR.YELLOW);
 		yellowPlayer.setTurn(false);
-		yellowPlayer.setPieces(board.getPiecesMap().get(greenPlayer.getColor()));
+		yellowPlayer.setPieces(board.getPiecesMap().get(yellowPlayer.getColor()));
 		players.add(yellowPlayer);
 		
 		redPlayer = new HumanPlayer(((LudoScreen) screen), dice);
 		redPlayer.setColor(COLOR.RED);
-		redPlayer.setTurn(true);
-		redPlayer.setPieces(board.getPiecesMap().get(greenPlayer.getColor()));
-		players.add(greenPlayer);
+		redPlayer.setTurn(false);
+		redPlayer.setPieces(board.getPiecesMap().get(redPlayer.getColor()));
+		players.add(redPlayer);
 		
-		redPlayer = new HumanPlayer(((LudoScreen) screen), dice);
-		redPlayer.setColor(COLOR.BLUE);
-		redPlayer.setTurn(true);
-		redPlayer.setPieces(board.getPiecesMap().get(greenPlayer.getColor()));
-		players.add(greenPlayer);
+		bluePlayer = new HumanPlayer(((LudoScreen) screen), dice);
+		bluePlayer.setColor(COLOR.BLUE);
+		bluePlayer.setTurn(false);
+		bluePlayer.setPieces(board.getPiecesMap().get(bluePlayer.getColor()));
+		players.add(bluePlayer);
 	}
 
 	private boolean moving = false;
@@ -78,6 +78,7 @@ public class LudoGameState {
 			Player player = players.get(i);
 
 			if (player.isTurn()) {
+				System.out.println(player.getColor()+" Turn");
 				move = player.play();
 				if (move != null) {
 					// do the actual move
@@ -92,10 +93,8 @@ public class LudoGameState {
 					} else {
 						players.get(0).setTurn(true);
 					}
-				} else {
-					// ignore others
-					break;
 				}
+				break;
 			}
 		}
 

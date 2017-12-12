@@ -10,6 +10,7 @@ import com.tgt.ludo.board.Board.COLOR;
 import com.tgt.ludo.board.Dice;
 import com.tgt.ludo.board.Piece;
 import com.tgt.ludo.board.Square;
+import com.tgt.ludo.player.ComputerPlayer;
 import com.tgt.ludo.player.HumanPlayer;
 import com.tgt.ludo.player.Move;
 import com.tgt.ludo.player.Player;
@@ -47,7 +48,8 @@ public class LudoGameStateController {
 		board = new Board();
 		board.setup();
 		this.screen = (LudoScreen) screen;
-		createPlayers();
+		//createPlayers();
+		createRobotPlayers();
 		gameState = GAME_STATE.PROGRESS;
 	}
 
@@ -80,15 +82,14 @@ public class LudoGameStateController {
 		if (move != null) {
 
 			if (move.isSkipTurn()) {
-				giveTurnToNext(playerIndex);
+				giveTurnToNext(player, playerIndex);
 				return;
 			}
 			if (move.isIncomplete()) {
 				player.setSelectDice(false);
 				player.setDiceRolled(true);
 			} else {
-				player.setTurn(false);
-				giveTurnToNext(playerIndex);
+				giveTurnToNext(player, playerIndex);
 				setPiecesShake(player, false);
 				
 			}
@@ -127,7 +128,8 @@ public class LudoGameStateController {
 
 	}
 
-	private void giveTurnToNext(int i) {
+	private void giveTurnToNext(Player currentPlayer,int i) {
+		currentPlayer.setTurn(false);
 		Player selectedPlayer;
 		if (i + 1 < players.size()) {
 			selectedPlayer = players.get(i + 1);
@@ -176,6 +178,38 @@ public class LudoGameStateController {
 		bluePlayer.setPieces(board.getPiecesMap().get(bluePlayer.getColor()));
 		players.add(bluePlayer);
 	}
+	
+	private void createRobotPlayers(){
+		players = new ArrayList<Player>();
+
+		greenPlayer = new ComputerPlayer(((LudoScreen) screen), ruleEngine);
+		greenPlayer.setColor(COLOR.GREEN);
+		greenPlayer.setTurn(true);
+		greenPlayer.setPieces(board.getPiecesMap().get(greenPlayer.getColor()));
+		players.add(greenPlayer);
+
+		yellowPlayer = new ComputerPlayer(((LudoScreen) screen), ruleEngine);
+		yellowPlayer.setColor(COLOR.YELLOW);
+		yellowPlayer.setTurn(false);
+		yellowPlayer.setStartIndex(Board.DIMENSION*2+1);
+		yellowPlayer.setPieces(board.getPiecesMap().get(yellowPlayer.getColor()));
+		players.add(yellowPlayer);
+
+		redPlayer = new ComputerPlayer(((LudoScreen) screen), ruleEngine);
+		redPlayer.setColor(COLOR.RED);
+		redPlayer.setTurn(false);
+		redPlayer.setStartIndex(Board.DIMENSION*4+2);
+		redPlayer.setPieces(board.getPiecesMap().get(redPlayer.getColor()));
+		players.add(redPlayer);
+
+		bluePlayer = new ComputerPlayer(((LudoScreen) screen), ruleEngine);
+		bluePlayer.setColor(COLOR.BLUE);
+		bluePlayer.setTurn(false);
+		bluePlayer.setStartIndex(Board.DIMENSION*6+3);
+		bluePlayer.setPieces(board.getPiecesMap().get(bluePlayer.getColor()));
+		players.add(bluePlayer);
+	}
+	
 	private void shakeDice(boolean shake) {
 		List<Dice> diceList = screen.getBoardRenderer().getDiceList();
 		for (Dice dice : diceList) {

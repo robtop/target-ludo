@@ -14,7 +14,7 @@ import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.graphics.g3d.utils.DefaultTextureBinder;
 import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
 import com.badlogic.gdx.math.Vector3;
-import com.tgt.ludo.gamestate.LudoGameState;
+import com.tgt.ludo.gamestate.LudoGameStateController;
 
 public class LudoScreen implements Screen {
 
@@ -32,7 +32,8 @@ public class LudoScreen implements Screen {
 
 	private BoardRenderer boardRenderer;
 	protected Vector3 touchPoint;
-	LudoGameState ludoGameState;
+	LudoGameStateController ludoGameState;
+	
 	public static final Vector3 LIGHT_DIRECTION = new Vector3(-1f, 1f, 3f);
 	public void create() {
 
@@ -61,7 +62,7 @@ public class LudoScreen implements Screen {
 
 		touchPoint = new Vector3();
 
-		ludoGameState = new LudoGameState((Screen) this);
+		ludoGameState = new LudoGameStateController((Screen) this);
 		boardRenderer = new BoardRenderer(ludoGameState.getBoard(), renderContext, cam, environment);
 		boardRenderer.setSelectedPlayer(ludoGameState.getGreenPlayer());
 	}

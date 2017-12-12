@@ -2,6 +2,7 @@ package com.tgt.ludo.gamestate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import com.badlogic.gdx.Screen;
 import com.tgt.ludo.board.Board;
@@ -15,7 +16,12 @@ import com.tgt.ludo.rules.BasicRuleEngine;
 import com.tgt.ludo.rules.RuleEngine;
 import com.tgt.ludo.ui.LudoScreen;
 
-public class LudoGameState {
+/***
+ * Main class controlling a single game session
+ * @author robin
+ *
+ */
+public class LudoGameStateController {
 	private Board board;
 	private Player greenPlayer;
 	private Player yellowPlayer;
@@ -26,12 +32,22 @@ public class LudoGameState {
 	private LudoScreen screen;
 	private List<Player> players;
 	RuleEngine ruleEngine = new BasicRuleEngine();
-
-	public LudoGameState(Screen screen) {
+    private UUID gameID;
+    private GAME_STATE gameState;
+    private Player winner;
+    
+    public static enum GAME_STATE {
+		WAITING, PROGRESS, COMPLETE
+	}
+	public LudoGameStateController(Screen screen) {
+		
+		gameID = UUID.randomUUID();
+		gameState = GAME_STATE.WAITING;
 		board = new Board();
 		board.setup();
 		this.screen = (LudoScreen) screen;
 		createPlayers();
+		gameState = GAME_STATE.PROGRESS;
 	}
 
 	private boolean movingAnimation = false;
@@ -72,6 +88,7 @@ public class LudoGameState {
 
 			} else {
 				player.setSelectDice(false);
+				player.setDiceRolled(true);
 			}
 
 			// do the actual move in the board backend
@@ -159,6 +176,10 @@ public class LudoGameState {
 
 	public Player getGreenPlayer() {
 		return greenPlayer;
+	}
+
+	public GAME_STATE getGameState() {
+		return gameState;
 	}
 
 }

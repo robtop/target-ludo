@@ -7,6 +7,11 @@ import java.util.Map;
 
 import com.tgt.ludo.player.Move;
 
+/**
+ * The main backend class representing a games board data
+ * @author robin
+ *
+ */
 public class Board {
 
 	// length of one arm of the board

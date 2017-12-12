@@ -107,7 +107,7 @@ public class LudoGameStateController {
 	
 	private void movePiece(Player player) {
 		movingAnimation = true;
-		((LudoScreen) screen).getBoardRenderer().setPiecetoMove(move);
+		((LudoScreen) screen).getBoardRenderer().setPiecetoMove(player,move);
 		move.getPiece().getSittingSuare().getPieces().remove(move.getPiece());
 		sittingSquareIndex = move.getPiece().getSittingSuare().getIndex();
 		move.getPiece().setShake(false);
@@ -157,18 +157,21 @@ public class LudoGameStateController {
 		yellowPlayer = new HumanPlayer(((LudoScreen) screen), ruleEngine);
 		yellowPlayer.setColor(COLOR.YELLOW);
 		yellowPlayer.setTurn(false);
+		yellowPlayer.setStartIndex(Board.DIMENSION*2+1);
 		yellowPlayer.setPieces(board.getPiecesMap().get(yellowPlayer.getColor()));
 		players.add(yellowPlayer);
 
 		redPlayer = new HumanPlayer(((LudoScreen) screen), ruleEngine);
 		redPlayer.setColor(COLOR.RED);
 		redPlayer.setTurn(false);
+		redPlayer.setStartIndex(Board.DIMENSION*4+2);
 		redPlayer.setPieces(board.getPiecesMap().get(redPlayer.getColor()));
 		players.add(redPlayer);
 
 		bluePlayer = new HumanPlayer(((LudoScreen) screen), ruleEngine);
 		bluePlayer.setColor(COLOR.BLUE);
 		bluePlayer.setTurn(false);
+		bluePlayer.setStartIndex(Board.DIMENSION*6+3);
 		bluePlayer.setPieces(board.getPiecesMap().get(bluePlayer.getColor()));
 		players.add(bluePlayer);
 	}

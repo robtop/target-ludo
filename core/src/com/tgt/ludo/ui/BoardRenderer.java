@@ -169,11 +169,11 @@ public class BoardRenderer extends StaticBoardRenderer {
 
 	}
 
-	public void setPiecetoMove(Move move) {
+	public void setPiecetoMove(Player player, Move move) {
 		pieceMove = move;
 		pieceMoved = false;
 		if (move.getPiece().isRest()) {
-			moveFinalIndex = 0;
+			moveFinalIndex = player.getStartIndex();
 		} else {
 			moveFinalIndex = move.getPiece().getSittingSuare().getIndex() + move.getSquares();
 			moveTempIndex = move.getPiece().getSittingSuare().getIndex() + 1;

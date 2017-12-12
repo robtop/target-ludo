@@ -17,7 +17,7 @@ public abstract class Player {
 	protected List<Piece> pieces;
 	protected RuleEngine ruleEngine;
 	protected COLOR color;
-	
+	protected int startIndex;
 	protected Piece selectedPiece;
 	// green get 0,0, Yellow 0,1 , Red 1,1 , Blue 0,1 - used for dice placement
 	// and start calculation
@@ -167,6 +167,14 @@ public abstract class Player {
 
 	public void setSelectDice(boolean selectDice) {
 		this.selectDice = selectDice;
+	}
+
+	public int getStartIndex() {
+		return startIndex;
+	}
+
+	public void setStartIndex(int startIndex) {
+		this.startIndex = startIndex;
 	}
 
 	

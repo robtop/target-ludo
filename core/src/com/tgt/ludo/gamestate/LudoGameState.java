@@ -25,7 +25,6 @@ public class LudoGameState {
 	// needed by human players to get inputs
 	private Screen screen;
 	private List<Player> players;
-	List<Dice> diceList;
 	RuleEngine ruleEngine = new BasicRuleEngine();
 
 	public LudoGameState(Screen screen) {
@@ -84,11 +83,11 @@ public class LudoGameState {
 				move = player.play();
 
 				if (move != null) {
-
+					
 					player.setTurn(false);
 					giveTurnToNext(i);
-
 					if (move.isSkipTurn()) {
+					
 						return;
 					}
 					// do the actual move
@@ -113,6 +112,9 @@ public class LudoGameState {
 			selectedPlayer = players.get(0);
 		}
 		selectedPlayer.setTurn(true);
+		List<Dice> diceList = ((LudoScreen) screen).getBoardRenderer().getDiceList();
+		diceList.clear();
+		diceList.add(((LudoScreen) screen).getBoardRenderer().createDiceInstance());
 		((LudoScreen) screen).getBoardRenderer().setSelectedPlayer(selectedPlayer);
 	}
 
@@ -124,5 +126,4 @@ public class LudoGameState {
 		return greenPlayer;
 	}
 
-	
 }

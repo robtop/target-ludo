@@ -45,6 +45,7 @@ public class HumanPlayer extends Player {
 		int diceValue = diceList.get(0).getDiceValue();
 		List<Move> moves = ruleEngine.getvalidMoves(this, diceValue);
 		if(moves.isEmpty()){
+			diceRolled = false;
 			//skip turn
 			return new Move(true);
 		}
@@ -68,6 +69,7 @@ public class HumanPlayer extends Player {
 					diceList.clear();
 					// create a new single die for the next play
 					diceList.add(screen.getBoardRenderer().createDiceInstance());
+					diceRolled = false;
 					return new Move(piece, diceValue);
 				}
 			} // TODO: 2 variation

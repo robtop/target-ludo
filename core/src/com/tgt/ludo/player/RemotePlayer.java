@@ -3,11 +3,12 @@ package com.tgt.ludo.player;
 import java.util.List;
 
 import com.tgt.ludo.rules.RuleEngine;
+import com.tgt.ludo.ui.LudoScreen;
 
 public class RemotePlayer extends Player {
 
-	public RemotePlayer(RuleEngine ruleEngine) {
-		super(ruleEngine);
+	public RemotePlayer(LudoScreen screen,RuleEngine ruleEngine) {
+		super(screen, ruleEngine);
 	}
 
 	@Override

@@ -10,8 +10,8 @@ public class PairedPlayer extends HumanPlayer{
 
 	private Player pairedPlayer;
 	
-	public PairedPlayer(LudoScreen screen, List<Dice> dice,RuleEngine ruleEngine) {
-		super(screen, dice,ruleEngine);
+	public PairedPlayer(LudoScreen screen,RuleEngine ruleEngine) {
+		super(screen, ruleEngine);
 		// TODO Auto-generated constructor stub
 	}
 

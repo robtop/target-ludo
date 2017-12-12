@@ -6,6 +6,7 @@ import java.util.List;
 import com.tgt.ludo.board.Board.COLOR;
 import com.tgt.ludo.rules.RuleEngine;
 import com.tgt.ludo.ui.BoardRenderer;
+import com.tgt.ludo.ui.LudoScreen;
 import com.tgt.ludo.board.Dice;
 import com.tgt.ludo.board.Piece;
 
@@ -17,7 +18,7 @@ public abstract class Player {
     protected COLOR color;
     protected boolean diceRolled = false;
     
-    public Player(RuleEngine ruleEngine) {
+    public Player(LudoScreen screen, RuleEngine ruleEngine) {
     	this.ruleEngine = ruleEngine;
 	}
     //Extending Players should set this

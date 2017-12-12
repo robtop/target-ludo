@@ -58,6 +58,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 			// set the destination squares translation to the piece
 			pieceInstance.transform.setTranslation(trans);
 			pieceMoved = true;
+			return;
 		}
 
 		Vector3 currentTranslation = new Vector3();

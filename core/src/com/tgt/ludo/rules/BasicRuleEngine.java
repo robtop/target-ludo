@@ -16,7 +16,8 @@ public class BasicRuleEngine implements RuleEngine {
 	}
 	
 	public  int getSingleDiceRoll(){
-		int value = (int) Math.floor((Math.random()*7));
+		//get range 1 to 6
+		int value = (int) Math.floor((Math.random()*6))+1;
 		//value =6;
 		System.out.println("Dice Roll: "+value);
 		return value;

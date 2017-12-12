@@ -23,8 +23,8 @@ public class HumanPlayer extends Player {
 	// need screen details to capture inputs and get location of pieces
 	LudoScreen screen;
   	
-	public HumanPlayer(LudoScreen screen,List<Dice> dice,RuleEngine ruleEngine) {
-		super(ruleEngine);
+	public HumanPlayer(LudoScreen screen,RuleEngine ruleEngine) {
+		super(screen,ruleEngine);
 		this.screen = screen;
 		//this.guiCam = screen.getGuiCam();
 		this.cam3D = screen.getCam();
@@ -33,6 +33,7 @@ public class HumanPlayer extends Player {
 
 	@Override
 	public Move play() {
+		
 		if(!diceRolled){
 			List<Integer> diceValList = rollDice();
 			if(!(diceValList==null)){
@@ -41,6 +42,7 @@ public class HumanPlayer extends Player {
 			return null;
 		}
 		
+		//dice is rolled in previous play loop - now select the piece to move
 		if (Gdx.input.justTouched()) {
 			touchPoint.set(Gdx.input.getX(), Gdx.input.getY(),0);
 			//guiCam.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
@@ -52,11 +54,14 @@ public class HumanPlayer extends Player {
 			//check if valid move and move
 			System.out.println("Touched: "+piece);
 			List<Dice> diceList = screen.getBoardRenderer().getDiceList();
-			//TODO dispose instance 
-			diceList.clear();
-			//TODO: 2 variation
-			diceList.add(screen.getBoardRenderer().createDiceInstance());
-			return new Move(piece,3);
+			if(diceList.size()==1){
+				//TODO dispose instance 
+				diceList.clear();
+				//create a new single die for the next play
+				diceList.add(screen.getBoardRenderer().createDiceInstance());
+				return new Move(piece,diceList.get(0).getDiceValue());
+			}//TODO: 2 variation
+			
 		}
 		return null;
 	}

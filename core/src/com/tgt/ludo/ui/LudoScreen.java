@@ -46,6 +46,7 @@ public class LudoScreen implements Screen {
 				LIGHT_DIRECTION.x, LIGHT_DIRECTION.y, LIGHT_DIRECTION.z));
 		// 3d Camera setup
 		cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		cam.far = 200;
 		cam.position.set(20f, 60f, -10f);
 		cam.lookAt(20f, 0f, 10f);
 //		cam.position.set(-30f, 30f, -5f);

@@ -95,6 +95,7 @@ public class LudoGameStateController {
 
 			// do the actual move in the board backend
 			movePiece(player);
+
 			// check game state for win etc
 		}
 	}

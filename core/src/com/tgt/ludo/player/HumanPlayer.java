@@ -92,7 +92,7 @@ public class HumanPlayer extends Player {
 			// check if valid move and move
 			System.out.println("Touched: " + piece);
 
-			if (diceList.size() == 1) {
+			if (diceList.size() == 1 ) {
 
 				if (ruleEngine.validMove(piece, diceList.get(0).getDiceValue())) {
 					// TODO dispose instance

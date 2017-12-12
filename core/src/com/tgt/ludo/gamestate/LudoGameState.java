@@ -31,6 +31,95 @@ public class LudoGameState {
 		board = new Board();
 		board.setup();
 		this.screen = (LudoScreen) screen;
+		createPlayers();
+	}
+
+	private boolean movingAnimation = false;
+	Move move;
+	int sittingSquareIndex = 0;
+
+	/***
+	 * Main game loop to update the backend and allow play
+	 */
+	public void update() {
+		// wait for piece motion animation to complete
+		if (movingAnimation) {
+			animationCheck();
+			return;
+		}
+
+		for (int i = 0; i < players.size(); i++) {
+			Player player = players.get(i);
+
+			if (player.isTurn()) {
+				play(player,i);
+				break;
+			}
+		}
+	}
+
+	private void play(Player player,int playerIndex) {
+		move = player.play();
+		if (move != null) {
+
+			if (move.isSkipTurn()) {
+
+				return;
+			}
+			if (move.isIncomplete()) {
+				player.setTurn(false);
+				giveTurnToNext(playerIndex);
+
+			} else {
+				player.setSelectDice(false);
+			}
+
+			// do the actual move in the board backend
+			movePiece(player);
+			// check game state for win etc
+		}
+	}
+
+	private void movePiece(Player player) {
+		movingAnimation = true;
+		((LudoScreen) screen).getBoardRenderer().setPieceMove(move);
+		move.getPiece().getSittingSuare().getPieces().remove(move.getPiece());
+		sittingSquareIndex = move.getPiece().getSittingSuare().getIndex();
+		move.getPiece().setShake(false);
+		shakeDice(false);
+	}
+
+	private void animationCheck() {
+		if (((LudoScreen) screen).getBoardRenderer().isPieceMoved()) {
+			movingAnimation = false;
+			Square finalSquare = board.getSquares().get(sittingSquareIndex + move.getSquares());
+			finalSquare.getPieces().add(move.getPiece());
+			move.getPiece().setSittingSuare(finalSquare);
+			return;
+		}
+
+	}
+
+	private void giveTurnToNext(int i) {
+		Player selectedPlayer;
+		if (i + 1 < players.size()) {
+			selectedPlayer = players.get(i + 1);
+
+		} else {
+			selectedPlayer = players.get(0);
+		}
+		selectedPlayer.setTurn(true);
+		List<Dice> diceList = ((LudoScreen) screen).getBoardRenderer().getDiceList();
+		diceList.clear();
+
+		Dice newDice = ((LudoScreen) screen).getBoardRenderer().createDiceInstance();
+		newDice.setShake(true);
+
+		diceList.add(newDice);
+		((LudoScreen) screen).getBoardRenderer().setSelectedPlayer(selectedPlayer);
+	}
+
+	private void createPlayers(){
 		players = new ArrayList<Player>();
 
 		greenPlayer = new HumanPlayer(((LudoScreen) screen), ruleEngine);
@@ -57,81 +146,6 @@ public class LudoGameState {
 		bluePlayer.setPieces(board.getPiecesMap().get(bluePlayer.getColor()));
 		players.add(bluePlayer);
 	}
-
-	private boolean moving = false;
-	Move move;
-	int sittingSquareIndex = 0;
-
-	public void update() {
-		// wait for animation to complete
-		if (moving) {
-			if (((LudoScreen) screen).getBoardRenderer().isPieceMoved()) {
-				moving = false;
-				Square finalSquare = board.getSquares().get(sittingSquareIndex + move.getSquares());
-				finalSquare.getPieces().add(move.getPiece());
-				move.getPiece().setSittingSuare(finalSquare);
-				return;
-			}
-
-			return;
-		}
-
-		for (int i = 0; i < players.size(); i++) {
-			Player player = players.get(i);
-
-			if (player.isTurn()) {
-				move = player.play();
-
-				if (move != null) {
-
-					if (move.isSkipTurn()) {
-
-						return;
-					}
-
-					// do the actual move
-					moving = true;
-					((LudoScreen) screen).getBoardRenderer().setPieceMove(move);
-					move.getPiece().getSittingSuare().getPieces().remove(move.getPiece());
-					sittingSquareIndex = move.getPiece().getSittingSuare().getIndex();
-					move.getPiece().setShake(false);
-					shakeDice(false);
-
-					if (move.isIncomplete()) {
-						player.setTurn(false);
-						giveTurnToNext(i);
-
-					} else {
-						player.setSelectDice(false);
-					}
-
-					// check game state for win etc
-				}
-				break;
-			}
-		}
-
-	}
-
-	private void giveTurnToNext(int i) {
-		Player selectedPlayer;
-		if (i + 1 < players.size()) {
-			selectedPlayer = players.get(i + 1);
-
-		} else {
-			selectedPlayer = players.get(0);
-		}
-		selectedPlayer.setTurn(true);
-		List<Dice> diceList = ((LudoScreen) screen).getBoardRenderer().getDiceList();
-		diceList.clear();
-
-		Dice newDice = ((LudoScreen) screen).getBoardRenderer().createDiceInstance();
-		newDice.setShake(true);
-
-		diceList.add(newDice);
-		((LudoScreen) screen).getBoardRenderer().setSelectedPlayer(selectedPlayer);
-	}
-
 	private void shakeDice(boolean shake) {
 		List<Dice> diceList = screen.getBoardRenderer().getDiceList();
 		for (Dice dice : diceList) {

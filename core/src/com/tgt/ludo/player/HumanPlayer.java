@@ -42,26 +42,40 @@ public class HumanPlayer extends Player {
 	public Move play() {
 		diceList = screen.getBoardRenderer().getDiceList();
 
-		//player has not yet rolled the dice, so roll and retrun
+		// player has not yet rolled the dice, so roll and retrun
 		if (!diceRolled) {
 			rollDice();
 			return null;
 		}
+     
+		List<Move> moves = new ArrayList<Move>();
+		for (Dice dice : diceList) {
+			moves.addAll(ruleEngine.getValidMoves(this, dice.getDiceValue()));
+		}
 
-		//player has rolled dice and selected a piece - select which Die value to apply - in case of a 6 followed by another roll 
+		if (moves.isEmpty()) {
+			diceRolled = false;
+			// skip turn
+			return new Move(true);
+		}
+		
+	
+		// player has rolled dice and selected a piece - select which Die value
+		// to apply - in case of a 6 followed by another roll
 		if (selectDice) {
 			return getDiceMove();
 		}
 
-		//select the piece to play and return the move to gameState
+		// select the piece to play and return the move to gameState
 		return selectPiece();
 	}
 
-	private Move selectPiece(){
-		//get all valid moves the player can play 
+
+	private Move selectPiece() {
+		// get all valid moves the player can play
 		List<Move> moves = new ArrayList<Move>();
 		for (Dice dice : diceList) {
-			moves.addAll(ruleEngine.getvalidMoves(this, dice.getDiceValue()));
+			moves.addAll(ruleEngine.getValidMoves(this, dice.getDiceValue()));
 		}
 
 		if (moves.isEmpty()) {
@@ -70,52 +84,50 @@ public class HumanPlayer extends Player {
 			return new Move(true);
 		}
 
-		//shake all pieces that can move
-		for(Move move:moves){
+		// shake all pieces that can move
+		for (Move move : moves) {
 			move.getPiece().setShake(true);
 		}
-		//get user input from the screen
+		// get user input from the screen
 		return capturePieceInput();
 	}
-	
-	private Move capturePieceInput(){
+
+	private Move capturePieceInput() {
 		// dice is rolled in previous play loop - now select the piece to move
-				if (Gdx.input.justTouched()) {
-					touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-					Piece piece = getSelectedPiece();
-					if (piece == null) {
-						return null;
-					}
-
-					// assuming single dice
-					// check if valid move and move
-					System.out.println("Touched: " + piece);
-
-					if (diceList.size() == 1) {
-
-						if (ruleEngine.validMove(piece, diceList.get(0).getDiceValue())) {
-							// TODO dispose instance
-							diceList.clear();
-							// create a new single die for the next play
-							Dice newDice = screen.getBoardRenderer().createDiceInstance();
-							newDice.setShake(true);
-							diceList.add(newDice);
-							diceRolled = false;
-							return new Move(piece, diceList.get(0).getDiceValue());
-						}
-					} // TODO: 2 variation
-					else {
-						selectDice = true;
-						for (Piece pieceShake : pieces) {
-							pieceShake.setShake(false);
-						}
-						selectedPiece = piece;
-						selectedPiece.setShake(true);
-					}
-
-				}
+		if (Gdx.input.justTouched()) {
+			touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+			Piece piece = getSelectedPiece();
+			if (piece == null) {
 				return null;
+			}
+
+			// assuming single dice
+			// check if valid move and move
+			System.out.println("Touched: " + piece);
+
+			if (diceList.size() == 1 ) {
+
+				if (ruleEngine.validMove(piece, diceList.get(0).getDiceValue())) {
+					
+					//TODO: bug here
+					diceRolled = false;
+					return new Move(piece, diceList.get(0).getDiceValue());
+				}
+			} // TODO: 2 variation
+			else {
+				selectDice = true;
+				
+				for (Piece pieceShake : pieces) {
+					pieceShake.setShake(false);
+				}
+				selectedPiece = piece;
+				selectedPiece.setShake(true);
+			}
+
+		}
+		return null;
 	}
+
 	private void shakeDice(boolean shake) {
 		List<Dice> diceList = screen.getBoardRenderer().getDiceList();
 		for (Dice dice : diceList) {
@@ -129,31 +141,15 @@ public class HumanPlayer extends Player {
 				Gdx.app.getGraphics().getHeight());
 		Vector3 intersection = new Vector3();
 		for (Piece piece : pieces) {
+			if(!piece.isShake()){
+				continue;
+			}
 			Vector3 tran = new Vector3();
 			screen.getBoardRenderer().getPieceInstMap().get(piece).transform.getTranslation(tran);
 			if (Intersector.intersectRaySphere(pickRay, tran, BoardRenderer.SQUARE_LENGTH, intersection)) {
 				return piece;
 			}
 
-		}
-		return null;
-	}
-
-	protected List<Integer> captureDiceRollInput() {
-
-		// only last dice eligible to be touched - others should be six -
-		// //TODO: check variation with two dice
-		Dice dice = diceList.get(diceList.size() - 1);
-		if (Gdx.input.justTouched()) {
-			touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-			pickRay = cam3D.getPickRay(touchPoint.x, touchPoint.y, 0, 0, Gdx.app.getGraphics().getWidth(),
-					Gdx.app.getGraphics().getHeight());
-			Vector3 intersection = new Vector3();
-			Vector3 tran = new Vector3();
-			dice.getDiceInstance().transform.getTranslation(tran);
-			if (Intersector.intersectRaySphere(pickRay, tran, BoardRenderer.SQUARE_LENGTH, intersection)) {
-				return super.rollDice(dice, screen.getBoardRenderer());
-			}
 		}
 		return null;
 	}
@@ -176,16 +172,40 @@ public class HumanPlayer extends Player {
 		return move;
 	}
 
-	public void rollDice(){
+	public void rollDice() {
 		List<Integer> diceValList = captureDiceRollInput();
 		if (!(diceValList == null)) {
 
 			diceRolled = true;
 		}
 	}
-	
+
 	protected Dice captureDiceInput() {
 		List<Dice> diceList = screen.getBoardRenderer().getDiceList();
+		// only last dice eligible to be touched - others should be six -
+
+		if (Gdx.input.justTouched()) {
+			for (Dice dice : diceList) {
+				touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+				pickRay = cam3D.getPickRay(touchPoint.x, touchPoint.y, 0, 0, Gdx.app.getGraphics().getWidth(),
+						Gdx.app.getGraphics().getHeight());
+				Vector3 intersection = new Vector3();
+				Vector3 tran = new Vector3();
+				dice.getDiceInstance().transform.getTranslation(tran);
+				if (Intersector.intersectRaySphere(pickRay, tran, BoardRenderer.SQUARE_LENGTH, intersection)) {
+					return dice;
+				}
+			}
+		}
+		return null;
+	}
+
+	/**
+	 *  player has rolled dice and selected a piece - capture the user input of the die value to apply to the piece
+	 * @return
+	 */
+	protected List<Integer> captureDiceRollInput() {
+
 		// only last dice eligible to be touched - others should be six -
 		// //TODO: check variation with two dice
 		Dice dice = diceList.get(diceList.size() - 1);
@@ -197,7 +217,7 @@ public class HumanPlayer extends Player {
 			Vector3 tran = new Vector3();
 			dice.getDiceInstance().transform.getTranslation(tran);
 			if (Intersector.intersectRaySphere(pickRay, tran, BoardRenderer.SQUARE_LENGTH, intersection)) {
-				return dice;
+				return super.rollDice(dice, screen.getBoardRenderer());
 			}
 		}
 		return null;

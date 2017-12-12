@@ -68,22 +68,22 @@ public class StaticBoardRenderer {
 
 	protected void renderHomeSquares(float delta) {
 		for (Square sq : board.getHomeSquaresMap().get(COLOR.GREEN)) {
-			renderSquare(sq,delta);
+			renderSquare(sq, delta);
 		}
 	}
 
 	protected void renderRestSquares(float delta) {
 		for (Square sq : board.getRestSquaresMap().get(COLOR.GREEN)) {
-			renderSquare(sq,delta);
+			renderSquare(sq, delta);
 		}
 		for (Square sq : board.getRestSquaresMap().get(COLOR.YELLOW)) {
-			renderSquare(sq,delta);
+			renderSquare(sq, delta);
 		}
 		for (Square sq : board.getRestSquaresMap().get(COLOR.RED)) {
-			renderSquare(sq,delta);
+			renderSquare(sq, delta);
 		}
 		for (Square sq : board.getRestSquaresMap().get(COLOR.BLUE)) {
-			renderSquare(sq,delta);
+			renderSquare(sq, delta);
 		}
 	}
 
@@ -101,24 +101,26 @@ public class StaticBoardRenderer {
 
 	private void renderOuterTrack(float delta) {
 		for (Square sq : board.getSquares()) {
-			renderSquare(sq,delta);
+			renderSquare(sq, delta);
 		}
 	}
 
-	
 	protected void renderSquare(Square sq,float delta) {
 		modelBatch.render(squareInstMap.get(sq), environment);
 		if (sq.getPieces() != null && !sq.getPieces().isEmpty()) {
 
-			for (Piece pc : sq.getPieces()) {
-				renderPiece(pc,delta);
+			for (int i=0;i<sq.getPieces().size();i++) {
+				Piece pc = sq.getPieces().get(i);
+				renderPiece(pc,i,delta);
 			}
 		}
 	}
 
-	protected void renderPiece(Piece pc,float delta) {
+	protected void renderPiece(Piece pc, int index, float delta) {
 		Vector3 translation = new Vector3();
 		ModelInstance inst = pieceInstMap.get(pc);
+		// if more then one piece, give some space
+
 		inst.transform.translate(translation);
 		modelBatch.render(inst, environment);
 		translation.z = translation.z + 1;

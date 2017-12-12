@@ -9,6 +9,7 @@ public class Piece {
 	private boolean home;
 	private Square sittingSuare;
 	private boolean shake;
+	private boolean killed;
 
 	public Board.COLOR getColor() {
 		return color;
@@ -49,6 +50,15 @@ public class Piece {
 	public void setShake(boolean shake) {
 		this.shake = shake;
 	}
+
+	public boolean isKilled() {
+		return killed;
+	}
+
+	public void setKilled(boolean killed) {
+		this.killed = killed;
+	}
+
 	
 	
 }

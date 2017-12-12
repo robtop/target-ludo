@@ -17,12 +17,17 @@ public abstract class Player {
 	protected List<Piece> pieces;
 	protected RuleEngine ruleEngine;
 	protected COLOR color;
+	
+	protected Piece selectedPiece;
 	// green get 0,0, Yellow 0,1 , Red 1,1 , Blue 0,1 - used for dice placement
 	// and start calculation
 	protected int locX;
 	protected int locY;
 
 	protected boolean diceRolled = false;
+	
+	//if multiple dice
+	protected boolean pieceSelectedAfterRoll = false;
 
 	public Player(LudoScreen screen, RuleEngine ruleEngine) {
 		this.ruleEngine = ruleEngine;

@@ -36,14 +36,15 @@ public class StaticBoardRenderer {
 	protected Map<Square, ModelInstance> squareInstMap;
 	protected Map<Piece, ModelInstance> pieceInstMap;
 
-	public StaticBoardRenderer(Board board, RenderContext renderContext, PerspectiveCamera cam, Environment environment) {
+	public StaticBoardRenderer(Board board, RenderContext renderContext, PerspectiveCamera cam,
+			Environment environment) {
 		this.board = board;
 		this.renderContext = renderContext;
 		this.cam = cam;
 		this.environment = environment;
 
 		assetsManager.load("meshes/square.g3db", Model.class);
-		//assetsManager.load("meshes/piece.g3db", Model.class);
+		// assetsManager.load("meshes/piece.g3db", Model.class);
 		assetsManager.load("meshes/pawnGreen.g3dj", Model.class);
 		assetsManager.load("meshes/pawnYellow.g3dj", Model.class);
 		assetsManager.load("meshes/pawnRed.g3dj", Model.class);
@@ -65,56 +66,62 @@ public class StaticBoardRenderer {
 		modelBatch = new ModelBatch();
 	}
 
-	protected void renderHomeSquares() {
+	protected void renderHomeSquares(float delta) {
 		for (Square sq : board.getHomeSquaresMap().get(COLOR.GREEN)) {
-			renderSquare(sq);
+			renderSquare(sq,delta);
 		}
 	}
 
-	protected void renderRestSquares() {
+	protected void renderRestSquares(float delta) {
 		for (Square sq : board.getRestSquaresMap().get(COLOR.GREEN)) {
-			renderSquare(sq);
+			renderSquare(sq,delta);
 		}
 		for (Square sq : board.getRestSquaresMap().get(COLOR.YELLOW)) {
-			renderSquare(sq);
+			renderSquare(sq,delta);
 		}
 		for (Square sq : board.getRestSquaresMap().get(COLOR.RED)) {
-			renderSquare(sq);
+			renderSquare(sq,delta);
 		}
 		for (Square sq : board.getRestSquaresMap().get(COLOR.BLUE)) {
-			renderSquare(sq);
+			renderSquare(sq,delta);
 		}
 	}
-	
+
 	public void render(float delta) {
-		  
+
 		renderContext.begin();
 		modelBatch.begin(cam);
-		renderOuterTrack();
-		renderHomeSquares();
-		renderRestSquares();
+		renderOuterTrack(delta);
+		renderHomeSquares(delta);
+		renderRestSquares(delta);
 		modelBatch.end();
 		renderContext.end();
 
 	}
-	
-	private void renderOuterTrack() {
+
+	private void renderOuterTrack(float delta) {
 		for (Square sq : board.getSquares()) {
-			renderSquare(sq);
+			renderSquare(sq,delta);
 		}
 	}
+
 	
-	protected void renderSquare(Square sq) {
+	protected void renderSquare(Square sq,float delta) {
 		modelBatch.render(squareInstMap.get(sq), environment);
 		if (sq.getPieces() != null && !sq.getPieces().isEmpty()) {
-			Vector3 translation = new Vector3();
+
 			for (Piece pc : sq.getPieces()) {
-				ModelInstance inst = pieceInstMap.get(pc);
-				inst.transform.translate(translation);
-				modelBatch.render(inst, environment);
-				translation.z = translation.z + 1;
+				renderPiece(pc,delta);
 			}
 		}
+	}
+
+	protected void renderPiece(Piece pc,float delta) {
+		Vector3 translation = new Vector3();
+		ModelInstance inst = pieceInstMap.get(pc);
+		inst.transform.translate(translation);
+		modelBatch.render(inst, environment);
+		translation.z = translation.z + 1;
 	}
 
 	/**

@@ -128,6 +128,7 @@ public class Board {
 		for (int i = 0; i < 4; i++) {
 			Piece piece = new Piece();
 			piece.setColor(color);
+			piece.setRest(true);
 			list.add(piece);
 			placePieceInRestSq(piece, color);
 		}

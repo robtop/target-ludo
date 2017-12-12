@@ -86,6 +86,7 @@ public class LudoGameState {
 					
 					player.setTurn(false);
 					giveTurnToNext(i);
+					
 					if (move.isSkipTurn()) {
 					
 						return;

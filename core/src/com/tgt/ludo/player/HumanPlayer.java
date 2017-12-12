@@ -42,13 +42,27 @@ public class HumanPlayer extends Player {
 			return null;
 		}
 		List<Dice> diceList = screen.getBoardRenderer().getDiceList();
+		if (pieceSelectedAfterRoll) {
+			Dice dice = selectDice();
+			if (dice == null) {
+				return null;
+			}
+			diceList.remove(dice);
+			pieceSelectedAfterRoll = false;
+			selectedPiece.setShake(false);
+			return new Move(selectedPiece, dice.getDiceValue());
+
+		}
+
 		int diceValue = diceList.get(0).getDiceValue();
+
 		List<Move> moves = ruleEngine.getvalidMoves(this, diceValue);
-		if(moves.isEmpty()){
+		if (moves.isEmpty()) {
 			diceRolled = false;
-			//skip turn
+			// skip turn
 			return new Move(true);
 		}
+
 		// dice is rolled in previous play loop - now select the piece to move
 		if (Gdx.input.justTouched()) {
 			touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0);
@@ -60,10 +74,9 @@ public class HumanPlayer extends Player {
 			// assuming single dice
 			// check if valid move and move
 			System.out.println("Touched: " + piece);
-			
+
 			if (diceList.size() == 1) {
 
-			
 				if (ruleEngine.validMove(piece, diceValue)) {
 					// TODO dispose instance
 					diceList.clear();
@@ -73,6 +86,14 @@ public class HumanPlayer extends Player {
 					return new Move(piece, diceValue);
 				}
 			} // TODO: 2 variation
+			else {
+				pieceSelectedAfterRoll = true;
+                for(Piece pieceShake:pieces){
+                	pieceShake.setShake(false);
+                }
+				selectedPiece = piece;
+				selectedPiece.setShake(true);
+			}
 
 		}
 		return null;
@@ -108,6 +129,25 @@ public class HumanPlayer extends Player {
 			dice.getDiceInstance().transform.getTranslation(tran);
 			if (Intersector.intersectRaySphere(pickRay, tran, BoardRenderer.SQUARE_LENGTH, intersection)) {
 				return super.rollDice(dice, screen.getBoardRenderer());
+			}
+		}
+		return null;
+	}
+
+	protected Dice selectDice() {
+		List<Dice> diceList = screen.getBoardRenderer().getDiceList();
+		// only last dice eligible to be touched - others should be six -
+		// //TODO: check variation with two dice
+		Dice dice = diceList.get(diceList.size() - 1);
+		if (Gdx.input.justTouched()) {
+			touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+			pickRay = cam3D.getPickRay(touchPoint.x, touchPoint.y, 0, 0, Gdx.app.getGraphics().getWidth(),
+					Gdx.app.getGraphics().getHeight());
+			Vector3 intersection = new Vector3();
+			Vector3 tran = new Vector3();
+			dice.getDiceInstance().transform.getTranslation(tran);
+			if (Intersector.intersectRaySphere(pickRay, tran, BoardRenderer.SQUARE_LENGTH, intersection)) {
+				return dice;
 			}
 		}
 		return null;

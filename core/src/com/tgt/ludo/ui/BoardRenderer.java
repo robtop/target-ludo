@@ -95,6 +95,23 @@ public class BoardRenderer extends StaticBoardRenderer {
 		}
 	}
 
+	@Override
+	protected void renderPiece(Piece pc,float delta) {
+	   super.renderPiece(pc,delta);
+	   
+	   if(pc.isShake()){
+		   ModelInstance inst = pieceInstMap.get(pc);
+		   Vector3 translation = new Vector3();
+		   inst.transform.getTranslation(translation);
+		   if(translation.y<1){
+			    inst.transform.translate(0,delta,0);
+		   } else {
+			   translation.y=0;
+			   inst.transform.setTranslation(translation);
+		   }
+	   }
+	}
+	
 	public void setPieceMove(Move move) {
 		pieceMove = move;
 		pieceMoved = false;

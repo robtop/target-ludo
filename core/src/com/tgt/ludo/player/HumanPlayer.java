@@ -47,7 +47,19 @@ public class HumanPlayer extends Player {
 			rollDice();
 			return null;
 		}
+     
+		List<Move> moves = new ArrayList<Move>();
+		for (Dice dice : diceList) {
+			moves.addAll(ruleEngine.getValidMoves(this, dice.getDiceValue()));
+		}
 
+		if (moves.isEmpty()) {
+			diceRolled = false;
+			// skip turn
+			return new Move(true);
+		}
+		
+	
 		// player has rolled dice and selected a piece - select which Die value
 		// to apply - in case of a 6 followed by another roll
 		if (selectDice) {
@@ -57,6 +69,7 @@ public class HumanPlayer extends Player {
 		// select the piece to play and return the move to gameState
 		return selectPiece();
 	}
+
 
 	private Move selectPiece() {
 		// get all valid moves the player can play
@@ -95,18 +108,15 @@ public class HumanPlayer extends Player {
 			if (diceList.size() == 1 ) {
 
 				if (ruleEngine.validMove(piece, diceList.get(0).getDiceValue())) {
-					// TODO dispose instance
-					diceList.clear();
-					// create a new single die for the next play
-					Dice newDice = screen.getBoardRenderer().createDiceInstance();
-					newDice.setShake(true);
-					diceList.add(newDice);
+					
+					//TODO: bug here
 					diceRolled = false;
 					return new Move(piece, diceList.get(0).getDiceValue());
 				}
 			} // TODO: 2 variation
 			else {
 				selectDice = true;
+				
 				for (Piece pieceShake : pieces) {
 					pieceShake.setShake(false);
 				}

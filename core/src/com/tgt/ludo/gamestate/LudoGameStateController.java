@@ -80,7 +80,7 @@ public class LudoGameStateController {
 		if (move != null) {
 
 			if (move.isSkipTurn()) {
-
+				giveTurnToNext(playerIndex);
 				return;
 			}
 			if (move.isIncomplete()) {

@@ -14,6 +14,9 @@ public class Move {
     private boolean home;
     private boolean skipTurn;
     
+    //signifies we need another move to complet the players turn
+    private boolean incomplete;
+    
     public Move(boolean skipTurn){
     	this.skipTurn = skipTurn;
     }
@@ -72,6 +75,12 @@ public class Move {
 
 	public void setSkipTurn(boolean skipTurn) {
 		this.skipTurn = skipTurn;
+	}
+	public boolean isIncomplete() {
+		return incomplete;
+	}
+	public void setIncomplete(boolean incomplete) {
+		this.incomplete = incomplete;
 	}
 	
 }

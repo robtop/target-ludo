@@ -1,5 +1,6 @@
 package com.tgt.ludo.player;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
@@ -50,15 +51,23 @@ public class HumanPlayer extends Player {
 				return null;
 			}
 			diceList.remove(dice);
+			if(diceList.isEmpty()){
 			pieceSelectedAfterRoll = false;
 			selectedPiece.setShake(false);
 			return new Move(selectedPiece, dice.getDiceValue());
-
+			}
+			Move move = new Move(selectedPiece, dice.getDiceValue());
+			move.setIncomplete(true);
+			return move;
 		}
 		
-		int diceValue = diceList.get(0).getDiceValue();
-
-		List<Move> moves = ruleEngine.getvalidMoves(this, diceValue);
+		//int diceValue = diceList.get(0).getDiceValue();
+       
+		List<Move> moves = new ArrayList<Move>();
+		for(Dice dice:diceList){
+				moves.addAll(ruleEngine.getvalidMoves(this, dice.getDiceValue()));
+		}
+		
 		if (moves.isEmpty()) {
 			diceRolled = false;
 			// skip turn
@@ -79,7 +88,7 @@ public class HumanPlayer extends Player {
 
 			if (diceList.size() == 1) {
 
-				if (ruleEngine.validMove(piece, diceValue)) {
+				if (ruleEngine.validMove(piece, diceList.get(0).getDiceValue())) {
 					// TODO dispose instance
 					diceList.clear();
 					// create a new single die for the next play
@@ -87,7 +96,7 @@ public class HumanPlayer extends Player {
 					newDice.setShake(true);
 					diceList.add(newDice);
 					diceRolled = false;
-					return new Move(piece, diceValue);
+					return new Move(piece, diceList.get(0).getDiceValue());
 				}
 			} // TODO: 2 variation
 			else {

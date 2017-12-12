@@ -53,5 +53,8 @@ public class BasicRuleEngine implements RuleEngine {
 
 		return moves;
 	}
-
+   
+	private boolean pieceCanMove(Piece piece,int diceVal){
+		return true;
+	}
 }

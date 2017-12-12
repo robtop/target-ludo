@@ -23,7 +23,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 	private Move pieceMove;
 	private int moveFinalIndex;
 	private int moveTempIndex;
-	private boolean restMoved;
+	private boolean restMovedToStart;
 	private static final int MOVE_SPEED = 10;
 	private ModelInstance pieceInstance;
 	private List<Dice> diceList;
@@ -86,12 +86,13 @@ public class BoardRenderer extends StaticBoardRenderer {
 	}
 
 	public void renderMovingRestPiece(float delta) {
-		if (restMoved) {
+		if (restMovedToStart) {
 			Vector3 trans = new Vector3();
 			squareInstMap.get(board.getSquares().get(moveFinalIndex)).transform.getTranslation(trans);
 			// set the destination squares translation to the piece
 			pieceInstance.transform.setTranslation(trans);
 			pieceMoved = true;
+			restMovedToStart = false;
 			return;
 		}
 
@@ -104,7 +105,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 		Vector3 diff = finalTranslation.sub(currentTranslation);
 		modelBatch.render(pieceInstance, environment);
 		if (diff.len() < .1f) {
-			restMoved = true;
+			restMovedToStart = true;
 		} else {
 
 			pieceInstance.transform.translate(diff.scl(delta * MOVE_SPEED));
@@ -149,13 +150,15 @@ public class BoardRenderer extends StaticBoardRenderer {
 	}
 
 	@Override
-	protected void renderPiece(Piece pc, float delta) {
-		super.renderPiece(pc, delta);
+	protected void renderPiece(Piece pc,int index, float delta) {
+		super.renderPiece(pc,index, delta);
 
 		if (pc.isShake()) {
 			ModelInstance inst = pieceInstMap.get(pc);
 			Vector3 translation = new Vector3();
 			inst.transform.getTranslation(translation);
+			// if more then one piece, give some space
+			translation.z = translation.z + index;
 			if (translation.y < 1) {
 				inst.transform.translate(0, delta, 0);
 			} else {
@@ -163,13 +166,18 @@ public class BoardRenderer extends StaticBoardRenderer {
 				inst.transform.setTranslation(translation);
 			}
 		}
+
 	}
 
 	public void setPiecetoMove(Move move) {
 		pieceMove = move;
 		pieceMoved = false;
-		moveFinalIndex = move.getPiece().getSittingSuare().getIndex() + move.getSquares();
-		moveTempIndex = move.getPiece().getSittingSuare().getIndex() + 1;
+		if (move.getPiece().isRest()) {
+			moveFinalIndex = 0;
+		} else {
+			moveFinalIndex = move.getPiece().getSittingSuare().getIndex() + move.getSquares();
+			moveTempIndex = move.getPiece().getSittingSuare().getIndex() + 1;
+		}
 	}
 
 	public Dice createDiceInstance() {

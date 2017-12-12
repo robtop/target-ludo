@@ -131,6 +131,9 @@ public class HumanPlayer extends Player {
 				Gdx.app.getGraphics().getHeight());
 		Vector3 intersection = new Vector3();
 		for (Piece piece : pieces) {
+			if(!piece.isShake()){
+				continue;
+			}
 			Vector3 tran = new Vector3();
 			screen.getBoardRenderer().getPieceInstMap().get(piece).transform.getTranslation(tran);
 			if (Intersector.intersectRaySphere(pickRay, tran, BoardRenderer.SQUARE_LENGTH, intersection)) {

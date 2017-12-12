@@ -34,20 +34,21 @@ public class HumanPlayer extends Player {
 
 	}
 
+	/***
+	 * Main game loop for human player
+	 * 
+	 */
 	@Override
 	public Move play() {
-
 		diceList = screen.getBoardRenderer().getDiceList();
 
+		//player has not yet rolled the dice, so roll and retrun
 		if (!diceRolled) {
-			List<Integer> diceValList = rollDice();
-			if (!(diceValList == null)) {
-
-				diceRolled = true;
-			}
+			rollDice();
 			return null;
 		}
 
+		//player has rolled dice and selected an piece - select which Die value to apply - in case of a 6 followed by another roll 
 		if (selectDice) {
 			return getDiceMove();
 		}
@@ -124,7 +125,7 @@ public class HumanPlayer extends Player {
 		return null;
 	}
 
-	protected List<Integer> rollDice() {
+	protected List<Integer> captureDiceRollInput() {
 
 		// only last dice eligible to be touched - others should be six -
 		// //TODO: check variation with two dice
@@ -161,6 +162,14 @@ public class HumanPlayer extends Player {
 		return move;
 	}
 
+	public void rollDice(){
+		List<Integer> diceValList = captureDiceRollInput();
+		if (!(diceValList == null)) {
+
+			diceRolled = true;
+		}
+	}
+	
 	protected Dice captureDiceInput() {
 		List<Dice> diceList = screen.getBoardRenderer().getDiceList();
 		// only last dice eligible to be touched - others should be six -

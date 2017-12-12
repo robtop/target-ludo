@@ -33,11 +33,13 @@ public class LudoGameStateController {
 	// needed by human players to get inputs
 	private LudoScreen screen;
 	private List<Player> players;
-	RuleEngine ruleEngine = new BasicRuleEngine();
+	
     private UUID gameID;
     private GAME_STATE gameState;
     private Player winner;
-    
+	private RuleEngine ruleEngine;
+	private Player player;
+	
     public static enum GAME_STATE {
 		WAITING, PROGRESS, COMPLETE
 	}
@@ -47,6 +49,7 @@ public class LudoGameStateController {
 		gameState = GAME_STATE.WAITING;
 		board = new Board();
 		board.setup();
+		ruleEngine = new BasicRuleEngine(board);
 		this.screen = (LudoScreen) screen;
 		//createPlayers();
 		createRobotPlayers();
@@ -71,6 +74,7 @@ public class LudoGameStateController {
 			Player player = players.get(i);
 
 			if (player.isTurn()) {
+				this.player = player;
 				play(player,i);
 				break;
 			}
@@ -114,12 +118,22 @@ public class LudoGameStateController {
 		sittingSquareIndex = move.getPiece().getSittingSuare().getIndex();
 		move.getPiece().setShake(false);
 		shakeDice(false);
-	}
+//		Square finalSquare
+//		if(move.getPiece().isRest()){
+//			finalSquare = board.getSquares().get(player.getStartIndex() + move.getSquares());
+//		}
+		}
+		
 
 	private void animationCheck() {
 		if (((LudoScreen) screen).getBoardRenderer().isPieceMoved()) {
 			movingAnimation = false;
-			Square finalSquare = board.getSquares().get(sittingSquareIndex + move.getSquares());
+			Square finalSquare;
+					if(move.getPiece().isRest()){
+						finalSquare = board.getSquares().get(player.getStartIndex() + move.getSquares());
+					}else {
+						finalSquare = board.getSquares().get(sittingSquareIndex + move.getSquares());
+					}
 			move.getPiece().setRest(false);
 			finalSquare.getPieces().add(move.getPiece());
 			move.getPiece().setSittingSuare(finalSquare);

@@ -63,7 +63,7 @@ public class LudoScreen implements Screen {
 
 		ludoGameState = new LudoGameState((Screen) this);
 		boardRenderer = new BoardRenderer(ludoGameState.getBoard(), renderContext, cam, environment);
-
+		boardRenderer.setSelectedPlayer(ludoGameState.getGreenPlayer());
 	}
 
 	public void render(float delta) {

@@ -7,6 +7,7 @@ import com.tgt.ludo.board.Board.COLOR;
 import com.tgt.ludo.rules.RuleEngine;
 import com.tgt.ludo.ui.BoardRenderer;
 import com.tgt.ludo.ui.LudoScreen;
+import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.tgt.ludo.board.Dice;
 import com.tgt.ludo.board.Piece;
 
@@ -14,20 +15,26 @@ public abstract class Player {
 
 	private boolean turn = false;
 	protected List<Piece> pieces;
-    protected RuleEngine ruleEngine;
-    protected COLOR color;
-    protected boolean diceRolled = false;
-    
-    public Player(LudoScreen screen, RuleEngine ruleEngine) {
-    	this.ruleEngine = ruleEngine;
+	protected RuleEngine ruleEngine;
+	protected COLOR color;
+	// green get 0,0, Yellow 0,1 , Red 1,1 , Blue 0,1 - used for dice placement
+	// and start calculation
+	protected int locX;
+	protected int locY;
+
+	protected boolean diceRolled = false;
+
+	public Player(LudoScreen screen, RuleEngine ruleEngine) {
+		this.ruleEngine = ruleEngine;
 	}
-    //Extending Players should set this
-    protected List<Integer> diceRolls = new ArrayList<Integer>();
+
+	// Extending Players should set this
+	protected List<Integer> diceRolls = new ArrayList<Integer>();
 
 	// main game loop
-	public Move play(){
-		if(diceRolled){
-			//rollDice();
+	public Move play() {
+		if (diceRolled) {
+			// rollDice();
 		}
 		return null;
 	}
@@ -39,20 +46,22 @@ public abstract class Player {
 	/**
 	 * Roll a single dice
 	 * 
-	 * @param dice - The dice to be rolled
-	 * @param boardRenderer - to get the diceList and create new die if we get a six
-	 * @return - list of dice values or null if we need another throw 
+	 * @param dice
+	 *            - The dice to be rolled
+	 * @param boardRenderer
+	 *            - to get the diceList and create new die if we get a six
+	 * @return - list of dice values or null if we need another throw
 	 */
-	protected  List<Integer> rollDice(Dice dice,BoardRenderer boardRenderer){
+	protected List<Integer> rollDice(Dice dice, BoardRenderer boardRenderer) {
 		List<Dice> diceList = boardRenderer.getDiceList();
 		int value = ruleEngine.getSingleDiceRoll();
 		dice.setDiceValue(value);
 		dice.setRolled(true);
-		if(value == 6){
+		if (value == 6) {
 			diceList.add(boardRenderer.createDiceInstance());
 		} else {
 			List<Integer> list = new ArrayList<Integer>();
-			for(Dice diceTemp:diceList){
+			for (Dice diceTemp : diceList) {
 				list.add(dice.getDiceValue());
 			}
 			return list;
@@ -60,7 +69,7 @@ public abstract class Player {
 		dice.setRolled(true);
 		return null;
 	}
-	
+
 	public void setTurn(boolean turn) {
 		this.turn = turn;
 	}
@@ -103,6 +112,37 @@ public abstract class Player {
 
 	public void setColor(COLOR color) {
 		this.color = color;
+		switch (color) {
+		case YELLOW:
+			locX = 1;
+			locY = 0;
+			break;
+
+		case RED:
+			locX = 1;
+			locY = 1;
+			break;
+		case BLUE:
+			locX = 0;
+			locY = 1;
+			break;
+		}
 	}
-	
+
+	public int getLocX() {
+		return locX;
+	}
+
+	public void setLocX(int locX) {
+		this.locX = locX;
+	}
+
+	public int getLocY() {
+		return locY;
+	}
+
+	public void setLocY(int locY) {
+		this.locY = locY;
+	}
+
 }

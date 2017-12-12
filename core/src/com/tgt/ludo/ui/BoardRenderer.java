@@ -13,8 +13,8 @@ import com.badlogic.gdx.math.Vector3;
 import com.tgt.ludo.board.Board;
 import com.tgt.ludo.board.Dice;
 import com.tgt.ludo.board.Piece;
-import com.tgt.ludo.board.Board.COLOR;
 import com.tgt.ludo.player.Move;
+import com.tgt.ludo.player.Player;
 
 public class BoardRenderer extends StaticBoardRenderer {
 
@@ -26,6 +26,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 	private ModelInstance pieceInstance;
 	private List<Dice> diceList;
 	protected Model diceModel;
+	protected Player selectedPlayer;
 
 	public BoardRenderer(Board board, RenderContext renderContext, PerspectiveCamera cam, Environment environment) {
 		super(board, renderContext, cam, environment);
@@ -38,18 +39,16 @@ public class BoardRenderer extends StaticBoardRenderer {
 
 	public void render(float delta) {
 		super.render(delta);
-		
-			renderContext.begin();
-			modelBatch.begin(cam);
-			if (!pieceMoved) {
-			renderMovingPiece(delta);
-			}
-			renderDice();
-			modelBatch.end();
-			renderContext.end();
-		}
 
-	
+		renderContext.begin();
+		modelBatch.begin(cam);
+		if (!pieceMoved) {
+			renderMovingPiece(delta);
+		}
+		renderDice();
+		modelBatch.end();
+		renderContext.end();
+	}
 
 	public void renderMovingPiece(float delta) {
 		if (moveTempIndex == moveFinalIndex + 1) {
@@ -79,16 +78,18 @@ public class BoardRenderer extends StaticBoardRenderer {
 	}
 
 	public void renderDice() {
-		int count=0;
+		int count = 0;
 		for (Dice dice : diceList) {
-		
-			if(!dice.isRolled()){
-			 	dice.getDiceInstance().transform.setToRotation(new Vector3(1, 1,1),45);
+
+			if (!dice.isRolled()) {
+				dice.getDiceInstance().transform.setToRotation(new Vector3(1, 1, 1), 45);
 			} else {
 				// rotate according to number
-				dice.getDiceInstance().transform.setToRotation(new Vector3(0, 0,0),0);
+				dice.getDiceInstance().transform.setToRotation(new Vector3(0, 0, 0), 0);
 			}
-			dice.getDiceInstance().transform.setTranslation(0, 0,count*SQUARE_LENGTH*1.5f);
+			dice.getDiceInstance().transform.setTranslation(
+					(selectedPlayer.getLocX() * Board.DIMENSION * 2 * SQUARE_LENGTH*1.4f), 0,
+					(selectedPlayer.getLocY() * Board.DIMENSION * SQUARE_LENGTH * 2 + count * SQUARE_LENGTH * 1.5f)- (Board.DIMENSION *  SQUARE_LENGTH));
 			modelBatch.render(dice.getDiceInstance(), environment);
 			count++;
 		}
@@ -123,6 +124,14 @@ public class BoardRenderer extends StaticBoardRenderer {
 
 	public void setDiceList(List<Dice> diceList) {
 		this.diceList = diceList;
+	}
+
+	public Player getSelectedPlayer() {
+		return selectedPlayer;
+	}
+
+	public void setSelectedPlayer(Player selectedPlayer) {
+		this.selectedPlayer = selectedPlayer;
 	}
 
 }

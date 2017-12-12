@@ -1,6 +1,11 @@
 package com.tgt.ludo.rules;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.tgt.ludo.board.Piece;
+import com.tgt.ludo.player.Move;
+import com.tgt.ludo.player.Player;
 
 /**
  * Engine to enfocre rule of ludo.
@@ -12,6 +17,11 @@ public class BasicRuleEngine implements RuleEngine {
 
 	@Override
 	public boolean validMove(Piece piece,int diceVal){
+		
+		if(piece.isRest() && diceVal == 6){
+			return true;
+		}
+		//TODO check board
 		return true;
 	}
 	
@@ -22,6 +32,19 @@ public class BasicRuleEngine implements RuleEngine {
 		System.out.println("Dice Roll: "+value);
 		return value;
 	
+	}
+
+	@Override
+	public List<Move> getvalidMoves(Player player,int diceVal) {
+		List<Move> moves = new ArrayList<Move>();
+		for(Piece piece:player.getPieces()){
+			if(piece.isRest() && diceVal==6){
+				Move move = new Move(piece);
+				move.setStart(true);
+			}
+		}
+		
+		return moves;
 	}
 	
 }

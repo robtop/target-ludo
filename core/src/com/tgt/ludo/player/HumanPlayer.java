@@ -1,5 +1,6 @@
 package com.tgt.ludo.player;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
@@ -22,6 +23,7 @@ public class HumanPlayer extends Player {
 	Ray pickRay;
 	// need screen details to capture inputs and get location of pieces
 	LudoScreen screen;
+	List<Dice> diceList;
 
 	public HumanPlayer(LudoScreen screen, RuleEngine ruleEngine) {
 		super(screen, ruleEngine);
@@ -29,88 +31,99 @@ public class HumanPlayer extends Player {
 		// this.guiCam = screen.getGuiCam();
 		this.cam3D = screen.getCam();
 		touchPoint = new Vector3();
+
 	}
 
+	/***
+	 * Main game loop for human player
+	 * 
+	 */
 	@Override
 	public Move play() {
+		diceList = screen.getBoardRenderer().getDiceList();
 
+		//player has not yet rolled the dice, so roll and retrun
 		if (!diceRolled) {
-			List<Integer> diceValList = rollDice();
-			if (!(diceValList == null)) {
-				
-				diceRolled = true;
-			}
+			rollDice();
 			return null;
 		}
-		List<Dice> diceList = screen.getBoardRenderer().getDiceList();
-		if (pieceSelectedAfterRoll) {
-			shakeDice(true);
-			Dice dice = selectDice();
-			if (dice == null) {
-				return null;
-			}
-			diceList.remove(dice);
-			pieceSelectedAfterRoll = false;
-			selectedPiece.setShake(false);
-			return new Move(selectedPiece, dice.getDiceValue());
 
+		//player has rolled dice and selected a piece - select which Die value to apply - in case of a 6 followed by another roll 
+		if (selectDice) {
+			return getDiceMove();
 		}
-		
-		int diceValue = diceList.get(0).getDiceValue();
 
-		List<Move> moves = ruleEngine.getvalidMoves(this, diceValue);
+		//select the piece to play and return the move to gameState
+		return selectPiece();
+	}
+
+	private Move selectPiece(){
+		//get all valid moves the player can play 
+		List<Move> moves = new ArrayList<Move>();
+		for (Dice dice : diceList) {
+			moves.addAll(ruleEngine.getvalidMoves(this, dice.getDiceValue()));
+		}
+
 		if (moves.isEmpty()) {
 			diceRolled = false;
 			// skip turn
 			return new Move(true);
 		}
 
-		// dice is rolled in previous play loop - now select the piece to move
-		if (Gdx.input.justTouched()) {
-			touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-			Piece piece = getSelectedPiece();
-			if (piece == null) {
-				return null;
-			}
-
-			// assuming single dice
-			// check if valid move and move
-			System.out.println("Touched: " + piece);
-
-			if (diceList.size() == 1) {
-
-				if (ruleEngine.validMove(piece, diceValue)) {
-					// TODO dispose instance
-					diceList.clear();
-					// create a new single die for the next play
-					Dice newDice = screen.getBoardRenderer().createDiceInstance();
-					newDice.setShake(true);
-					diceList.add(newDice);
-					diceRolled = false;
-					return new Move(piece, diceValue);
-				}
-			} // TODO: 2 variation
-			else {
-				pieceSelectedAfterRoll = true;
-                for(Piece pieceShake:pieces){
-                	pieceShake.setShake(false);
-                }
-				selectedPiece = piece;
-				selectedPiece.setShake(true);
-			}
-
+		//shake all pieces that can move
+		for(Move move:moves){
+			move.getPiece().setShake(true);
 		}
-		return null;
-	}
-
-	private void shakeDice(boolean shake){
-		List<Dice> diceList = screen.getBoardRenderer().getDiceList();
-		 for(Dice dice:diceList){
-			 dice.setShake(shake);
-         }
+		//get user input from the screen
+		return capturePieceInput();
 	}
 	
-	private Piece getSelectedPiece() {
+	private Move capturePieceInput(){
+		// dice is rolled in previous play loop - now select the piece to move
+				if (Gdx.input.justTouched()) {
+					touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+					Piece piece = getSelectedPiece();
+					if (piece == null) {
+						return null;
+					}
+
+					// assuming single dice
+					// check if valid move and move
+					System.out.println("Touched: " + piece);
+
+					if (diceList.size() == 1) {
+
+						if (ruleEngine.validMove(piece, diceList.get(0).getDiceValue())) {
+							// TODO dispose instance
+							diceList.clear();
+							// create a new single die for the next play
+							Dice newDice = screen.getBoardRenderer().createDiceInstance();
+							newDice.setShake(true);
+							diceList.add(newDice);
+							diceRolled = false;
+							return new Move(piece, diceList.get(0).getDiceValue());
+						}
+					} // TODO: 2 variation
+					else {
+						selectDice = true;
+						for (Piece pieceShake : pieces) {
+							pieceShake.setShake(false);
+						}
+						selectedPiece = piece;
+						selectedPiece.setShake(true);
+					}
+
+				}
+				return null;
+	}
+	private void shakeDice(boolean shake) {
+		List<Dice> diceList = screen.getBoardRenderer().getDiceList();
+		for (Dice dice : diceList) {
+			dice.setShake(shake);
+		}
+	}
+
+	public Piece getSelectedPiece() {
 		// check if touched
 		pickRay = cam3D.getPickRay(touchPoint.x, touchPoint.y, 0, 0, Gdx.app.getGraphics().getWidth(),
 				Gdx.app.getGraphics().getHeight());
@@ -126,8 +139,8 @@ public class HumanPlayer extends Player {
 		return null;
 	}
 
-	protected List<Integer> rollDice() {
-		List<Dice> diceList = screen.getBoardRenderer().getDiceList();
+	protected List<Integer> captureDiceRollInput() {
+
 		// only last dice eligible to be touched - others should be six -
 		// //TODO: check variation with two dice
 		Dice dice = diceList.get(diceList.size() - 1);
@@ -145,7 +158,33 @@ public class HumanPlayer extends Player {
 		return null;
 	}
 
-	protected Dice selectDice() {
+	protected Move getDiceMove() {
+		shakeDice(true);
+		Dice dice = captureDiceInput();
+		if (dice == null) {
+			return null;
+		}
+		diceList.remove(dice);
+
+		if (diceList.isEmpty()) {
+			selectDice = false;
+			selectedPiece.setShake(false);
+			return new Move(selectedPiece, dice.getDiceValue());
+		}
+		Move move = new Move(selectedPiece, dice.getDiceValue());
+		move.setIncomplete(true);
+		return move;
+	}
+
+	public void rollDice(){
+		List<Integer> diceValList = captureDiceRollInput();
+		if (!(diceValList == null)) {
+
+			diceRolled = true;
+		}
+	}
+	
+	protected Dice captureDiceInput() {
 		List<Dice> diceList = screen.getBoardRenderer().getDiceList();
 		// only last dice eligible to be touched - others should be six -
 		// //TODO: check variation with two dice

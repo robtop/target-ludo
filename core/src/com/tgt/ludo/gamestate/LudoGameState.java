@@ -23,14 +23,14 @@ public class LudoGameState {
 	private Player bluePlayer;
 
 	// needed by human players to get inputs
-	private Screen screen;
+	private LudoScreen screen;
 	private List<Player> players;
 	RuleEngine ruleEngine = new BasicRuleEngine();
 
 	public LudoGameState(Screen screen) {
 		board = new Board();
 		board.setup();
-		this.screen = screen;
+		this.screen = (LudoScreen) screen;
 		players = new ArrayList<Player>();
 
 		greenPlayer = new HumanPlayer(((LudoScreen) screen), ruleEngine);
@@ -83,19 +83,28 @@ public class LudoGameState {
 				move = player.play();
 
 				if (move != null) {
-					
-					player.setTurn(false);
-					giveTurnToNext(i);
-					
+
 					if (move.isSkipTurn()) {
-					
+
 						return;
 					}
+
 					// do the actual move
 					moving = true;
 					((LudoScreen) screen).getBoardRenderer().setPieceMove(move);
 					move.getPiece().getSittingSuare().getPieces().remove(move.getPiece());
 					sittingSquareIndex = move.getPiece().getSittingSuare().getIndex();
+					move.getPiece().setShake(false);
+					shakeDice(false);
+
+					if (move.isIncomplete()) {
+						player.setTurn(false);
+						giveTurnToNext(i);
+
+					} else {
+						player.setSelectDice(false);
+					}
+
 					// check game state for win etc
 				}
 				break;
@@ -115,10 +124,19 @@ public class LudoGameState {
 		selectedPlayer.setTurn(true);
 		List<Dice> diceList = ((LudoScreen) screen).getBoardRenderer().getDiceList();
 		diceList.clear();
+
 		Dice newDice = ((LudoScreen) screen).getBoardRenderer().createDiceInstance();
 		newDice.setShake(true);
+
 		diceList.add(newDice);
 		((LudoScreen) screen).getBoardRenderer().setSelectedPlayer(selectedPlayer);
+	}
+
+	private void shakeDice(boolean shake) {
+		List<Dice> diceList = screen.getBoardRenderer().getDiceList();
+		for (Dice dice : diceList) {
+			dice.setShake(shake);
+		}
 	}
 
 	public Board getBoard() {

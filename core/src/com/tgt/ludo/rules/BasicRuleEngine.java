@@ -16,35 +16,40 @@ import com.tgt.ludo.player.Player;
 public class BasicRuleEngine implements RuleEngine {
 
 	@Override
-	public boolean validMove(Piece piece,int diceVal){
-		
-		if(piece.isRest() && diceVal == 6){
+	public boolean validMove(Piece piece, int diceVal) {
+
+		if (piece.isRest() && diceVal == 6) {
 			return true;
 		}
-		//TODO check board
+		// TODO check board
 		return true;
 	}
-	
-	public  int getSingleDiceRoll(){
-		//get range 1 to 6
-		int value = (int) Math.floor((Math.random()*6))+1;
-		//value =6;
-		System.out.println("Dice Roll: "+value);
+
+	int prev = 0;
+
+	public int getSingleDiceRoll() {
+		// get range 1 to 6
+		int value = (int) Math.floor((Math.random() * 6)) + 1;
+		if (prev != 6)
+			value = 6;
+		prev = value;
+		System.out.println("Dice Roll: " + value);
 		return value;
-	
+
 	}
 
 	@Override
-	public List<Move> getvalidMoves(Player player,int diceVal) {
+	public List<Move> getvalidMoves(Player player, int diceVal) {
 		List<Move> moves = new ArrayList<Move>();
-		for(Piece piece:player.getPieces()){
-			if(piece.isRest() && diceVal==6){
+		for (Piece piece : player.getPieces()) {
+			if (piece.isRest() && diceVal == 6) {
 				Move move = new Move(piece);
 				move.setStart(true);
+				moves.add(move);
 			}
 		}
-		
+
 		return moves;
 	}
-	
+
 }

@@ -8,6 +8,7 @@ public class Piece {
 	private boolean rest;
 	private boolean home;
 	private Square sittingSuare;
+	private boolean shake;
 
 	public Board.COLOR getColor() {
 		return color;
@@ -39,6 +40,14 @@ public class Piece {
 
 	public void setSittingSuare(Square sittingSuare) {
 		this.sittingSuare = sittingSuare;
+	}
+
+	public boolean isShake() {
+		return shake;
+	}
+
+	public void setShake(boolean shake) {
+		this.shake = shake;
 	}
 	
 	

@@ -14,6 +14,7 @@ public class Dice {
    int diceValue = 1;
    //is this rolled or waiting to be rolled by the player
    boolean rolled=false;
+   boolean shake = false;
    
    public void dispose(){
 	   diceInstance.model.dispose();
@@ -47,6 +48,14 @@ public void setDiceValue(int diceValue) {
 
 public void setRolled(boolean rolled) {
 	this.rolled = rolled;
+}
+
+public boolean isShake() {
+	return shake;
+}
+
+public void setShake(boolean shake) {
+	this.shake = shake;
 }
    
    

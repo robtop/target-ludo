@@ -62,7 +62,7 @@ public class HumanPlayer extends Player {
 		// get all valid moves the player can play
 		List<Move> moves = new ArrayList<Move>();
 		for (Dice dice : diceList) {
-			moves.addAll(ruleEngine.getvalidMoves(this, dice.getDiceValue()));
+			moves.addAll(ruleEngine.getValidMoves(this, dice.getDiceValue()));
 		}
 
 		if (moves.isEmpty()) {

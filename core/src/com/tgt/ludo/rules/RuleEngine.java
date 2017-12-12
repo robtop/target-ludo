@@ -16,7 +16,7 @@ public interface RuleEngine {
 
 	public boolean validMove(Piece piece,int diceVal);
 	
-	public List<Move> getvalidMoves(Player player,int diceVal);
+	public List<Move> getValidMoves(Player player,int diceVal);
 	
 	public  int getSingleDiceRoll();
 }

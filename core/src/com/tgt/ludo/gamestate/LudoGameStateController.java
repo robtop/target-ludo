@@ -90,6 +90,7 @@ public class LudoGameStateController {
 				player.setTurn(false);
 				giveTurnToNext(playerIndex);
 				setPiecesShake(player, false);
+				
 			}
 
 			// do the actual move in the board backend
@@ -106,7 +107,7 @@ public class LudoGameStateController {
 	
 	private void movePiece(Player player) {
 		movingAnimation = true;
-		((LudoScreen) screen).getBoardRenderer().setPieceMove(move);
+		((LudoScreen) screen).getBoardRenderer().setPiecetoMove(move);
 		move.getPiece().getSittingSuare().getPieces().remove(move.getPiece());
 		sittingSquareIndex = move.getPiece().getSittingSuare().getIndex();
 		move.getPiece().setShake(false);
@@ -117,6 +118,7 @@ public class LudoGameStateController {
 		if (((LudoScreen) screen).getBoardRenderer().isPieceMoved()) {
 			movingAnimation = false;
 			Square finalSquare = board.getSquares().get(sittingSquareIndex + move.getSquares());
+			move.getPiece().setRest(false);
 			finalSquare.getPieces().add(move.getPiece());
 			move.getPiece().setSittingSuare(finalSquare);
 			return;

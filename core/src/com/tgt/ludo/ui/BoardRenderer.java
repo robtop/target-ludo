@@ -23,6 +23,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 	private Move pieceMove;
 	private int moveFinalIndex;
 	private int moveTempIndex;
+	private boolean restMoved;
 	private static final int MOVE_SPEED = 10;
 	private ModelInstance pieceInstance;
 	private List<Dice> diceList;
@@ -46,7 +47,11 @@ public class BoardRenderer extends StaticBoardRenderer {
 		renderContext.begin();
 		modelBatch.begin(cam);
 		if (!pieceMoved) {
-			renderMovingPiece(delta);
+			if (pieceMove.getPiece().isRest()) {
+				renderMovingRestPiece(delta);
+			} else {
+				renderMovingPiece(delta);
+			}
 		}
 		renderDice(delta);
 		modelBatch.end();
@@ -73,6 +78,33 @@ public class BoardRenderer extends StaticBoardRenderer {
 		modelBatch.render(pieceInstance, environment);
 		if (diff.len() < .1f) {
 			moveTempIndex++;
+		} else {
+
+			pieceInstance.transform.translate(diff.scl(delta * MOVE_SPEED));
+		}
+
+	}
+
+	public void renderMovingRestPiece(float delta) {
+		if (restMoved) {
+			Vector3 trans = new Vector3();
+			squareInstMap.get(board.getSquares().get(moveFinalIndex)).transform.getTranslation(trans);
+			// set the destination squares translation to the piece
+			pieceInstance.transform.setTranslation(trans);
+			pieceMoved = true;
+			return;
+		}
+
+		Vector3 currentTranslation = new Vector3();
+		Vector3 finalTranslation = new Vector3();
+		pieceInstance = pieceInstMap.get(pieceMove.getPiece());
+		pieceInstance.transform.getTranslation(currentTranslation);
+		squareInstMap.get(board.getSquares().get(moveFinalIndex)).transform.getTranslation(finalTranslation);
+
+		Vector3 diff = finalTranslation.sub(currentTranslation);
+		modelBatch.render(pieceInstance, environment);
+		if (diff.len() < .1f) {
+			restMoved = true;
 		} else {
 
 			pieceInstance.transform.translate(diff.scl(delta * MOVE_SPEED));
@@ -133,7 +165,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 		}
 	}
 
-	public void setPieceMove(Move move) {
+	public void setPiecetoMove(Move move) {
 		pieceMove = move;
 		pieceMoved = false;
 		moveFinalIndex = move.getPiece().getSittingSuare().getIndex() + move.getSquares();

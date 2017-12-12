@@ -39,14 +39,16 @@ public class BasicRuleEngine implements RuleEngine {
 	}
 
 	@Override
-	public List<Move> getvalidMoves(Player player, int diceVal) {
+	public List<Move> getValidMoves(Player player, int diceVal) {
 		List<Move> moves = new ArrayList<Move>();
 		for (Piece piece : player.getPieces()) {
 			if (piece.isRest() && diceVal == 6) {
 				Move move = new Move(piece);
+				move.setSquares(0);
 				move.setStart(true);
 				moves.add(move);
 			}
+			
 		}
 
 		return moves;

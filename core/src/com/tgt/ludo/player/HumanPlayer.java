@@ -48,11 +48,17 @@ public class HumanPlayer extends Player {
 			return null;
 		}
 
-		//player has rolled dice and selected an piece - select which Die value to apply - in case of a 6 followed by another roll 
+		//player has rolled dice and selected a piece - select which Die value to apply - in case of a 6 followed by another roll 
 		if (selectDice) {
 			return getDiceMove();
 		}
 
+		//select the piece to play and return the move to gameState
+		return selectPiece();
+	}
+
+	private Move selectPiece(){
+		//get all valid moves the player can play 
 		List<Move> moves = new ArrayList<Move>();
 		for (Dice dice : diceList) {
 			moves.addAll(ruleEngine.getvalidMoves(this, dice.getDiceValue()));
@@ -64,44 +70,52 @@ public class HumanPlayer extends Player {
 			return new Move(true);
 		}
 
-		// dice is rolled in previous play loop - now select the piece to move
-		if (Gdx.input.justTouched()) {
-			touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-			Piece piece = getSelectedPiece();
-			if (piece == null) {
-				return null;
-			}
-
-			// assuming single dice
-			// check if valid move and move
-			System.out.println("Touched: " + piece);
-
-			if (diceList.size() == 1) {
-
-				if (ruleEngine.validMove(piece, diceList.get(0).getDiceValue())) {
-					// TODO dispose instance
-					diceList.clear();
-					// create a new single die for the next play
-					Dice newDice = screen.getBoardRenderer().createDiceInstance();
-					newDice.setShake(true);
-					diceList.add(newDice);
-					diceRolled = false;
-					return new Move(piece, diceList.get(0).getDiceValue());
-				}
-			} // TODO: 2 variation
-			else {
-				selectDice = true;
-				for (Piece pieceShake : pieces) {
-					pieceShake.setShake(false);
-				}
-				selectedPiece = piece;
-				selectedPiece.setShake(true);
-			}
-
+		//shake all pieces that can move
+		for(Move move:moves){
+			move.getPiece().setShake(true);
 		}
-		return null;
+		//get user input from the screen
+		return capturePieceInput();
 	}
+	
+	private Move capturePieceInput(){
+		// dice is rolled in previous play loop - now select the piece to move
+				if (Gdx.input.justTouched()) {
+					touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+					Piece piece = getSelectedPiece();
+					if (piece == null) {
+						return null;
+					}
 
+					// assuming single dice
+					// check if valid move and move
+					System.out.println("Touched: " + piece);
+
+					if (diceList.size() == 1) {
+
+						if (ruleEngine.validMove(piece, diceList.get(0).getDiceValue())) {
+							// TODO dispose instance
+							diceList.clear();
+							// create a new single die for the next play
+							Dice newDice = screen.getBoardRenderer().createDiceInstance();
+							newDice.setShake(true);
+							diceList.add(newDice);
+							diceRolled = false;
+							return new Move(piece, diceList.get(0).getDiceValue());
+						}
+					} // TODO: 2 variation
+					else {
+						selectDice = true;
+						for (Piece pieceShake : pieces) {
+							pieceShake.setShake(false);
+						}
+						selectedPiece = piece;
+						selectedPiece.setShake(true);
+					}
+
+				}
+				return null;
+	}
 	private void shakeDice(boolean shake) {
 		List<Dice> diceList = screen.getBoardRenderer().getDiceList();
 		for (Dice dice : diceList) {

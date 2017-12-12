@@ -25,14 +25,18 @@ public class ComputerPlayer extends Player{
 			moves.addAll(ruleEngine.getValidMoves(this, integer));
 		}
 		if (moves.isEmpty()) {
-			diceRolled = false;
 			// skip turn
 			return new Move(true);
 		}
-		return null;
+		
+		return selectMove(moves);
 	}
 
 
+	private Move selectMove(List<Move> moves){
+		//give first valid move
+		return moves.get(0);
+	}
 	protected  List<Integer> rollDice() {
 	
 		List<Integer> rolls = new ArrayList<Integer>();

@@ -1,4 +1,4 @@
-package com.tgt.ludo;
+package com.tgt.ludo.gamestate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +11,8 @@ import com.tgt.ludo.board.Square;
 import com.tgt.ludo.player.HumanPlayer;
 import com.tgt.ludo.player.Move;
 import com.tgt.ludo.player.Player;
+import com.tgt.ludo.rules.BasicRuleEngine;
+import com.tgt.ludo.rules.RuleEngine;
 import com.tgt.ludo.ui.LudoScreen;
 
 public class LudoGameState {
@@ -24,6 +26,7 @@ public class LudoGameState {
 	private Screen screen;
 	private List<Player> players;
 	List<Dice> diceList;
+	RuleEngine ruleEngine = new BasicRuleEngine();
 
 	public LudoGameState(Screen screen) {
 		board = new Board();
@@ -31,25 +34,25 @@ public class LudoGameState {
 		this.screen = screen;
 		players = new ArrayList<Player>();
 
-		greenPlayer = new HumanPlayer(((LudoScreen) screen), diceList);
+		greenPlayer = new HumanPlayer(((LudoScreen) screen), ruleEngine);
 		greenPlayer.setColor(COLOR.GREEN);
 		greenPlayer.setTurn(true);
 		greenPlayer.setPieces(board.getPiecesMap().get(greenPlayer.getColor()));
 		players.add(greenPlayer);
 
-		yellowPlayer = new HumanPlayer(((LudoScreen) screen), diceList);
+		yellowPlayer = new HumanPlayer(((LudoScreen) screen), ruleEngine);
 		yellowPlayer.setColor(COLOR.YELLOW);
 		yellowPlayer.setTurn(false);
 		yellowPlayer.setPieces(board.getPiecesMap().get(yellowPlayer.getColor()));
 		players.add(yellowPlayer);
 
-		redPlayer = new HumanPlayer(((LudoScreen) screen), diceList);
+		redPlayer = new HumanPlayer(((LudoScreen) screen), ruleEngine);
 		redPlayer.setColor(COLOR.RED);
 		redPlayer.setTurn(false);
 		redPlayer.setPieces(board.getPiecesMap().get(redPlayer.getColor()));
 		players.add(redPlayer);
 
-		bluePlayer = new HumanPlayer(((LudoScreen) screen), diceList);
+		bluePlayer = new HumanPlayer(((LudoScreen) screen), ruleEngine);
 		bluePlayer.setColor(COLOR.BLUE);
 		bluePlayer.setTurn(false);
 		bluePlayer.setPieces(board.getPiecesMap().get(bluePlayer.getColor()));
@@ -79,19 +82,21 @@ public class LudoGameState {
 
 			if (player.isTurn()) {
 				move = player.play();
+
 				if (move != null) {
+
+					player.setTurn(false);
+					giveTurnToNext(i);
+
+					if (move.isSkipTurn()) {
+						return;
+					}
 					// do the actual move
 					moving = true;
 					((LudoScreen) screen).getBoardRenderer().setPieceMove(move);
 					move.getPiece().getSittingSuare().getPieces().remove(move.getPiece());
 					sittingSquareIndex = move.getPiece().getSittingSuare().getIndex();
-					// check game state
-					player.setTurn(false);
-					if (i + 1 < players.size()) {
-						players.get(i + 1).setTurn(true);
-					} else {
-						players.get(0).setTurn(true);
-					}
+					// check game state for win etc
 				}
 				break;
 			}
@@ -99,8 +104,25 @@ public class LudoGameState {
 
 	}
 
+	private void giveTurnToNext(int i) {
+		Player selectedPlayer;
+		if (i + 1 < players.size()) {
+			selectedPlayer = players.get(i + 1);
+
+		} else {
+			selectedPlayer = players.get(0);
+		}
+		selectedPlayer.setTurn(true);
+		((LudoScreen) screen).getBoardRenderer().setSelectedPlayer(selectedPlayer);
+	}
+
 	public Board getBoard() {
 		return board;
 	}
 
+	public Player getGreenPlayer() {
+		return greenPlayer;
+	}
+
+	
 }

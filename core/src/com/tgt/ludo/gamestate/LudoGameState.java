@@ -115,7 +115,9 @@ public class LudoGameState {
 		selectedPlayer.setTurn(true);
 		List<Dice> diceList = ((LudoScreen) screen).getBoardRenderer().getDiceList();
 		diceList.clear();
-		diceList.add(((LudoScreen) screen).getBoardRenderer().createDiceInstance());
+		Dice newDice = ((LudoScreen) screen).getBoardRenderer().createDiceInstance();
+		newDice.setShake(true);
+		diceList.add(newDice);
 		((LudoScreen) screen).getBoardRenderer().setSelectedPlayer(selectedPlayer);
 	}
 

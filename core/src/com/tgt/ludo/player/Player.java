@@ -62,8 +62,11 @@ public abstract class Player {
 		int value = ruleEngine.getSingleDiceRoll();
 		dice.setDiceValue(value);
 		dice.setRolled(true);
+		dice.setShake(false);
 		if (value == 6) {
-			diceList.add(boardRenderer.createDiceInstance());
+			Dice newdice = boardRenderer.createDiceInstance();
+			newdice.setShake(true);
+			diceList.add(newdice);
 		} else {
 			List<Integer> list = new ArrayList<Integer>();
 			for (Dice diceTemp : diceList) {

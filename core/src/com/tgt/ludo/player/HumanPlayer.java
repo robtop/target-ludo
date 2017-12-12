@@ -37,12 +37,14 @@ public class HumanPlayer extends Player {
 		if (!diceRolled) {
 			List<Integer> diceValList = rollDice();
 			if (!(diceValList == null)) {
+				
 				diceRolled = true;
 			}
 			return null;
 		}
 		List<Dice> diceList = screen.getBoardRenderer().getDiceList();
 		if (pieceSelectedAfterRoll) {
+			shakeDice(true);
 			Dice dice = selectDice();
 			if (dice == null) {
 				return null;
@@ -53,7 +55,7 @@ public class HumanPlayer extends Player {
 			return new Move(selectedPiece, dice.getDiceValue());
 
 		}
-
+		
 		int diceValue = diceList.get(0).getDiceValue();
 
 		List<Move> moves = ruleEngine.getvalidMoves(this, diceValue);
@@ -81,7 +83,9 @@ public class HumanPlayer extends Player {
 					// TODO dispose instance
 					diceList.clear();
 					// create a new single die for the next play
-					diceList.add(screen.getBoardRenderer().createDiceInstance());
+					Dice newDice = screen.getBoardRenderer().createDiceInstance();
+					newDice.setShake(true);
+					diceList.add(newDice);
 					diceRolled = false;
 					return new Move(piece, diceValue);
 				}
@@ -99,6 +103,13 @@ public class HumanPlayer extends Player {
 		return null;
 	}
 
+	private void shakeDice(boolean shake){
+		List<Dice> diceList = screen.getBoardRenderer().getDiceList();
+		 for(Dice dice:diceList){
+			 dice.setShake(shake);
+         }
+	}
+	
 	private Piece getSelectedPiece() {
 		// check if touched
 		pickRay = cam3D.getPickRay(touchPoint.x, touchPoint.y, 0, 0, Gdx.app.getGraphics().getWidth(),

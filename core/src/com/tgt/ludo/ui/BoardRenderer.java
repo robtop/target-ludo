@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.badlogic.gdx.assets.loaders.ModelLoader;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.Model;
@@ -34,7 +35,9 @@ public class BoardRenderer extends StaticBoardRenderer {
 		assetsManager.finishLoading();
 		diceModel = (Model) assetsManager.get("meshes/dice.g3db");
 		diceList = new ArrayList<Dice>();
-		diceList.add(createDiceInstance());
+		Dice newDice = createDiceInstance();
+		newDice.setShake(true);
+		diceList.add(newDice);
 	}
 
 	public void render(float delta) {
@@ -45,7 +48,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 		if (!pieceMoved) {
 			renderMovingPiece(delta);
 		}
-		renderDice();
+		renderDice(delta);
 		modelBatch.end();
 		renderContext.end();
 	}
@@ -77,41 +80,59 @@ public class BoardRenderer extends StaticBoardRenderer {
 
 	}
 
-	public void renderDice() {
+	public void renderDice(float delta) {
 		int count = 0;
 		for (Dice dice : diceList) {
 
-			if (!dice.isRolled()) {
-				dice.getDiceInstance().transform.setToRotation(new Vector3(1, 1, 1), 45);
-			} else {
-				// rotate according to number
-				dice.getDiceInstance().transform.setToRotation(new Vector3(0, 0, 0), 0);
-			}
+			// if (!dice.isRolled()) {
+			// dice.getDiceInstance().transform.setToRotation(new Vector3(1, 1,
+			// 1), 45);
+			// } else {
+			// // rotate according to number
+			// dice.getDiceInstance().transform.setToRotation(new Vector3(0, 0,
+			// 0), 0);
+			// }
+			Vector3 translation = new Vector3();
+			ModelInstance inst = dice.getDiceInstance();
+			inst.transform.getTranslation(translation);
+
 			dice.getDiceInstance().transform.setTranslation(
-					(selectedPlayer.getLocX() * Board.DIMENSION * 2 * SQUARE_LENGTH*1.4f), 0,
-					(selectedPlayer.getLocY() * Board.DIMENSION * SQUARE_LENGTH * 2 + count * SQUARE_LENGTH * 1.5f)- (Board.DIMENSION *  SQUARE_LENGTH));
+					(selectedPlayer.getLocX() * Board.DIMENSION * 2 * SQUARE_LENGTH * 1.4f), translation.y,
+					(selectedPlayer.getLocY() * Board.DIMENSION * SQUARE_LENGTH * 2 + count * SQUARE_LENGTH * 1.5f)
+							- (Board.DIMENSION * SQUARE_LENGTH));
 			modelBatch.render(dice.getDiceInstance(), environment);
 			count++;
+
+			if (dice.isShake()) {
+				inst.transform.getTranslation(translation);
+				if (translation.y < 1) {
+					inst.transform.translate(0, delta, 0);
+				} else {
+					translation.y = 0;
+					inst.transform.setTranslation(translation);
+				}
+			}
 		}
+
 	}
 
 	@Override
-	protected void renderPiece(Piece pc,float delta) {
-	   super.renderPiece(pc,delta);
-	   
-	   if(pc.isShake()){
-		   ModelInstance inst = pieceInstMap.get(pc);
-		   Vector3 translation = new Vector3();
-		   inst.transform.getTranslation(translation);
-		   if(translation.y<1){
-			    inst.transform.translate(0,delta,0);
-		   } else {
-			   translation.y=0;
-			   inst.transform.setTranslation(translation);
-		   }
-	   }
+	protected void renderPiece(Piece pc, float delta) {
+		super.renderPiece(pc, delta);
+
+		if (pc.isShake()) {
+			ModelInstance inst = pieceInstMap.get(pc);
+			Vector3 translation = new Vector3();
+			inst.transform.getTranslation(translation);
+			if (translation.y < 1) {
+				inst.transform.translate(0, delta, 0);
+			} else {
+				translation.y = 0;
+				inst.transform.setTranslation(translation);
+			}
+		}
 	}
-	
+
 	public void setPieceMove(Move move) {
 		pieceMove = move;
 		pieceMoved = false;

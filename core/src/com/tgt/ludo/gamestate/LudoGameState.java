@@ -84,22 +84,27 @@ public class LudoGameState {
 
 				if (move != null) {
 
-					if (!move.isIncomplete()) {
-						player.setTurn(false);
-						giveTurnToNext(i);
+					if (move.isSkipTurn()) {
 
-						if (move.isSkipTurn()) {
-
-							return;
-						}
+						return;
 					}
+
 					// do the actual move
 					moving = true;
 					((LudoScreen) screen).getBoardRenderer().setPieceMove(move);
 					move.getPiece().getSittingSuare().getPieces().remove(move.getPiece());
 					sittingSquareIndex = move.getPiece().getSittingSuare().getIndex();
 					move.getPiece().setShake(false);
-					
+					shakeDice(false);
+
+					if (move.isIncomplete()) {
+						player.setTurn(false);
+						giveTurnToNext(i);
+
+					} else {
+						player.setSelectDice(false);
+					}
+
 					// check game state for win etc
 				}
 				break;
@@ -119,20 +124,21 @@ public class LudoGameState {
 		selectedPlayer.setTurn(true);
 		List<Dice> diceList = ((LudoScreen) screen).getBoardRenderer().getDiceList();
 		diceList.clear();
+
 		Dice newDice = ((LudoScreen) screen).getBoardRenderer().createDiceInstance();
 		newDice.setShake(true);
-		shakeDice(false);
+
 		diceList.add(newDice);
 		((LudoScreen) screen).getBoardRenderer().setSelectedPlayer(selectedPlayer);
 	}
 
-	private void shakeDice(boolean shake){
+	private void shakeDice(boolean shake) {
 		List<Dice> diceList = screen.getBoardRenderer().getDiceList();
-		 for(Dice dice:diceList){
-			 dice.setShake(shake);
-         }
+		for (Dice dice : diceList) {
+			dice.setShake(shake);
+		}
 	}
-	
+
 	public Board getBoard() {
 		return board;
 	}

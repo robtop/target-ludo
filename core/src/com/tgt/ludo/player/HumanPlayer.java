@@ -23,6 +23,7 @@ public class HumanPlayer extends Player {
 	Ray pickRay;
 	// need screen details to capture inputs and get location of pieces
 	LudoScreen screen;
+	List<Dice> diceList;
 
 	public HumanPlayer(LudoScreen screen, RuleEngine ruleEngine) {
 		super(screen, ruleEngine);
@@ -30,44 +31,32 @@ public class HumanPlayer extends Player {
 		// this.guiCam = screen.getGuiCam();
 		this.cam3D = screen.getCam();
 		touchPoint = new Vector3();
+
 	}
 
 	@Override
 	public Move play() {
 
+		diceList = screen.getBoardRenderer().getDiceList();
+
 		if (!diceRolled) {
 			List<Integer> diceValList = rollDice();
 			if (!(diceValList == null)) {
-				
+
 				diceRolled = true;
 			}
 			return null;
 		}
-		List<Dice> diceList = screen.getBoardRenderer().getDiceList();
-		if (pieceSelectedAfterRoll) {
-			shakeDice(true);
-			Dice dice = selectDice();
-			if (dice == null) {
-				return null;
-			}
-			diceList.remove(dice);
-			if(diceList.isEmpty()){
-			pieceSelectedAfterRoll = false;
-			selectedPiece.setShake(false);
-			return new Move(selectedPiece, dice.getDiceValue());
-			}
-			Move move = new Move(selectedPiece, dice.getDiceValue());
-			move.setIncomplete(true);
-			return move;
+
+		if (selectDice) {
+			return getDiceMove();
 		}
-		
-		//int diceValue = diceList.get(0).getDiceValue();
-       
+
 		List<Move> moves = new ArrayList<Move>();
-		for(Dice dice:diceList){
-				moves.addAll(ruleEngine.getvalidMoves(this, dice.getDiceValue()));
+		for (Dice dice : diceList) {
+			moves.addAll(ruleEngine.getvalidMoves(this, dice.getDiceValue()));
 		}
-		
+
 		if (moves.isEmpty()) {
 			diceRolled = false;
 			// skip turn
@@ -100,10 +89,10 @@ public class HumanPlayer extends Player {
 				}
 			} // TODO: 2 variation
 			else {
-				pieceSelectedAfterRoll = true;
-                for(Piece pieceShake:pieces){
-                	pieceShake.setShake(false);
-                }
+				selectDice = true;
+				for (Piece pieceShake : pieces) {
+					pieceShake.setShake(false);
+				}
 				selectedPiece = piece;
 				selectedPiece.setShake(true);
 			}
@@ -112,14 +101,14 @@ public class HumanPlayer extends Player {
 		return null;
 	}
 
-	private void shakeDice(boolean shake){
+	private void shakeDice(boolean shake) {
 		List<Dice> diceList = screen.getBoardRenderer().getDiceList();
-		 for(Dice dice:diceList){
-			 dice.setShake(shake);
-         }
+		for (Dice dice : diceList) {
+			dice.setShake(shake);
+		}
 	}
-	
-	private Piece getSelectedPiece() {
+
+	public Piece getSelectedPiece() {
 		// check if touched
 		pickRay = cam3D.getPickRay(touchPoint.x, touchPoint.y, 0, 0, Gdx.app.getGraphics().getWidth(),
 				Gdx.app.getGraphics().getHeight());
@@ -136,7 +125,7 @@ public class HumanPlayer extends Player {
 	}
 
 	protected List<Integer> rollDice() {
-		List<Dice> diceList = screen.getBoardRenderer().getDiceList();
+
 		// only last dice eligible to be touched - others should be six -
 		// //TODO: check variation with two dice
 		Dice dice = diceList.get(diceList.size() - 1);
@@ -154,7 +143,25 @@ public class HumanPlayer extends Player {
 		return null;
 	}
 
-	protected Dice selectDice() {
+	protected Move getDiceMove() {
+		shakeDice(true);
+		Dice dice = captureDiceInput();
+		if (dice == null) {
+			return null;
+		}
+		diceList.remove(dice);
+
+		if (diceList.isEmpty()) {
+			selectDice = false;
+			selectedPiece.setShake(false);
+			return new Move(selectedPiece, dice.getDiceValue());
+		}
+		Move move = new Move(selectedPiece, dice.getDiceValue());
+		move.setIncomplete(true);
+		return move;
+	}
+
+	protected Dice captureDiceInput() {
 		List<Dice> diceList = screen.getBoardRenderer().getDiceList();
 		// only last dice eligible to be touched - others should be six -
 		// //TODO: check variation with two dice

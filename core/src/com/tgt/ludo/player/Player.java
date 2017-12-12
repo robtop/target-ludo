@@ -27,7 +27,7 @@ public abstract class Player {
 	protected boolean diceRolled = false;
 	
 	//if multiple dice
-	protected boolean pieceSelectedAfterRoll = false;
+	protected boolean selectDice = false;
 
 	public Player(LudoScreen screen, RuleEngine ruleEngine) {
 		this.ruleEngine = ruleEngine;
@@ -152,5 +152,23 @@ public abstract class Player {
 	public void setLocY(int locY) {
 		this.locY = locY;
 	}
+
+	public Piece getSelectedPiece() {
+		return selectedPiece;
+	}
+
+	public void setSelectedPiece(Piece selectedPiece) {
+		this.selectedPiece = selectedPiece;
+	}
+
+	public boolean isSelectDice() {
+		return selectDice;
+	}
+
+	public void setSelectDice(boolean selectDice) {
+		this.selectDice = selectDice;
+	}
+
+	
 
 }

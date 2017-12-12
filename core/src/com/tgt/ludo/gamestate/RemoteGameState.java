@@ -1,4 +1,4 @@
-package com.tgt.ludo;
+package com.tgt.ludo.gamestate;
 
 import java.util.ArrayList;
 import java.util.List;

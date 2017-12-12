@@ -14,7 +14,7 @@ import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.graphics.g3d.utils.DefaultTextureBinder;
 import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
 import com.badlogic.gdx.math.Vector3;
-import com.tgt.ludo.LudoGameState;
+import com.tgt.ludo.gamestate.LudoGameState;
 
 public class LudoScreen implements Screen {
 

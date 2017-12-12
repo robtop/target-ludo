@@ -1,4 +1,4 @@
-package com.tgt.ludo;
+package com.tgt.ludo.gamestate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +11,8 @@ import com.tgt.ludo.board.Square;
 import com.tgt.ludo.player.HumanPlayer;
 import com.tgt.ludo.player.Move;
 import com.tgt.ludo.player.Player;
+import com.tgt.ludo.rules.BasicRuleEngine;
+import com.tgt.ludo.rules.RuleEngine;
 import com.tgt.ludo.ui.LudoScreen;
 
 public class LudoGameState {

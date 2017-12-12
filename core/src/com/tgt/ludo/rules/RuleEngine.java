@@ -1,4 +1,4 @@
-package com.tgt.ludo;
+package com.tgt.ludo.rules;
 
 import com.tgt.ludo.board.Piece;
 

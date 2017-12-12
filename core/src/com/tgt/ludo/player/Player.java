@@ -3,8 +3,8 @@ package com.tgt.ludo.player;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.tgt.ludo.RuleEngine;
 import com.tgt.ludo.board.Board.COLOR;
+import com.tgt.ludo.rules.RuleEngine;
 import com.tgt.ludo.ui.BoardRenderer;
 import com.tgt.ludo.board.Dice;
 import com.tgt.ludo.board.Piece;

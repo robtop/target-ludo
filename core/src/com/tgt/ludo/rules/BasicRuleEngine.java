@@ -1,4 +1,4 @@
-package com.tgt.ludo;
+package com.tgt.ludo.rules;
 
 import com.tgt.ludo.board.Piece;
 
@@ -17,7 +17,7 @@ public class BasicRuleEngine implements RuleEngine {
 	
 	public  int getSingleDiceRoll(){
 		int value = (int) Math.floor((Math.random()*7));
-		value =6;
+		//value =6;
 		System.out.println("Dice Roll: "+value);
 		return value;
 	

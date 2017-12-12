@@ -1,6 +1,6 @@
 package com.tgt.ludo.player;
 
-import com.tgt.ludo.RuleEngine;
+import com.tgt.ludo.rules.RuleEngine;
 
 public class ANNPlayer extends ComputerPlayer{
 

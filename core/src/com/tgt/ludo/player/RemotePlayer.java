@@ -2,7 +2,7 @@ package com.tgt.ludo.player;
 
 import java.util.List;
 
-import com.tgt.ludo.RuleEngine;
+import com.tgt.ludo.rules.RuleEngine;
 
 public class RemotePlayer extends Player {
 

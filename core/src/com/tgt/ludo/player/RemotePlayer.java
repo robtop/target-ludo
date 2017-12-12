@@ -2,9 +2,12 @@ package com.tgt.ludo.player;
 
 import java.util.List;
 
+import com.tgt.ludo.RuleEngine;
+
 public class RemotePlayer extends Player {
 
-	public RemotePlayer() {
+	public RemotePlayer(RuleEngine ruleEngine) {
+		super(ruleEngine);
 	}
 
 	@Override
@@ -20,7 +23,6 @@ public class RemotePlayer extends Player {
 		
 	}
 
-	@Override
 	public List<Integer> rollDice() {
 		//TODO: get roll dice from server
 		return null;

@@ -80,13 +80,14 @@ public class BoardRenderer extends StaticBoardRenderer {
 	public void renderDice() {
 		int count=0;
 		for (Dice dice : diceList) {
+		
 			if(!dice.isRolled()){
-				dice.getDiceInstance().transform.setToRotation(new Vector3(1, 1,1),45);
+			 	dice.getDiceInstance().transform.setToRotation(new Vector3(1, 1,1),45);
 			} else {
 				// rotate according to number
 				dice.getDiceInstance().transform.setToRotation(new Vector3(0, 0,0),0);
 			}
-			dice.getDiceInstance().transform.translate(0, 0,count*SQUARE_LENGTH*2);
+			dice.getDiceInstance().transform.setTranslation(0, 0,count*SQUARE_LENGTH*1.5f);
 			modelBatch.render(dice.getDiceInstance(), environment);
 			count++;
 		}

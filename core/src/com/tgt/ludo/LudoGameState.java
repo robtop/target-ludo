@@ -24,32 +24,33 @@ public class LudoGameState {
 	private Screen screen;
 	private List<Player> players;
 	List<Dice> diceList;
-
+	RuleEngine ruleEngine = new BasicRuleEngine();
+	
 	public LudoGameState(Screen screen) {
 		board = new Board();
 		board.setup();
 		this.screen = screen;
 		players = new ArrayList<Player>();
 
-		greenPlayer = new HumanPlayer(((LudoScreen) screen), diceList);
+		greenPlayer = new HumanPlayer(((LudoScreen) screen), diceList,ruleEngine);
 		greenPlayer.setColor(COLOR.GREEN);
 		greenPlayer.setTurn(true);
 		greenPlayer.setPieces(board.getPiecesMap().get(greenPlayer.getColor()));
 		players.add(greenPlayer);
 
-		yellowPlayer = new HumanPlayer(((LudoScreen) screen), diceList);
+		yellowPlayer = new HumanPlayer(((LudoScreen) screen), diceList,ruleEngine);
 		yellowPlayer.setColor(COLOR.YELLOW);
 		yellowPlayer.setTurn(false);
 		yellowPlayer.setPieces(board.getPiecesMap().get(yellowPlayer.getColor()));
 		players.add(yellowPlayer);
 
-		redPlayer = new HumanPlayer(((LudoScreen) screen), diceList);
+		redPlayer = new HumanPlayer(((LudoScreen) screen), diceList,ruleEngine);
 		redPlayer.setColor(COLOR.RED);
 		redPlayer.setTurn(false);
 		redPlayer.setPieces(board.getPiecesMap().get(redPlayer.getColor()));
 		players.add(redPlayer);
 
-		bluePlayer = new HumanPlayer(((LudoScreen) screen), diceList);
+		bluePlayer = new HumanPlayer(((LudoScreen) screen), diceList,ruleEngine);
 		bluePlayer.setColor(COLOR.BLUE);
 		bluePlayer.setTurn(false);
 		bluePlayer.setPieces(board.getPiecesMap().get(bluePlayer.getColor()));

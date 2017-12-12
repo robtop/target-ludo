@@ -1,6 +1,5 @@
 package com.tgt.ludo.player;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
@@ -8,6 +7,7 @@ import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
+import com.tgt.ludo.RuleEngine;
 import com.tgt.ludo.board.Dice;
 import com.tgt.ludo.board.Piece;
 import com.tgt.ludo.ui.BoardRenderer;
@@ -23,7 +23,8 @@ public class HumanPlayer extends Player {
 	// need screen details to capture inputs and get location of pieces
 	LudoScreen screen;
   	
-	public HumanPlayer(LudoScreen screen,List<Dice> dice) {
+	public HumanPlayer(LudoScreen screen,List<Dice> dice,RuleEngine ruleEngine) {
+		super(ruleEngine);
 		this.screen = screen;
 		//this.guiCam = screen.getGuiCam();
 		this.cam3D = screen.getCam();
@@ -77,7 +78,6 @@ public class HumanPlayer extends Player {
 		return null;
 	}
 
-	@Override
 	protected List<Integer> rollDice() {
 		List<Dice> diceList = screen.getBoardRenderer().getDiceList();
 		//only last dice eligible to be touched - others should be six - //TODO: check variation with two dice
@@ -91,22 +91,7 @@ public class HumanPlayer extends Player {
 			dice.getDiceInstance().transform.getTranslation(tran);
 			if(Intersector.intersectRaySphere(pickRay, tran, BoardRenderer.SQUARE_LENGTH, intersection))
 			{
-				int value = (int) Math.floor((Math.random()*7));
-				dice.setDiceValue(value);
-				dice.setRolled(true);
-				value =6;
-				System.out.println("Dice Roll: "+value);
-				
-				if(value == 6){
-					diceList.add(screen.getBoardRenderer().createDiceInstance());
-				} else {
-					List<Integer> list = new ArrayList<Integer>();
-					for(Dice diceTemp:diceList){
-						list.add(dice.getDiceValue());
-					}
-					return list;
-				}
-				dice.setRolled(true);
+				return super.rollDice(dice,  screen.getBoardRenderer());
 			}
 		}
 		return null;

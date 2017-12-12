@@ -5,6 +5,8 @@ import java.util.List;
 
 import com.tgt.ludo.RuleEngine;
 import com.tgt.ludo.board.Board.COLOR;
+import com.tgt.ludo.ui.BoardRenderer;
+import com.tgt.ludo.board.Dice;
 import com.tgt.ludo.board.Piece;
 
 public abstract class Player {
@@ -15,13 +17,16 @@ public abstract class Player {
     protected COLOR color;
     protected boolean diceRolled = false;
     
+    public Player(RuleEngine ruleEngine) {
+    	this.ruleEngine = ruleEngine;
+	}
     //Extending Players should set this
     protected List<Integer> diceRolls = new ArrayList<Integer>();
 
 	// main game loop
 	public Move play(){
 		if(diceRolled){
-			rollDice();
+			//rollDice();
 		}
 		return null;
 	}
@@ -30,7 +35,30 @@ public abstract class Player {
 		return turn;
 	}
 
-	protected abstract  List<Integer> rollDice();
+	/**
+	 * Roll a single dice
+	 * 
+	 * @param dice - The dice to be rolled
+	 * @param boardRenderer - to get the diceList and create new die if we get a six
+	 * @return - list of dice values or null if we need another throw 
+	 */
+	protected  List<Integer> rollDice(Dice dice,BoardRenderer boardRenderer){
+		List<Dice> diceList = boardRenderer.getDiceList();
+		int value = ruleEngine.getSingleDiceRoll();
+		dice.setDiceValue(value);
+		dice.setRolled(true);
+		if(value == 6){
+			diceList.add(boardRenderer.createDiceInstance());
+		} else {
+			List<Integer> list = new ArrayList<Integer>();
+			for(Dice diceTemp:diceList){
+				list.add(dice.getDiceValue());
+			}
+			return list;
+		}
+		dice.setRolled(true);
+		return null;
+	}
 	
 	public void setTurn(boolean turn) {
 		this.turn = turn;

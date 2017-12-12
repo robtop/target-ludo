@@ -8,6 +8,7 @@ import com.badlogic.gdx.Screen;
 import com.tgt.ludo.board.Board;
 import com.tgt.ludo.board.Board.COLOR;
 import com.tgt.ludo.board.Dice;
+import com.tgt.ludo.board.Piece;
 import com.tgt.ludo.board.Square;
 import com.tgt.ludo.player.HumanPlayer;
 import com.tgt.ludo.player.Move;
@@ -83,12 +84,12 @@ public class LudoGameStateController {
 				return;
 			}
 			if (move.isIncomplete()) {
-				player.setTurn(false);
-				giveTurnToNext(playerIndex);
-
-			} else {
 				player.setSelectDice(false);
 				player.setDiceRolled(true);
+			} else {
+				player.setTurn(false);
+				giveTurnToNext(playerIndex);
+				setPiecesShake(player, false);
 			}
 
 			// do the actual move in the board backend
@@ -97,6 +98,12 @@ public class LudoGameStateController {
 		}
 	}
 
+	private void setPiecesShake(Player player,boolean shake){
+		for(Piece piece:player.getPieces()){
+			piece.setShake(shake);
+		}
+	}
+	
 	private void movePiece(Player player) {
 		movingAnimation = true;
 		((LudoScreen) screen).getBoardRenderer().setPieceMove(move);

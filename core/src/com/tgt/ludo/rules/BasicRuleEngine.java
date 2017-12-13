@@ -119,4 +119,74 @@ public class BasicRuleEngine implements RuleEngine {
 		}
 		return null;
 	}
+
+	@Override
+	public boolean goToJail(Move move) {
+		int dest = move.getPiece().getSittingSuare().getIndex() + move.getSquares();
+		if (Board.jailIndexes.contains(dest)) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean goToHomeSquare(Move move) {
+		int dest = move.getPiece().getSittingSuare().getIndex() + move.getSquares();
+		if (Board.HOME_INDEX == dest) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean makeAkill(Move move) {
+		int dest = move.getPiece().getSittingSuare().getIndex() + move.getSquares();
+		if (!board.getSquares().get(dest).getPieces().isEmpty()) {
+			for (Piece piece : board.getSquares().get(dest).getPieces()) {
+				if (piece.getColor() != move.getPiece().getColor()) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean closeToKill(Move move) {
+		int dest = move.getPiece().getSittingSuare().getIndex() + move.getSquares();
+		for(int i=dest;i<6;i++){
+		if(!board.getSquares().get(i).getPieces().isEmpty()){
+			for(Piece piece:board.getSquares().get(i).getPieces()){
+				if(piece.getColor()!= move.getPiece().getColor()){
+					return true;
+				}
+			}
+		}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean jumpJail(Move move) {
+		int currentIndex = move.getPiece().getSittingSuare().getIndex();
+		int dest = move.getPiece().getSittingSuare().getIndex() + move.getSquares();
+		for(int i=currentIndex;i<dest;i++){
+			if(board.jailIndexes.contains(i)){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean escapeKill(Move move) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean reachHome(Move move) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

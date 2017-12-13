@@ -33,7 +33,7 @@ public class ComputerPlayer extends Player{
 	}
 
 
-	private Move selectMove(List<Move> moves){
+	protected Move selectMove(List<Move> moves){
 		int move = (int) Math.floor(Math.random()*moves.size());
 		//give first valid move
 		return moves.get(move);

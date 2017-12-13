@@ -13,7 +13,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.tgt.ludo.board.Board;
 import com.tgt.ludo.board.Dice;
 import com.tgt.ludo.board.Piece;
-import com.tgt.ludo.board.Square;
+import com.tgt.ludo.board.Board.COLOR;
 import com.tgt.ludo.player.Move;
 import com.tgt.ludo.player.Player;
 
@@ -23,6 +23,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 	private Move pieceMove;
 	private int moveFinalIndex;
 	private int moveTempIndex;
+	private int moveCount;
 	private boolean restMovedToStart;
 	private static final int MOVE_SPEED = 10;
 	private ModelInstance pieceInstance;
@@ -59,7 +60,8 @@ public class BoardRenderer extends StaticBoardRenderer {
 	}
 
 	public void renderMovingPiece(float delta) {
-		if (moveTempIndex == moveFinalIndex + 1) {
+		
+		if (moveCount == pieceMove.getSquares()-1) {
 			Vector3 trans = new Vector3();
 			squareInstMap.get(board.getSquares().get(moveFinalIndex)).transform.getTranslation(trans);
 			// set the destination squares translation to the piece
@@ -67,7 +69,9 @@ public class BoardRenderer extends StaticBoardRenderer {
 			pieceMoved = true;
 			return;
 		}
-
+		//check if it reached its home square or home etc
+		moveTempIndex = calulateNextIndex();
+		
 		Vector3 currentTranslation = new Vector3();
 		Vector3 finalTranslation = new Vector3();
 		pieceInstance = pieceInstMap.get(pieceMove.getPiece());
@@ -78,6 +82,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 		modelBatch.render(pieceInstance, environment);
 		if (diff.len() < .1f) {
 			moveTempIndex++;
+			moveCount++;
 		} else {
 
 			pieceInstance.transform.translate(diff.scl(delta * MOVE_SPEED));
@@ -85,6 +90,32 @@ public class BoardRenderer extends StaticBoardRenderer {
 
 	}
 
+	private int  calulateNextIndex(){
+		 Board.COLOR color = pieceMove.getPiece().getColor();
+		 int startIndex = 0;
+		 switch(color){
+		 case GREEN:
+			 startIndex = Board.startIndexes.get(0);
+			 break;
+		 case YELLOW:
+			 startIndex = Board.startIndexes.get(1);
+			 break;
+		 case RED:
+			 startIndex = Board.startIndexes.get(2);
+			 break;
+		 case BLUE:
+			 startIndex = Board.startIndexes.get(3);
+			 break;
+		 }
+		 
+		 if(moveCount+pieceMove.getPiece().getSittingSuare().getIndex() <= board.TOTAL_NUM_SQUARES){
+			 //move to home square
+		 } else
+		 if(moveTempIndex == board.TOTAL_NUM_SQUARES){
+			 moveTempIndex = 0;
+		 }
+		 return moveTempIndex;
+	}
 	public void renderMovingRestPiece(float delta) {
 		if (restMovedToStart) {
 			Vector3 trans = new Vector3();
@@ -170,6 +201,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 	}
 
 	public void setPieceMovingInTrack(Player player, Move move) {
+		moveCount=0;
 		pieceMove = move;
 		pieceMoved = false;
 		if (move.getPiece().isRest()) {
@@ -183,6 +215,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 	}
 	
 	public void setPieceMovingOutSideTrack(Player player, Move move) {
+		moveCount=0;
 		pieceMove = move;
 		pieceMoved = false;
 		if (move.getPiece().isRest()) {
@@ -190,7 +223,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 		}else if (move.getPiece().isKilled()) {
 		//	moveFinalIndex = getFreeSquare(board.getHomeSquaresMap().get(player.getColor());
 		}  else {
-			moveFinalIndex = move.getPiece().getSittingSuare().getIndex() + move.getSquares();
+			moveFinalIndex = move.getPiece().getSittingSuare().getIndex() + move.getSquares()-1;
 			moveTempIndex = move.getPiece().getSittingSuare().getIndex() + 1;
 		}
 	}

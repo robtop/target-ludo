@@ -25,13 +25,15 @@ public class LudoUtil {
 		}
 
 		int sittingIndex = move.getPiece().getSittingSuare().getIndex();
-
+		System.out.println("sittingIndex: "+sittingIndex);
 		if (move.getSquares() + sittingIndex == Board.TOTAL_NUM_SQUARES - 1) {
 			// move to home square
 		} else if (move.getSquares() + sittingIndex >= Board.TOTAL_NUM_SQUARES) {
 			return (move.getSquares() + sittingIndex) % Board.TOTAL_NUM_SQUARES;
 		}
-		return sittingIndex + move.getSquares();
+		int dest = sittingIndex + move.getSquares();
+		System.out.println("calulateDestIndex: "+dest);
+		return dest;
 	}
 
 	public static int calulateNextIndex(Move pieceMove, int moveCount, int moveTempIndex) {
@@ -53,7 +55,7 @@ public class LudoUtil {
 		}
 
 		if (moveTempIndex == 0) {
-			moveTempIndex += startIndex;
+			moveTempIndex = startIndex+1;
 		} else if (moveCount + pieceMove.getPiece().getSittingSuare().getIndex() >= Board.TOTAL_NUM_SQUARES) {
 			// move to home square
 		} else if (moveTempIndex == Board.TOTAL_NUM_SQUARES) {
@@ -61,6 +63,7 @@ public class LudoUtil {
 		} else {
 			moveTempIndex += 1;
 		}
+		System.out.println("calulateNextIndex: "+moveTempIndex);
 		return moveTempIndex;
 	}
 

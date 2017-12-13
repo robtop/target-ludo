@@ -136,7 +136,7 @@ public class LudoGameStateController {
 			movingAnimation = false;
 			Square finalSquare = null;
 			if (move.getPiece().isRest()) {
-				finalSquare = board.getSquares().get(player.getStartIndex() + move.getSquares());
+				finalSquare = board.getSquares().get(player.getStartIndex());
 				move.getPiece().setRest(false);
 			}
 			// else if (move.getPiece().getSittingSuare().isSpecialHome()) {

@@ -19,14 +19,20 @@ import com.tgt.ludo.player.Player;
 
 public class BoardRenderer extends StaticBoardRenderer {
 
-	private boolean pieceMoved = true;
-	private Move pieceMove;
-	private int moveFinalIndex;
+	protected boolean pieceMoved = true;
+	protected Move pieceMove;
+	protected int moveFinalIndex;
 	private int moveTempIndex;
 	private int moveCount;
-	private boolean restMovedToStart;
-	private static final int MOVE_SPEED = 10;
-	private ModelInstance pieceInstance;
+	
+	//flags for animation 
+	protected boolean restMovedToStart;
+	private boolean jailMovedToRest;
+	private boolean homeSqMovedToHome;
+	private boolean killMovedToRest;
+	
+	protected static final int MOVE_SPEED = 10;
+	protected ModelInstance pieceInstance;
 	private List<Dice> diceList;
 	protected Model diceModel;
 	protected Player selectedPlayer;
@@ -54,6 +60,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 				renderMovingPiece(delta);
 			}
 		}
+		
 		renderDice(delta);
 		modelBatch.end();
 		renderContext.end();
@@ -90,32 +97,6 @@ public class BoardRenderer extends StaticBoardRenderer {
 
 	}
 
-	private int  calulateNextIndex(){
-		 Board.COLOR color = pieceMove.getPiece().getColor();
-		 int startIndex = 0;
-		 switch(color){
-		 case GREEN:
-			 startIndex = Board.startIndexes.get(0);
-			 break;
-		 case YELLOW:
-			 startIndex = Board.startIndexes.get(1);
-			 break;
-		 case RED:
-			 startIndex = Board.startIndexes.get(2);
-			 break;
-		 case BLUE:
-			 startIndex = Board.startIndexes.get(3);
-			 break;
-		 }
-		 
-		 if(moveCount+pieceMove.getPiece().getSittingSuare().getIndex() <= board.TOTAL_NUM_SQUARES){
-			 //move to home square
-		 } else
-		 if(moveTempIndex == board.TOTAL_NUM_SQUARES){
-			 moveTempIndex = 0;
-		 }
-		 return moveTempIndex;
-	}
 	public void renderMovingRestPiece(float delta) {
 		if (restMovedToStart) {
 			Vector3 trans = new Vector3();
@@ -143,19 +124,39 @@ public class BoardRenderer extends StaticBoardRenderer {
 		}
 
 	}
+	
+	private int  calulateNextIndex(){
+		 Board.COLOR color = pieceMove.getPiece().getColor();
+		 int startIndex = 0;
+		 switch(color){
+		 case GREEN:
+			 startIndex = Board.startIndexes.get(0);
+			 break;
+		 case YELLOW:
+			 startIndex = Board.startIndexes.get(1);
+			 break;
+		 case RED:
+			 startIndex = Board.startIndexes.get(2);
+			 break;
+		 case BLUE:
+			 startIndex = Board.startIndexes.get(3);
+			 break;
+		 }
+		 
+		 if(moveCount+pieceMove.getPiece().getSittingSuare().getIndex() <= board.TOTAL_NUM_SQUARES){
+			 //move to home square
+		 } else
+		 if(moveTempIndex == board.TOTAL_NUM_SQUARES){
+			 moveTempIndex = 0;
+		 }
+		 return moveTempIndex;
+	}
+	
 
 	public void renderDice(float delta) {
 		int count = 0;
 		for (Dice dice : diceList) {
 
-			// if (!dice.isRolled()) {
-			// dice.getDiceInstance().transform.setToRotation(new Vector3(1, 1,
-			// 1), 45);
-			// } else {
-			// // rotate according to number
-			// dice.getDiceInstance().transform.setToRotation(new Vector3(0, 0,
-			// 0), 0);
-			// }
 			Vector3 translation = new Vector3();
 			ModelInstance inst = dice.getDiceInstance();
 			inst.transform.getTranslation(translation);
@@ -200,6 +201,11 @@ public class BoardRenderer extends StaticBoardRenderer {
 
 	}
 
+	/**
+	 * 
+	 * @param player
+	 * @param move
+	 */
 	public void setPieceMovingInTrack(Player player, Move move) {
 		moveCount=0;
 		pieceMove = move;

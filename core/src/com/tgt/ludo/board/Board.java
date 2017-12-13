@@ -151,6 +151,12 @@ public class Board {
 		return list;
 	}
 
+	/**
+	 * Only called on creation
+	 * 
+	 * @param piece
+	 * @param color
+	 */
 	private void placePieceInRestSq(Piece piece, COLOR color) {
 		// find empty square and place
 		for (Square sq : restSquaresMap.get(color)) {

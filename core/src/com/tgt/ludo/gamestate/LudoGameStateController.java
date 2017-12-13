@@ -53,8 +53,8 @@ public class LudoGameStateController {
 		board.setup();
 		ruleEngine = new BasicRuleEngine(board);
 		this.screen = (LudoScreen) screen;
-	     createPlayers();
-		//createRobotPlayers();
+		// createPlayers();
+		createRobotPlayers();
 		gameState = GAME_STATE.PROGRESS;
 	}
 
@@ -72,9 +72,9 @@ public class LudoGameStateController {
 			return;
 		}
 
-		//check for any events after animation/piece moves
+		// check for any events after animation/piece moves
 		checkGameState();
-		
+
 		for (int i = 0; i < players.size(); i++) {
 			Player player = players.get(i);
 
@@ -86,12 +86,12 @@ public class LudoGameStateController {
 		}
 	}
 
-	private void checkGameState(){
-		for(Piece kill:ruleEngine.getKills()){
+	private void checkGameState() {
+		for (Piece kill : ruleEngine.getKills()) {
 			movingAnimation = true;
 		}
 	}
-	
+
 	private void play(Player player, int playerIndex) {
 		move = player.play();
 		if (move != null) {
@@ -129,11 +129,6 @@ public class LudoGameStateController {
 		sittingSquareIndex = move.getPiece().getSittingSuare().getIndex();
 		move.getPiece().setShake(false);
 		shakeDice(false);
-		// Square finalSquare
-		// if(move.getPiece().isRest()){
-		// finalSquare = board.getSquares().get(player.getStartIndex() +
-		// move.getSquares());
-		// }
 	}
 
 	private void animationCheck() {
@@ -143,23 +138,58 @@ public class LudoGameStateController {
 			if (move.getPiece().isRest()) {
 				finalSquare = board.getSquares().get(player.getStartIndex() + move.getSquares());
 				move.getPiece().setRest(false);
-			} else if (move.getPiece().getSittingSuare().isSpecialHome()) {
-				finalSquare = board.getSquares().get(sittingSquareIndex + move.getSquares());
-			} else if (move.getPiece().getSittingSuare().isJail()) {
-				finalSquare = board.getSquares().get(sittingSquareIndex + move.getSquares());
-			}  else if (move.getPiece().isKilled()) {
-				finalSquare = board.getSquares().get(sittingSquareIndex + move.getSquares());
-			} else {
-				finalSquare = board.getSquares().get(sittingSquareIndex + move.getSquares());
 			}
-            if(finalSquare == null){
-            	System.out.println("null?");
-            }
+			// else if (move.getPiece().getSittingSuare().isSpecialHome()) {
+			// finalSquare = board.getSquares().get(sittingSquareIndex +
+			// move.getSquares());
+			// } else if (move.getPiece().getSittingSuare().isJail()) {
+			// finalSquare = board.getSquares().get(sittingSquareIndex +
+			// move.getSquares());
+			// } else if (move.getPiece().isKilled()) {
+			// finalSquare = board.getSquares().get(sittingSquareIndex +
+			// move.getSquares());
+			// } 
+			else
+			{
+				finalSquare = board.getSquares().get(calulateDestIndex(move));
+			}
+			if (finalSquare == null) {
+				System.out.println("null?");
+			}
 			finalSquare.getPieces().add(move.getPiece());
 			move.getPiece().setSittingSuare(finalSquare);
 			return;
 		}
 
+	}
+
+	private int calulateDestIndex(Move move) {
+
+		Board.COLOR color = move.getPiece().getColor();
+		int startIndex = 0;
+		switch (color) {
+		case GREEN:
+			startIndex = Board.startIndexes.get(0);
+			break;
+		case YELLOW:
+			startIndex = Board.startIndexes.get(1);
+			break;
+		case RED:
+			startIndex = Board.startIndexes.get(2);
+			break;
+		case BLUE:
+			startIndex = Board.startIndexes.get(3);
+			break;
+		}
+
+		int sittingIndex = move.getPiece().getSittingSuare().getIndex();
+
+		if (move.getSquares() + sittingIndex <= board.TOTAL_NUM_SQUARES) {
+			// move to home square
+		} else if (move.getSquares() + sittingIndex > board.TOTAL_NUM_SQUARES) {
+			return (move.getSquares() + sittingIndex) % board.TOTAL_NUM_SQUARES;
+		}
+		return sittingIndex + move.getSquares();
 	}
 
 	private void giveTurnToNext(Player currentPlayer, int i) {

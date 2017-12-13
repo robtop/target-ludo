@@ -53,7 +53,7 @@ public class LudoGameStateController {
 		board.setup();
 		ruleEngine = new BasicRuleEngine(board);
 		this.screen = (LudoScreen) screen;
-	     createPlayers();
+		createPlayers();
 		//createRobotPlayers();
 		gameState = GAME_STATE.PROGRESS;
 	}
@@ -72,9 +72,9 @@ public class LudoGameStateController {
 			return;
 		}
 
-		//check for any events after animation/piece moves
+		// check for any events after animation/piece moves
 		checkGameState();
-		
+
 		for (int i = 0; i < players.size(); i++) {
 			Player player = players.get(i);
 
@@ -86,12 +86,12 @@ public class LudoGameStateController {
 		}
 	}
 
-	private void checkGameState(){
-		for(Piece kill:ruleEngine.getKills()){
+	private void checkGameState() {
+		for (Piece kill : ruleEngine.getKills()) {
 			movingAnimation = true;
 		}
 	}
-	
+
 	private void play(Player player, int playerIndex) {
 		move = player.play();
 		if (move != null) {
@@ -129,11 +129,6 @@ public class LudoGameStateController {
 		sittingSquareIndex = move.getPiece().getSittingSuare().getIndex();
 		move.getPiece().setShake(false);
 		shakeDice(false);
-		// Square finalSquare
-		// if(move.getPiece().isRest()){
-		// finalSquare = board.getSquares().get(player.getStartIndex() +
-		// move.getSquares());
-		// }
 	}
 
 	private void animationCheck() {
@@ -141,26 +136,34 @@ public class LudoGameStateController {
 			movingAnimation = false;
 			Square finalSquare = null;
 			if (move.getPiece().isRest()) {
-				finalSquare = board.getSquares().get(player.getStartIndex() + move.getSquares());
+				finalSquare = board.getSquares().get(player.getStartIndex());
 				move.getPiece().setRest(false);
-			} else if (move.getPiece().getSittingSuare().isSpecialHome()) {
-				finalSquare = board.getSquares().get(sittingSquareIndex + move.getSquares());
-			} else if (move.getPiece().getSittingSuare().isJail()) {
-				finalSquare = board.getSquares().get(sittingSquareIndex + move.getSquares());
-			}  else if (move.getPiece().isKilled()) {
-				finalSquare = board.getSquares().get(sittingSquareIndex + move.getSquares());
-			} else {
-				finalSquare = board.getSquares().get(sittingSquareIndex + move.getSquares());
 			}
-            if(finalSquare == null){
-            	System.out.println("null?");
-            }
+			// else if (move.getPiece().getSittingSuare().isSpecialHome()) {
+			// finalSquare = board.getSquares().get(sittingSquareIndex +
+			// move.getSquares());
+			// } else if (move.getPiece().getSittingSuare().isJail()) {
+			// finalSquare = board.getSquares().get(sittingSquareIndex +
+			// move.getSquares());
+			// } else if (move.getPiece().isKilled()) {
+			// finalSquare = board.getSquares().get(sittingSquareIndex +
+			// move.getSquares());
+			// } 
+			else
+			{
+				finalSquare = board.getSquares().get(LudoUtil.calulateDestIndex(move));
+			}
+			if (finalSquare == null) {
+				System.out.println("null?");
+			}
 			finalSquare.getPieces().add(move.getPiece());
 			move.getPiece().setSittingSuare(finalSquare);
 			return;
 		}
 
 	}
+
+
 
 	private void giveTurnToNext(Player currentPlayer, int i) {
 		currentPlayer.setTurn(false);
@@ -216,29 +219,26 @@ public class LudoGameStateController {
 	private void createRobotPlayers() {
 		players = new ArrayList<Player>();
 
+	
 		greenPlayer = new ComputerPlayer(((LudoScreen) screen), ruleEngine);
 		greenPlayer.setColor(COLOR.GREEN);
-		greenPlayer.setTurn(true);
 		greenPlayer.setPieces(board.getPiecesMap().get(greenPlayer.getColor()));
 		players.add(greenPlayer);
 
 		yellowPlayer = new ComputerPlayer(((LudoScreen) screen), ruleEngine);
 		yellowPlayer.setColor(COLOR.YELLOW);
-		yellowPlayer.setTurn(false);
 		yellowPlayer.setStartIndex(Board.DIMENSION * 2 + 1);
 		yellowPlayer.setPieces(board.getPiecesMap().get(yellowPlayer.getColor()));
 		players.add(yellowPlayer);
 
 		redPlayer = new ComputerPlayer(((LudoScreen) screen), ruleEngine);
 		redPlayer.setColor(COLOR.RED);
-		redPlayer.setTurn(false);
 		redPlayer.setStartIndex(Board.DIMENSION * 4 + 2);
 		redPlayer.setPieces(board.getPiecesMap().get(redPlayer.getColor()));
 		players.add(redPlayer);
-
+  
 		bluePlayer = new ComputerPlayer(((LudoScreen) screen), ruleEngine);
 		bluePlayer.setColor(COLOR.BLUE);
-		bluePlayer.setTurn(false);
 		bluePlayer.setStartIndex(Board.DIMENSION * 6 + 3);
 		bluePlayer.setPieces(board.getPiecesMap().get(bluePlayer.getColor()));
 		players.add(bluePlayer);
@@ -261,6 +261,10 @@ public class LudoGameStateController {
 
 	public GAME_STATE getGameState() {
 		return gameState;
+	}
+
+	public List<Player> getPlayers() {
+		return players;
 	}
 
 }

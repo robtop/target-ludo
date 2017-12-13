@@ -96,6 +96,8 @@ public class Board {
 
 	}
 
+	
+	
 	private void createRestSquares() {
 		restSquaresMap = new HashMap<Board.COLOR, List<Square>>();
 		restSquaresMap.put(COLOR.GREEN, createRestSquareList(COLOR.GREEN));
@@ -151,6 +153,12 @@ public class Board {
 		return list;
 	}
 
+	/**
+	 * Only called on creation
+	 * 
+	 * @param piece
+	 * @param color
+	 */
 	private void placePieceInRestSq(Piece piece, COLOR color) {
 		// find empty square and place
 		for (Square sq : restSquaresMap.get(color)) {

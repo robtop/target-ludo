@@ -13,20 +13,26 @@ import com.badlogic.gdx.math.Vector3;
 import com.tgt.ludo.board.Board;
 import com.tgt.ludo.board.Dice;
 import com.tgt.ludo.board.Piece;
-import com.tgt.ludo.board.Board.COLOR;
+import com.tgt.ludo.gamestate.LudoUtil;
 import com.tgt.ludo.player.Move;
 import com.tgt.ludo.player.Player;
 
 public class BoardRenderer extends StaticBoardRenderer {
 
-	private boolean pieceMoved = true;
-	private Move pieceMove;
-	private int moveFinalIndex;
+	protected boolean pieceMoved = true;
+	protected Move pieceMove;
+	protected int moveFinalIndex;
 	private int moveTempIndex;
 	private int moveCount;
-	private boolean restMovedToStart;
-	private static final int MOVE_SPEED = 10;
-	private ModelInstance pieceInstance;
+
+	// flags for animation
+	protected boolean restMovedToStart;
+	private boolean jailMovedToRest;
+	private boolean homeSqMovedToHome;
+	private boolean killMovedToRest;
+
+	protected static final int MOVE_SPEED = 10;
+	protected ModelInstance pieceInstance;
 	private List<Dice> diceList;
 	protected Model diceModel;
 	protected Player selectedPlayer;
@@ -54,14 +60,15 @@ public class BoardRenderer extends StaticBoardRenderer {
 				renderMovingPiece(delta);
 			}
 		}
+
 		renderDice(delta);
 		modelBatch.end();
 		renderContext.end();
 	}
 
 	public void renderMovingPiece(float delta) {
-		
-		if (moveCount == pieceMove.getSquares()-1) {
+
+		if (moveCount == pieceMove.getSquares() - 1) {
 			Vector3 trans = new Vector3();
 			squareInstMap.get(board.getSquares().get(moveFinalIndex)).transform.getTranslation(trans);
 			// set the destination squares translation to the piece
@@ -69,9 +76,8 @@ public class BoardRenderer extends StaticBoardRenderer {
 			pieceMoved = true;
 			return;
 		}
-		//check if it reached its home square or home etc
-		moveTempIndex = calulateNextIndex();
-		
+		// check if it reached its home square or home etc
+
 		Vector3 currentTranslation = new Vector3();
 		Vector3 finalTranslation = new Vector3();
 		pieceInstance = pieceInstMap.get(pieceMove.getPiece());
@@ -81,7 +87,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 		Vector3 diff = finalTranslation.sub(currentTranslation);
 		modelBatch.render(pieceInstance, environment);
 		if (diff.len() < .1f) {
-			moveTempIndex++;
+			moveTempIndex = LudoUtil.calulateNextIndex(pieceMove, moveCount, moveTempIndex);
 			moveCount++;
 		} else {
 
@@ -90,32 +96,6 @@ public class BoardRenderer extends StaticBoardRenderer {
 
 	}
 
-	private int  calulateNextIndex(){
-		 Board.COLOR color = pieceMove.getPiece().getColor();
-		 int startIndex = 0;
-		 switch(color){
-		 case GREEN:
-			 startIndex = Board.startIndexes.get(0);
-			 break;
-		 case YELLOW:
-			 startIndex = Board.startIndexes.get(1);
-			 break;
-		 case RED:
-			 startIndex = Board.startIndexes.get(2);
-			 break;
-		 case BLUE:
-			 startIndex = Board.startIndexes.get(3);
-			 break;
-		 }
-		 
-		 if(moveCount+pieceMove.getPiece().getSittingSuare().getIndex() <= board.TOTAL_NUM_SQUARES){
-			 //move to home square
-		 } else
-		 if(moveTempIndex == board.TOTAL_NUM_SQUARES){
-			 moveTempIndex = 0;
-		 }
-		 return moveTempIndex;
-	}
 	public void renderMovingRestPiece(float delta) {
 		if (restMovedToStart) {
 			Vector3 trans = new Vector3();
@@ -148,14 +128,6 @@ public class BoardRenderer extends StaticBoardRenderer {
 		int count = 0;
 		for (Dice dice : diceList) {
 
-			// if (!dice.isRolled()) {
-			// dice.getDiceInstance().transform.setToRotation(new Vector3(1, 1,
-			// 1), 45);
-			// } else {
-			// // rotate according to number
-			// dice.getDiceInstance().transform.setToRotation(new Vector3(0, 0,
-			// 0), 0);
-			// }
 			Vector3 translation = new Vector3();
 			ModelInstance inst = dice.getDiceInstance();
 			inst.transform.getTranslation(translation);
@@ -181,8 +153,8 @@ public class BoardRenderer extends StaticBoardRenderer {
 	}
 
 	@Override
-	protected void renderPiece(Piece pc,int index, float delta) {
-		super.renderPiece(pc,index, delta);
+	protected void renderPiece(Piece pc, int index, float delta) {
+		super.renderPiece(pc, index, delta);
 
 		if (pc.isShake()) {
 			ModelInstance inst = pieceInstMap.get(pc);
@@ -200,38 +172,52 @@ public class BoardRenderer extends StaticBoardRenderer {
 
 	}
 
+	/**
+	 * 
+	 * @param player
+	 * @param move
+	 */
 	public void setPieceMovingInTrack(Player player, Move move) {
-		moveCount=0;
+		moveCount = 0;
 		pieceMove = move;
 		pieceMoved = false;
 		if (move.getPiece().isRest()) {
 			moveFinalIndex = player.getStartIndex();
-		}else if (move.getPiece().isKilled()) {
-		//	moveFinalIndex = getFreeSquare(board.getHomeSquaresMap().get(player.getColor());
-		}  else {
-			moveFinalIndex = move.getPiece().getSittingSuare().getIndex() + move.getSquares();
-			moveTempIndex = move.getPiece().getSittingSuare().getIndex() + 1;
+		} else if (move.getPiece().isKilled()) {
+			// moveFinalIndex =
+			// getFreeSquare(board.getHomeSquaresMap().get(player.getColor());
+		} else {
+			moveFinalIndex = 0;
+			moveFinalIndex = LudoUtil.calulateDestIndex(move);
+			moveTempIndex = 0;
+			moveTempIndex = LudoUtil.calulateNextIndex(move, moveCount, moveTempIndex);
 		}
 	}
-	
+
+	private void createBase() {
+
+	}
+
 	public void setPieceMovingOutSideTrack(Player player, Move move) {
-		moveCount=0;
+		moveCount = 0;
 		pieceMove = move;
 		pieceMoved = false;
 		if (move.getPiece().isRest()) {
 			moveFinalIndex = player.getStartIndex();
-		}else if (move.getPiece().isKilled()) {
-		//	moveFinalIndex = getFreeSquare(board.getHomeSquaresMap().get(player.getColor());
-		}  else {
-			moveFinalIndex = move.getPiece().getSittingSuare().getIndex() + move.getSquares()-1;
+		} else if (move.getPiece().isKilled()) {
+			// moveFinalIndex =
+			// getFreeSquare(board.getHomeSquaresMap().get(player.getColor());
+		} else {
+			moveFinalIndex = move.getPiece().getSittingSuare().getIndex() + move.getSquares() - 1;
+			moveTempIndex = 0;
 			moveTempIndex = move.getPiece().getSittingSuare().getIndex() + 1;
 		}
 	}
 
-//	private Square getFreeSquare(List<Square> square){
-//		
-//	}
-	
+	// private Square getFreeSquare(List<Square> square){
+	//
+	// }
+
 	public Dice createDiceInstance() {
 
 		instance = new ModelInstance(diceModel);

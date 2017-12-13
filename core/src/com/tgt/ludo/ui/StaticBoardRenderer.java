@@ -173,8 +173,8 @@ public class StaticBoardRenderer {
 
 	private void createBase() {
 		base = new ModelInstance(baseModel);
-		base.transform.translate(40, -2, 5);
-		base.transform.scale(1.35f, 1.35f,1.35f);
+		base.transform.translate(40, -2, 4);
+		base.transform.scale(1.31f, 1.31f,1.31f);
 	}
 
 	private void renderBase() {

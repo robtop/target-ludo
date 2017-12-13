@@ -81,7 +81,9 @@ public class AdvancedLudoGameStateController extends LudoGameStateController {
 				return square;
 			}
 		}
-		return null;
+		//TODO: bug returns null sometimes - shouldnt
+		return board.getRestSquaresMap().get(color).get(0);
+		//return null;
 	}
 
 	private Player getPlayer(Board.COLOR color){

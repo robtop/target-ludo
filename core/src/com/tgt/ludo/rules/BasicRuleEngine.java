@@ -6,6 +6,7 @@ import java.util.List;
 import com.tgt.ludo.board.Board;
 import com.tgt.ludo.board.Piece;
 import com.tgt.ludo.board.Square;
+import com.tgt.ludo.gamestate.LudoUtil;
 import com.tgt.ludo.player.Player;
 import com.tgt.ludo.player.action.Kill;
 import com.tgt.ludo.player.action.Move;
@@ -140,7 +141,7 @@ public class BasicRuleEngine implements RuleEngine {
 
 	@Override
 	public boolean makeAkill(Move move) {
-		int dest = move.getPiece().getSittingSuare().getIndex() + move.getSquares();
+		int dest = LudoUtil.calulateDestIndex(move);
 		if (!board.getSquares().get(dest).getPieces().isEmpty()) {
 			for (Piece piece : board.getSquares().get(dest).getPieces()) {
 				if (piece.getColor() != move.getPiece().getColor()) {
@@ -153,7 +154,7 @@ public class BasicRuleEngine implements RuleEngine {
 
 	@Override
 	public boolean closeToKill(Move move) {
-		int dest = move.getPiece().getSittingSuare().getIndex() + move.getSquares();
+		int dest = LudoUtil.calulateDestIndex(move);
 		for(int i=dest;i<6;i++){
 		if(!board.getSquares().get(i).getPieces().isEmpty()){
 			for(Piece piece:board.getSquares().get(i).getPieces()){
@@ -169,7 +170,8 @@ public class BasicRuleEngine implements RuleEngine {
 	@Override
 	public boolean jumpJail(Move move) {
 		int currentIndex = move.getPiece().getSittingSuare().getIndex();
-		int dest = move.getPiece().getSittingSuare().getIndex() + move.getSquares();
+		int dest = LudoUtil.calulateDestIndex(move);
+		//wont work around the track corner coz dest < currentIndex
 		for(int i=currentIndex;i<dest;i++){
 			if(board.jailIndexes.contains(i)){
 				return true;

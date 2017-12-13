@@ -26,4 +26,20 @@ public interface RuleEngine {
 	public Piece getPieceOnHomeSquare();
 	
 	public  Piece getPieceOnJail();
+	
+	//scenarios that can be used by ANN
+	public boolean goToJail(Move move);
+	
+	public boolean goToHomeSquare(Move move);
+	
+	public boolean makeAkill(Move move);
+	
+	public boolean closeToKill(Move move);
+	
+	public boolean jumpJail(Move move);
+	
+	public boolean escapeKill(Move move);
+	
+	public boolean reachHome(Move move);
+	
 }

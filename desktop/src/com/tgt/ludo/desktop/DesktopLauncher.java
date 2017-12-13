@@ -10,5 +10,4 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		new LwjglApplication(new LudoGame(), config);
 	}
-
 }

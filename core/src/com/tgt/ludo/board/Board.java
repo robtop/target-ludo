@@ -10,6 +10,7 @@ import com.tgt.ludo.player.Move;
 
 /**
  * The main backend class representing a games board data
+ * 
  * @author robin
  *
  */
@@ -20,16 +21,22 @@ public class Board {
 	// start location of a player wrt dimension
 	public static final int START = 0;
 	// index from start point of each color
-	//public static final int JAIL_INDEX = 12;
+	// public static final int JAIL_INDEX = 12;
 	// special home square
 	public static final int HOME_INDEX = 4;
 
 	public static enum COLOR {
 		GREEN, YELLOW, RED, BLUE
 	}
-    
-	private List<Integer> jailIndexes = new ArrayList<Integer>(Arrays.asList(13,30,47,64,80));
 
+	public static final  List<Integer> jailIndexes = new ArrayList<Integer>(Arrays.asList(13, 30, 47, 64, 80));
+
+	public static final List<Integer> startIndexes = new ArrayList<Integer>(
+			Arrays.asList(0, DIMENSION * 2 + 1, DIMENSION * 4 + 2, DIMENSION * 6 + 3));
+
+	//main track
+	public static final int TOTAL_NUM_SQUARES = DIMENSION * 4 * 2 + 4;
+	
 	private List<Square> squares;
 
 	private Map<COLOR, List<Square>> homeSquaresMap;
@@ -38,7 +45,7 @@ public class Board {
 
 	private Map<COLOR, List<Piece>> piecesMap;
 	private int players = 4;
-	
+
 	public void setup(int players) {
 		this.players = players;
 		setup();
@@ -52,16 +59,18 @@ public class Board {
 	}
 
 	private void createSquares() {
-		int totalOuterSqrs = DIMENSION * 4 * 2 + 4;
+		
 		int numHomeSqrsPerColor = DIMENSION - 1;
 		squares = new ArrayList<Square>();
-		for (int i = 0; i < totalOuterSqrs; i++) {
+		for (int i = 0; i < TOTAL_NUM_SQUARES; i++) {
 			Square sq = new Square();
 			sq.setIndex(i);
 
 			if (jailIndexes.contains(i)) {
 				sq.setJail(true);
-			}
+			} else if (startIndexes.contains(i)) {
+				sq.setStartSquare(true);
+			} else
 
 			if (i == HOME_INDEX) {
 				sq.setHome(true);
@@ -157,18 +166,18 @@ public class Board {
 
 	public void movePiece(Move move) {
 		Piece piece = move.getPiece();
-		
-		if(piece.getSittingSuare().isRestSquare()){
-			
-			//get stat of this color
+
+		if (piece.getSittingSuare().isRestSquare()) {
+
+			// get stat of this color
 			Square startSquare = squares.get(0);
-			if(startSquare.getPieces() == null){
+			if (startSquare.getPieces() == null) {
 				startSquare.setPieces(new ArrayList<Piece>());
 			}
 			startSquare.getPieces().add(piece);
 			return;
 		}
-		
+
 		int index = piece.getSittingSuare().getIndex();
 		piece.getSittingSuare().getPieces().remove(piece);
 		squares.get(index).getPieces().add(piece);

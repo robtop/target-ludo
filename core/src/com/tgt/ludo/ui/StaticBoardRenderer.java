@@ -175,6 +175,26 @@ public class StaticBoardRenderer {
 				instance = new ModelInstance(squareHomeModel);
 			} else if (sq.isJail()) {
 				instance = new ModelInstance(squareJailModel);
+			}else if (sq.isStartSquare()) {
+				for(int i=0;i<4;i++){
+					if(Board.startIndexes.get(i).equals(sq.getIndex())){
+						switch(i) {
+						case 0:
+							instance = new ModelInstance(squareGreenModel);
+							break;
+						case 1:
+							instance = new ModelInstance(squareYellowModel);
+							break;
+						case 2:
+							instance = new ModelInstance(squareRedModel);
+							break;
+						case 3:
+							instance = new ModelInstance(squareBlueModel);
+							break;
+					}
+					}
+						
+				}
 			} else {
 				instance = new ModelInstance(squareModel);
 			}
@@ -241,6 +261,7 @@ public class StaticBoardRenderer {
 			squareInstMap.put(sq, instance);
 
 		}
+
 	}
 
 	protected ModelInstance createPieceInstance(Piece piece, COLOR color) {
@@ -271,10 +292,13 @@ public class StaticBoardRenderer {
 		createHomeSquares(squareGreenModel, COLOR.GREEN, new Vector3(2 * SQUARE_LENGTH, 1, 1 * SQUARE_LENGTH), 1, 0);
 
 		createHomeSquares(squareYellowModel, COLOR.YELLOW,
-				(new Vector3((board.DIMENSION + 2)* SQUARE_LENGTH, 0, (-1)* SQUARE_LENGTH)) , 0, -1);
+				(new Vector3((board.DIMENSION + 2) * SQUARE_LENGTH, 0, (-1) * SQUARE_LENGTH)), 0, -1);
+
 		createHomeSquares(squareBlueModel, COLOR.BLUE,
-				new Vector3((board.DIMENSION + 1)* SQUARE_LENGTH , 0, (board.DIMENSION - 1)* SQUARE_LENGTH ),0, 1);
-		createHomeSquares(squareRedModel, COLOR.RED, new Vector3(0, 0, -1 * SQUARE_LENGTH), 1, 0);
+				new Vector3((board.DIMENSION + 1) * SQUARE_LENGTH, 0, (board.DIMENSION - 1) * SQUARE_LENGTH), 0, 1);
+
+		createHomeSquares(squareRedModel, COLOR.RED,
+				new Vector3((board.DIMENSION + 4) * SQUARE_LENGTH, 0, 1 * SQUARE_LENGTH), 1, 0);
 	}
 
 	private void createHomeSquares(Model squareModel, COLOR color, Vector3 translation, int xControl, int yControl) {

@@ -1,15 +1,21 @@
 package com.tgt.ludo.board;
 
 public class Piece {
-	
-	//keep a copy for convenience :(
-	//private ModelInstance pieceInstance;
+
+	// keep a copy for convenience :(
+	// private ModelInstance pieceInstance;
 	private Board.COLOR color;
+
+	// at rest
 	private boolean rest;
-	private boolean home;
+	// at homesuares
+	private boolean homeSq;
 	private Square sittingSuare;
 	private boolean shake;
 	private boolean killed;
+	
+	//track how much it moved
+	private int moveCount = 0;
 
 	public Board.COLOR getColor() {
 		return color;
@@ -27,12 +33,12 @@ public class Piece {
 		this.rest = rest;
 	}
 
-	public boolean isHome() {
-		return home;
+	public boolean isHomeSq() {
+		return homeSq;
 	}
 
-	public void setHome(boolean home) {
-		this.home = home;
+	public void setHomeSq(boolean homeSq) {
+		this.homeSq = homeSq;
 	}
 
 	public Square getSittingSuare() {
@@ -59,6 +65,12 @@ public class Piece {
 		this.killed = killed;
 	}
 
-	
-	
+	public int getMoveCount() {
+		return moveCount;
+	}
+
+	public void setMoveCount(int moveCount) {
+		this.moveCount = moveCount;
+	}
+
 }

@@ -3,7 +3,6 @@ package com.tgt.ludo.ui;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.Model;
@@ -82,12 +81,19 @@ public class BoardRenderer extends StaticBoardRenderer {
 		Vector3 finalTranslation = new Vector3();
 		pieceInstance = pieceInstMap.get(pieceMove.getPiece());
 		pieceInstance.transform.getTranslation(currentTranslation);
-		squareInstMap.get(board.getSquares().get(moveTempIndex)).transform.getTranslation(finalTranslation);
+
+		if (pieceMove.getPiece().isHomeSq()) {
+			squareInstMap
+					.get(board.getHomeSquaresMap().get(pieceMove.getPiece().getColor()).get(moveTempIndex)).transform
+							.getTranslation(finalTranslation);
+		} else {
+			squareInstMap.get(board.getSquares().get(moveTempIndex)).transform.getTranslation(finalTranslation);
+		}
 
 		Vector3 diff = finalTranslation.sub(currentTranslation);
 		modelBatch.render(pieceInstance, environment);
 		if (diff.len() < .1f) {
-			moveTempIndex = LudoUtil.calulateNextIndex(pieceMove, moveCount, moveTempIndex);
+			moveTempIndex = LudoUtil.calulateNextIndex(pieceMove,moveCount,moveTempIndex );
 			moveCount++;
 		} else {
 
@@ -189,7 +195,8 @@ public class BoardRenderer extends StaticBoardRenderer {
 		} else {
 			moveFinalIndex = 0;
 			moveFinalIndex = LudoUtil.calulateDestIndex(move);
-			moveTempIndex = 0;
+			moveTempIndex = move.getPiece().getSittingSuare().getIndex();
+			moveCount =0;
 			moveTempIndex = LudoUtil.calulateNextIndex(move, moveCount, moveTempIndex);
 		}
 	}
@@ -209,7 +216,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 			// getFreeSquare(board.getHomeSquaresMap().get(player.getColor());
 		} else {
 			moveFinalIndex = move.getPiece().getSittingSuare().getIndex() + move.getSquares() - 1;
-			moveTempIndex = 0;
+			moveTempIndex = move.getPiece().getSittingSuare().getIndex();
 			moveTempIndex = move.getPiece().getSittingSuare().getIndex() + 1;
 		}
 	}

@@ -53,8 +53,8 @@ public class LudoGameStateController {
 		board.setup();
 		ruleEngine = new BasicRuleEngine(board);
 		this.screen = (LudoScreen) screen;
-		createPlayers();
-		//createRobotPlayers();
+		//createPlayers();
+		createRobotPlayers();
 		gameState = GAME_STATE.PROGRESS;
 	}
 
@@ -157,6 +157,7 @@ public class LudoGameStateController {
 				System.out.println("null?");
 			}
 			finalSquare.getPieces().add(move.getPiece());
+			move.getPiece().getSittingSuare().getPieces().remove(move.getPiece());
 			move.getPiece().setSittingSuare(finalSquare);
 			return;
 		}
@@ -219,7 +220,7 @@ public class LudoGameStateController {
 	private void createRobotPlayers() {
 		players = new ArrayList<Player>();
 
-	
+/*	
 		greenPlayer = new ComputerPlayer(((LudoScreen) screen), ruleEngine);
 		greenPlayer.setColor(COLOR.GREEN);
 		greenPlayer.setPieces(board.getPiecesMap().get(greenPlayer.getColor()));
@@ -236,7 +237,7 @@ public class LudoGameStateController {
 		redPlayer.setStartIndex(Board.DIMENSION * 4 + 2);
 		redPlayer.setPieces(board.getPiecesMap().get(redPlayer.getColor()));
 		players.add(redPlayer);
-  
+  */
 		bluePlayer = new ComputerPlayer(((LudoScreen) screen), ruleEngine);
 		bluePlayer.setColor(COLOR.BLUE);
 		bluePlayer.setStartIndex(Board.DIMENSION * 6 + 3);

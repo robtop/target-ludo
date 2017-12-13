@@ -2,6 +2,7 @@ package com.tgt.ludo.ui;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.Environment;
@@ -95,6 +96,7 @@ public class StaticBoardRenderer {
 		createHomeSquares();
 		createRestSquares();
 		createBase();
+		createMainHome();
 		modelBatch = new ModelBatch();
 	}
 
@@ -136,8 +138,7 @@ public class StaticBoardRenderer {
 		renderHomeSquares(delta);
 		renderRestSquares(delta);
 		renderBase();
-		
-		
+		renderMainHome();
 		modelBatch.end();
 		renderContext.end();
 
@@ -147,6 +148,13 @@ public class StaticBoardRenderer {
 		for (Square sq : board.getSquares()) {
 			renderSquare(sq, delta);
 		}
+	}
+
+	private void renderMainHome() {
+		modelBatch.render(squareInstMap.get(board.getHomeMap().get(COLOR.GREEN)), environment);
+		modelBatch.render(squareInstMap.get(board.getHomeMap().get(COLOR.YELLOW)), environment);
+		modelBatch.render(squareInstMap.get(board.getHomeMap().get(COLOR.RED)), environment);
+		modelBatch.render(squareInstMap.get(board.getHomeMap().get(COLOR.BLUE)), environment);
 	}
 
 	protected void renderSquare(Square sq, float delta) {
@@ -173,13 +181,14 @@ public class StaticBoardRenderer {
 	private void createBase() {
 		base = new ModelInstance(baseModel);
 		base.transform.translate(40, -2, 4);
-		base.transform.scale(1.31f, 1.31f,1.31f);
+		base.transform.scale(1.31f, 1.31f, 1.31f);
 	}
 
 	private void renderBase() {
-		modelBatch.render(base,environment);
+		modelBatch.render(base, environment);
 
 	}
+
 	/**
 	 * Create the 3D models of the individual squares and translate them to
 	 * their positions
@@ -332,6 +341,22 @@ public class StaticBoardRenderer {
 			translation.z += yControl * SQUARE_LENGTH;
 		}
 
+	}
+
+	private void createMainHome() {
+		instance = new ModelInstance(squareGreenModel);
+		instance.transform.translate((Board.DIMENSION + 1) * SQUARE_LENGTH, .6f, 0);
+		instance.transform.scale(1.5f, 1.5f, 1.5f);
+		squareInstMap.put(board.getHomeMap().get(COLOR.GREEN), instance);
+		instance = new ModelInstance(squareYellowModel);
+		instance.transform.translate((Board.DIMENSION + 2) * SQUARE_LENGTH, .6f, 0);
+		squareInstMap.put(board.getHomeMap().get(COLOR.YELLOW), instance);
+		instance = new ModelInstance(squareBlueModel);
+		instance.transform.translate((Board.DIMENSION + 1) * SQUARE_LENGTH, .6f, 1 * SQUARE_LENGTH);
+		squareInstMap.put(board.getHomeMap().get(COLOR.BLUE), instance);
+		instance = new ModelInstance(squareRedModel);
+		instance.transform.translate((Board.DIMENSION + 1) * SQUARE_LENGTH, .6f, -1 * SQUARE_LENGTH);
+		squareInstMap.put(board.getHomeMap().get(COLOR.RED), instance);
 	}
 
 	protected void createRestSquares() {

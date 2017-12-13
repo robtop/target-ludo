@@ -102,8 +102,10 @@ public class BasicRuleEngine implements RuleEngine {
 
 	@Override
 	public Piece getPieceOnHomeSquare() {
-		Piece homePiece = board.getSquares().get(board.HOME_INDEX).getPieces().get(0);
-
+		Piece homePiece = null;
+		if (!board.getSquares().get(Board.HOME_INDEX).getPieces().isEmpty()) {
+			homePiece = board.getSquares().get(Board.HOME_INDEX).getPieces().get(0);
+		}
 		return homePiece;
 	}
 

@@ -33,6 +33,8 @@ public class AdvancedLudoGameStateController extends LudoGameStateController {
 	@Override
 	protected void checkGameState() {
 		killCheck();
+		jailCheck();
+		homeCheck();
 	}
 
 	private void killCheck() {
@@ -55,7 +57,7 @@ public class AdvancedLudoGameStateController extends LudoGameStateController {
 	
 	private void sendToHome(Piece piece){
 		piece.getSittingSuare().getPieces().remove(piece);
-		piece.setSittingSuare(homeMap.get(piece.getColor()));
+		piece.setSittingSuare(board.getHomeMap().get(piece.getColor()));
 		
 	}
 	
@@ -69,7 +71,7 @@ public class AdvancedLudoGameStateController extends LudoGameStateController {
 	private void homeCheck(){
 		Piece homePiece = ruleEngine.getPieceOnHomeSquare();
 		if(homePiece!=null){
-			sendToRest(homePiece);
+			sendToHome(homePiece);
 		}
 	}
 	

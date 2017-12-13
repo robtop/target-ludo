@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import com.tgt.ludo.player.action.Move;
 
 /**
@@ -28,7 +29,7 @@ public class Board {
 		GREEN, YELLOW, RED, BLUE
 	}
 
-	public static final  List<Integer> jailIndexes = new ArrayList<Integer>(Arrays.asList(13, 30, 47, 64, 80));
+	public static final  List<Integer> jailIndexes = new ArrayList<Integer>(Arrays.asList(13, 30, 47, 64));
 
 	public static final List<Integer> startIndexes = new ArrayList<Integer>(
 			Arrays.asList(0, DIMENSION * 2 + 1, DIMENSION * 4 + 2, DIMENSION * 6 + 3));
@@ -44,7 +45,8 @@ public class Board {
 
 	private Map<COLOR, List<Piece>> piecesMap;
 	private int players = 4;
-
+	Map<COLOR,Square> homeMap = new HashMap<Board.COLOR, Square>(); 
+	
 	public void setup(int players) {
 		this.players = players;
 		setup();
@@ -55,6 +57,7 @@ public class Board {
 		createHomeSquares();
 		createRestSquares();
 		createPieces();
+		createHomeMap();
 	}
 
 	private void createSquares() {
@@ -190,12 +193,26 @@ public class Board {
 		squares.get(index).getPieces().add(piece);
 	}
 
+	private void createHomeMap(){
+		homeMap.put(COLOR.GREEN, new Square());
+		homeMap.put(COLOR.YELLOW, new Square());
+		homeMap.put(COLOR.RED, new Square());
+		homeMap.put(COLOR.BLUE, new Square());
+	}
 	public List<Square> getSquares() {
 		return squares;
 	}
 
 	public void setSquares(List<Square> squares) {
 		this.squares = squares;
+	}
+
+	public Map<COLOR, Square> getHomeMap() {
+		return homeMap;
+	}
+
+	public void setHomeMap(Map<COLOR, Square> homeMap) {
+		this.homeMap = homeMap;
 	}
 
 	public Map<COLOR, List<Square>> getHomeSquaresMap() {

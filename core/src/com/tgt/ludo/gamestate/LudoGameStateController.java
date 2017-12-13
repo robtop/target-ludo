@@ -1,9 +1,7 @@
 package com.tgt.ludo.gamestate;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import com.badlogic.gdx.Screen;
@@ -34,7 +32,7 @@ public class LudoGameStateController implements GameStateController{
 	private Player redPlayer;
 	private Player bluePlayer;
 
-	Map<COLOR,Square> homeMap = new HashMap<Board.COLOR, Square>(); 
+	
 	// needed by human players to get inputs
 	protected LudoScreen screen;
 	protected List<Player> players;
@@ -60,7 +58,6 @@ public class LudoGameStateController implements GameStateController{
 		//createPlayers();
 		createRobotPlayers();
 		gameState = GAME_STATE.PROGRESS;
-		createHomeMap();
 	}
 
 	private boolean movingAnimation = false;
@@ -254,12 +251,7 @@ public class LudoGameStateController implements GameStateController{
 		}
 	}
 	
-	private void createHomeMap(){
-		homeMap.put(COLOR.GREEN, new Square());
-		homeMap.put(COLOR.YELLOW, new Square());
-		homeMap.put(COLOR.RED, new Square());
-		homeMap.put(COLOR.BLUE, new Square());
-	}
+	
 
 	public Board getBoard() {
 		return board;

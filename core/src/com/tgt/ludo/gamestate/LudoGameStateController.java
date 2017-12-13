@@ -53,8 +53,8 @@ public class LudoGameStateController {
 		board.setup();
 		ruleEngine = new BasicRuleEngine(board);
 		this.screen = (LudoScreen) screen;
-		// createPlayers();
-		createRobotPlayers();
+	     createPlayers();
+		//createRobotPlayers();
 		gameState = GAME_STATE.PROGRESS;
 	}
 
@@ -144,11 +144,11 @@ public class LudoGameStateController {
 				finalSquare = board.getSquares().get(player.getStartIndex() + move.getSquares());
 				move.getPiece().setRest(false);
 			} else if (move.getPiece().getSittingSuare().isSpecialHome()) {
-
+				finalSquare = board.getSquares().get(sittingSquareIndex + move.getSquares());
 			} else if (move.getPiece().getSittingSuare().isJail()) {
-
+				finalSquare = board.getSquares().get(sittingSquareIndex + move.getSquares());
 			}  else if (move.getPiece().isKilled()) {
-
+				finalSquare = board.getSquares().get(sittingSquareIndex + move.getSquares());
 			} else {
 				finalSquare = board.getSquares().get(sittingSquareIndex + move.getSquares());
 			}

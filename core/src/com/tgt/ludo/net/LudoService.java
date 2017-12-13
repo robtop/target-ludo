@@ -1,7 +1,7 @@
 package com.tgt.ludo.net;
 
-import com.tgt.ludo.player.Move;
 import com.tgt.ludo.player.Player;
+import com.tgt.ludo.player.action.Move;
 
 public interface LudoService {
 

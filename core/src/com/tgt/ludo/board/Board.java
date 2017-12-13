@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.tgt.ludo.player.Move;
+import com.tgt.ludo.player.action.Move;
 
 /**
  * The main backend class representing a games board data
@@ -23,13 +23,13 @@ public class Board {
 	// index from start point of each color
 	// public static final int JAIL_INDEX = 12;
 	// special home square
-	public static final int HOME_INDEX = 4;
+	public static final int HOME_INDEX = 7;
 
 	public static enum COLOR {
 		GREEN, YELLOW, RED, BLUE
 	}
 
-	public static final  List<Integer> jailIndexes = new ArrayList<Integer>(Arrays.asList(13, 30, 47, 64, 80));
+	public static final  List<Integer> jailIndexes = new ArrayList<Integer>(Arrays.asList(13, 30, 47, 64));
 
 	public static final List<Integer> startIndexes = new ArrayList<Integer>(
 			Arrays.asList(0, DIMENSION * 2 + 1, DIMENSION * 4 + 2, DIMENSION * 6 + 3));
@@ -45,7 +45,8 @@ public class Board {
 
 	private Map<COLOR, List<Piece>> piecesMap;
 	private int players = 4;
-
+	Map<COLOR,Square> homeMap = new HashMap<Board.COLOR, Square>(); 
+	
 	public void setup(int players) {
 		this.players = players;
 		setup();
@@ -56,6 +57,7 @@ public class Board {
 		createHomeSquares();
 		createRestSquares();
 		createPieces();
+		createHomeMap();
 	}
 
 	private void createSquares() {
@@ -191,12 +193,26 @@ public class Board {
 		squares.get(index).getPieces().add(piece);
 	}
 
+	private void createHomeMap(){
+		homeMap.put(COLOR.GREEN, new Square());
+		homeMap.put(COLOR.YELLOW, new Square());
+		homeMap.put(COLOR.RED, new Square());
+		homeMap.put(COLOR.BLUE, new Square());
+	}
 	public List<Square> getSquares() {
 		return squares;
 	}
 
 	public void setSquares(List<Square> squares) {
 		this.squares = squares;
+	}
+
+	public Map<COLOR, Square> getHomeMap() {
+		return homeMap;
+	}
+
+	public void setHomeMap(Map<COLOR, Square> homeMap) {
+		this.homeMap = homeMap;
 	}
 
 	public Map<COLOR, List<Square>> getHomeSquaresMap() {
@@ -209,6 +225,10 @@ public class Board {
 
 	public Map<COLOR, List<Piece>> getPiecesMap() {
 		return piecesMap;
+	}
+
+	public void setHomeSquaresMap(Map<COLOR, List<Square>> homeSquaresMap) {
+		this.homeSquaresMap = homeSquaresMap;
 	}
 
 }

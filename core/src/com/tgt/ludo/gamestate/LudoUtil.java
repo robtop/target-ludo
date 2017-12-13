@@ -1,7 +1,7 @@
 package com.tgt.ludo.gamestate;
 
 import com.tgt.ludo.board.Board;
-import com.tgt.ludo.player.Move;
+import com.tgt.ludo.player.action.Move;
 
 public class LudoUtil {
 
@@ -26,7 +26,7 @@ public class LudoUtil {
 
 		int sittingIndex = move.getPiece().getSittingSuare().getIndex();
 		int dest = sittingIndex + move.getSquares();
-		System.out.println("sittingIndex: " + sittingIndex);
+//		System.out.println("sittingIndex: " + sittingIndex);
 //		if (move.getSquares() + sittingIndex == Board.TOTAL_NUM_SQUARES - 1) {
 //			// move to home square
 //		} else
@@ -34,7 +34,7 @@ public class LudoUtil {
 			return (move.getSquares() + sittingIndex) % Board.TOTAL_NUM_SQUARES;
 		}
 		
-		System.out.println("calulateDestIndex: " + dest);
+		//System.out.println("calulateDestIndex: " + dest);
 		return dest;
 	}
 
@@ -67,11 +67,11 @@ public class LudoUtil {
 		} else {
 			moveTempIndex += 1;
 		}
-		System.out.println("calulateNextIndex: " + moveTempIndex);
+		//System.out.println("calulateNextIndex: " + moveTempIndex);
 		
 		pieceMove.getPiece().setMoveCount(pieceMove.getPiece().getMoveCount()+1);
-		System.out.println(
-				"total moves: " +pieceMove.getPiece().getMoveCount());
+	//	System.out.println(
+		//		"total moves: " +pieceMove.getPiece().getMoveCount());
 		return moveTempIndex;
 	}
 

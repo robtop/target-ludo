@@ -3,6 +3,7 @@ package com.tgt.ludo.ui;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.Model;
@@ -13,8 +14,8 @@ import com.tgt.ludo.board.Board;
 import com.tgt.ludo.board.Dice;
 import com.tgt.ludo.board.Piece;
 import com.tgt.ludo.gamestate.LudoUtil;
-import com.tgt.ludo.player.Move;
 import com.tgt.ludo.player.Player;
+import com.tgt.ludo.player.action.Move;
 
 public class BoardRenderer extends StaticBoardRenderer {
 

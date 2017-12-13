@@ -3,7 +3,7 @@ package com.tgt.ludo.player;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.tgt.ludo.board.Dice;
+import com.tgt.ludo.player.action.Move;
 import com.tgt.ludo.rules.RuleEngine;
 import com.tgt.ludo.ui.LudoScreen;
 
@@ -17,7 +17,7 @@ public class ComputerPlayer extends Player{
 	@Override
 	public Move play() {
 		super.play();
-		System.out.println("Turn: "+this.color);
+		//System.out.println("Turn: "+this.color);
 		List<Integer> list = rollDice();
 		
 		List<Move> moves = new ArrayList<Move>();
@@ -34,8 +34,9 @@ public class ComputerPlayer extends Player{
 
 
 	private Move selectMove(List<Move> moves){
+		int move = (int) Math.floor(Math.random()*moves.size());
 		//give first valid move
-		return moves.get(0);
+		return moves.get(move);
 	}
 	protected  List<Integer> rollDice() {
 	

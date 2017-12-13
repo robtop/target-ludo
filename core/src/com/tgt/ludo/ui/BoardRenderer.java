@@ -81,12 +81,19 @@ public class BoardRenderer extends StaticBoardRenderer {
 		Vector3 finalTranslation = new Vector3();
 		pieceInstance = pieceInstMap.get(pieceMove.getPiece());
 		pieceInstance.transform.getTranslation(currentTranslation);
-		squareInstMap.get(board.getSquares().get(moveTempIndex)).transform.getTranslation(finalTranslation);
+
+		if (pieceMove.getPiece().isHomeSq()) {
+			squareInstMap
+					.get(board.getHomeSquaresMap().get(pieceMove.getPiece().getColor()).get(moveTempIndex)).transform
+							.getTranslation(finalTranslation);
+		} else {
+			squareInstMap.get(board.getSquares().get(moveTempIndex)).transform.getTranslation(finalTranslation);
+		}
 
 		Vector3 diff = finalTranslation.sub(currentTranslation);
 		modelBatch.render(pieceInstance, environment);
 		if (diff.len() < .1f) {
-			moveTempIndex = LudoUtil.calulateNextIndex(pieceMove, moveCount, moveTempIndex);
+			moveTempIndex = LudoUtil.calulateNextIndex(pieceMove,moveCount,moveTempIndex );
 			moveCount++;
 		} else {
 
@@ -189,6 +196,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 			moveFinalIndex = 0;
 			moveFinalIndex = LudoUtil.calulateDestIndex(move);
 			moveTempIndex = move.getPiece().getSittingSuare().getIndex();
+			moveCount =0;
 			moveTempIndex = LudoUtil.calulateNextIndex(move, moveCount, moveTempIndex);
 		}
 	}

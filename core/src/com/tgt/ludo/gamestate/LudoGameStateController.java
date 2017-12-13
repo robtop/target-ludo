@@ -157,6 +157,7 @@ public class LudoGameStateController {
 				System.out.println("null?");
 			}
 			finalSquare.getPieces().add(move.getPiece());
+			move.getPiece().getSittingSuare().getPieces().remove(move.getPiece());
 			move.getPiece().setSittingSuare(finalSquare);
 			return;
 		}

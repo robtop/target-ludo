@@ -3,7 +3,6 @@ package com.tgt.ludo.ui;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.Model;
@@ -189,7 +188,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 		} else {
 			moveFinalIndex = 0;
 			moveFinalIndex = LudoUtil.calulateDestIndex(move);
-			moveTempIndex = 0;
+			moveTempIndex = move.getPiece().getSittingSuare().getIndex();
 			moveTempIndex = LudoUtil.calulateNextIndex(move, moveCount, moveTempIndex);
 		}
 	}
@@ -209,7 +208,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 			// getFreeSquare(board.getHomeSquaresMap().get(player.getColor());
 		} else {
 			moveFinalIndex = move.getPiece().getSittingSuare().getIndex() + move.getSquares() - 1;
-			moveTempIndex = 0;
+			moveTempIndex = move.getPiece().getSittingSuare().getIndex();
 			moveTempIndex = move.getPiece().getSittingSuare().getIndex() + 1;
 		}
 	}

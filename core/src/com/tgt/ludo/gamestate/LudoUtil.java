@@ -56,10 +56,10 @@ public class LudoUtil {
 
 		if (moveTempIndex == 0) {
 			moveTempIndex = startIndex+1;
-		} else if (moveCount + pieceMove.getPiece().getSittingSuare().getIndex() >= Board.TOTAL_NUM_SQUARES) {
-			// move to home square
-		} else if (moveTempIndex == Board.TOTAL_NUM_SQUARES) {
+		} else if (moveCount + pieceMove.getPiece().getSittingSuare().getIndex()+1 >= Board.TOTAL_NUM_SQUARES) {
 			moveTempIndex = 0;
+		} else if (moveTempIndex == Board.TOTAL_NUM_SQUARES) {
+			// move to home square
 		} else {
 			moveTempIndex += 1;
 		}

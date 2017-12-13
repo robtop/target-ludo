@@ -246,11 +246,11 @@ public class LudoGameStateController {
 	private void createRobotPlayers() {
 		players = new ArrayList<Player>();
 
-		greenPlayer = new ComputerPlayer(((LudoScreen) screen), ruleEngine);
-		greenPlayer.setColor(COLOR.GREEN);
-		greenPlayer.setTurn(true);
-		greenPlayer.setPieces(board.getPiecesMap().get(greenPlayer.getColor()));
-		players.add(greenPlayer);
+//		greenPlayer = new ComputerPlayer(((LudoScreen) screen), ruleEngine);
+//		greenPlayer.setColor(COLOR.GREEN);
+//		greenPlayer.setTurn(true);
+//		greenPlayer.setPieces(board.getPiecesMap().get(greenPlayer.getColor()));
+//		players.add(greenPlayer);
 
 		yellowPlayer = new ComputerPlayer(((LudoScreen) screen), ruleEngine);
 		yellowPlayer.setColor(COLOR.YELLOW);
@@ -258,20 +258,20 @@ public class LudoGameStateController {
 		yellowPlayer.setStartIndex(Board.DIMENSION * 2 + 1);
 		yellowPlayer.setPieces(board.getPiecesMap().get(yellowPlayer.getColor()));
 		players.add(yellowPlayer);
-
-		redPlayer = new ComputerPlayer(((LudoScreen) screen), ruleEngine);
-		redPlayer.setColor(COLOR.RED);
-		redPlayer.setTurn(false);
-		redPlayer.setStartIndex(Board.DIMENSION * 4 + 2);
-		redPlayer.setPieces(board.getPiecesMap().get(redPlayer.getColor()));
-		players.add(redPlayer);
-
-		bluePlayer = new ComputerPlayer(((LudoScreen) screen), ruleEngine);
-		bluePlayer.setColor(COLOR.BLUE);
-		bluePlayer.setTurn(false);
-		bluePlayer.setStartIndex(Board.DIMENSION * 6 + 3);
-		bluePlayer.setPieces(board.getPiecesMap().get(bluePlayer.getColor()));
-		players.add(bluePlayer);
+//
+//		redPlayer = new ComputerPlayer(((LudoScreen) screen), ruleEngine);
+//		redPlayer.setColor(COLOR.RED);
+//		redPlayer.setTurn(false);
+//		redPlayer.setStartIndex(Board.DIMENSION * 4 + 2);
+//		redPlayer.setPieces(board.getPiecesMap().get(redPlayer.getColor()));
+//		players.add(redPlayer);
+//
+//		bluePlayer = new ComputerPlayer(((LudoScreen) screen), ruleEngine);
+//		bluePlayer.setColor(COLOR.BLUE);
+//		bluePlayer.setTurn(false);
+//		bluePlayer.setStartIndex(Board.DIMENSION * 6 + 3);
+//		bluePlayer.setPieces(board.getPiecesMap().get(bluePlayer.getColor()));
+//		players.add(bluePlayer);
 	}
 
 	private void shakeDice(boolean shake) {
@@ -291,6 +291,10 @@ public class LudoGameStateController {
 
 	public GAME_STATE getGameState() {
 		return gameState;
+	}
+
+	public List<Player> getPlayers() {
+		return players;
 	}
 
 }

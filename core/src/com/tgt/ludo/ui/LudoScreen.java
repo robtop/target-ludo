@@ -15,6 +15,7 @@ import com.badlogic.gdx.graphics.g3d.utils.DefaultTextureBinder;
 import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
 import com.badlogic.gdx.math.Vector3;
 import com.tgt.ludo.gamestate.LudoGameStateController;
+import com.tgt.ludo.player.Player;
 
 public class LudoScreen implements Screen {
 
@@ -67,7 +68,10 @@ public class LudoScreen implements Screen {
 
 		ludoGameState = new LudoGameStateController((Screen) this);
 		boardRenderer = new BoardRenderer(ludoGameState.getBoard(), renderContext, cam, environment);
-		boardRenderer.setSelectedPlayer(ludoGameState.getGreenPlayer());
+		
+		Player selectedPlayer = ludoGameState.getPlayers().get(0);
+		selectedPlayer.setTurn(true);
+		boardRenderer.setSelectedPlayer(selectedPlayer);
 	}
 
 	public void render(float delta) {

@@ -6,8 +6,9 @@ import java.util.List;
 import com.tgt.ludo.board.Board;
 import com.tgt.ludo.board.Piece;
 import com.tgt.ludo.board.Square;
-import com.tgt.ludo.player.Move;
 import com.tgt.ludo.player.Player;
+import com.tgt.ludo.player.action.Kill;
+import com.tgt.ludo.player.action.Move;
 
 /**
  * Engine to enfocre rule of ludo.
@@ -80,19 +81,25 @@ public class BasicRuleEngine implements RuleEngine {
 	}
 
 	@Override
-	public List<Piece> getKills() {
-		List<Piece> kills = new ArrayList<Piece>();
+	public Kill getKills() {
+		List<Piece> killePieces = new ArrayList<Piece>();
+		Kill kill = new Kill();
 		for(Square square:board.getSquares()){
 			if(square.getPieces().size()>1){
 				//checking two is enough, otherwise it would be a block
 				if(!square.getPieces().get(0).getColor().equals(square.getPieces().get(1).getColor())){
 					//older piece gets killed
-					kills.add(square.getPieces().get(0));
+					// if a variation the add more than ones
+					killePieces.add(square.getPieces().get(0));
+					kill.setKilledPiece(killePieces);
+					kill.setKillerPiece(square.getPieces().get(1));
 					System.out.println("Killed");
 				}
 			}
 		}
-		return kills;
+		
+		
+			return kill;
 	}
 
 	@Override

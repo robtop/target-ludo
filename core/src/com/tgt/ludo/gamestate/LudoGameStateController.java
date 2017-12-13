@@ -12,8 +12,8 @@ import com.tgt.ludo.board.Piece;
 import com.tgt.ludo.board.Square;
 import com.tgt.ludo.player.ComputerPlayer;
 import com.tgt.ludo.player.HumanPlayer;
-import com.tgt.ludo.player.Move;
 import com.tgt.ludo.player.Player;
+import com.tgt.ludo.player.action.Move;
 import com.tgt.ludo.rules.BasicRuleEngine;
 import com.tgt.ludo.rules.RuleEngine;
 import com.tgt.ludo.ui.LudoScreen;
@@ -25,21 +25,21 @@ import com.tgt.ludo.ui.LudoScreen;
  *
  */
 public class LudoGameStateController implements GameStateController{
-	private Board board;
+	protected Board board;
 	private Player greenPlayer;
 	private Player yellowPlayer;
 	private Player redPlayer;
 	private Player bluePlayer;
 
 	// needed by human players to get inputs
-	private LudoScreen screen;
-	private List<Player> players;
+	protected LudoScreen screen;
+	protected List<Player> players;
 
 	private UUID gameID;
 	private GAME_STATE gameState;
 	private Player winner;
-	private RuleEngine ruleEngine;
-	private Player player;
+	protected RuleEngine ruleEngine;
+	protected Player player;
 
 	public static enum GAME_STATE {
 		WAITING, PROGRESS, COMPLETE
@@ -59,7 +59,7 @@ public class LudoGameStateController implements GameStateController{
 	}
 
 	private boolean movingAnimation = false;
-	Move move;
+	private Move move;
 	int sittingSquareIndex = 0;
 
 	/***
@@ -86,10 +86,8 @@ public class LudoGameStateController implements GameStateController{
 		}
 	}
 
-	private void checkGameState() {
-		for (Piece kill : ruleEngine.getKills()) {
-			movingAnimation = true;
-		}
+	protected void checkGameState() {
+	
 	}
 
 	protected void play(Player player, int playerIndex) {

@@ -1,4 +1,4 @@
-package com.tgt.ludo.player;
+package com.tgt.ludo.player.action;
 
 import com.tgt.ludo.board.Piece;
 

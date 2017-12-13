@@ -3,8 +3,9 @@ package com.tgt.ludo.rules;
 import java.util.List;
 
 import com.tgt.ludo.board.Piece;
-import com.tgt.ludo.player.Move;
 import com.tgt.ludo.player.Player;
+import com.tgt.ludo.player.action.Kill;
+import com.tgt.ludo.player.action.Move;
 
 /**
  * Engine to enfocre rule of ludo.
@@ -20,7 +21,7 @@ public interface RuleEngine {
 	
 	public  int getSingleDiceRoll();
 	
-	public  List<Piece> getKills();
+	public  Kill getKills();
 	
 	public Piece getPieceOnHomeSquare();
 	

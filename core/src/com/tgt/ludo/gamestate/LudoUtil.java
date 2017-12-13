@@ -1,7 +1,7 @@
 package com.tgt.ludo.gamestate;
 
 import com.tgt.ludo.board.Board;
-import com.tgt.ludo.player.Move;
+import com.tgt.ludo.player.action.Move;
 
 public class LudoUtil {
 

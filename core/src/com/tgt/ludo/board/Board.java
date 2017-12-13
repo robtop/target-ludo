@@ -96,6 +96,8 @@ public class Board {
 
 	}
 
+	
+	
 	private void createRestSquares() {
 		restSquaresMap = new HashMap<Board.COLOR, List<Square>>();
 		restSquaresMap.put(COLOR.GREEN, createRestSquareList(COLOR.GREEN));

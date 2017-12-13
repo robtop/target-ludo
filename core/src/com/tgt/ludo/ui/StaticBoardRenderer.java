@@ -38,12 +38,16 @@ public class StaticBoardRenderer {
 	protected Model squareJailModel;
 	protected Model squareHomeModel;
 
+	protected Model baseModel;
+
 	protected ModelInstance instance;
 	public Environment environment;
 	// keep ModelInstance here instead of in the Square to keep the backend
 	// independent of the UI
 	protected Map<Square, ModelInstance> squareInstMap;
 	protected Map<Piece, ModelInstance> pieceInstMap;
+
+	protected ModelInstance base;
 
 	public StaticBoardRenderer(Board board, RenderContext renderContext, PerspectiveCamera cam,
 			Environment environment) {
@@ -61,13 +65,17 @@ public class StaticBoardRenderer {
 
 		assetsManager.load("meshes/square_jail.g3dj", Model.class);
 		assetsManager.load("meshes/square_home.g3dj", Model.class);
-		// assetsManager.load("meshes/piece.g3db", Model.class);
+
+		assetsManager.load("meshes/base.g3dj", Model.class);
+
 		assetsManager.load("meshes/pawnGreen.g3dj", Model.class);
 		assetsManager.load("meshes/pawnYellow.g3dj", Model.class);
 		assetsManager.load("meshes/pawnRed.g3dj", Model.class);
 		assetsManager.load("meshes/pawnBlue.g3dj", Model.class);
 		assetsManager.finishLoading();
 		squareModel = (Model) assetsManager.get("meshes/square_white.g3dj");
+
+		baseModel = (Model) assetsManager.get("meshes/base.g3dj");
 
 		squareRedModel = (Model) assetsManager.get("meshes/square_red.g3dj");
 		squareGreenModel = (Model) assetsManager.get("meshes/square_green.g3dj");
@@ -87,6 +95,7 @@ public class StaticBoardRenderer {
 		createOuterTrack();
 		createHomeSquares();
 		createRestSquares();
+		createBase();
 		modelBatch = new ModelBatch();
 	}
 
@@ -127,6 +136,9 @@ public class StaticBoardRenderer {
 		renderOuterTrack(delta);
 		renderHomeSquares(delta);
 		renderRestSquares(delta);
+		renderBase();
+		
+		
 		modelBatch.end();
 		renderContext.end();
 
@@ -159,6 +171,16 @@ public class StaticBoardRenderer {
 		translation.z = translation.z + 1;
 	}
 
+	private void createBase() {
+		base = new ModelInstance(baseModel);
+		base.transform.translate(40, -2, 5);
+		base.transform.scale(1.35f, 1.35f,1.35f);
+	}
+
+	private void renderBase() {
+		modelBatch.render(base,environment);
+
+	}
 	/**
 	 * Create the 3D models of the individual squares and translate them to
 	 * their positions
@@ -175,10 +197,10 @@ public class StaticBoardRenderer {
 				instance = new ModelInstance(squareHomeModel);
 			} else if (sq.isJail()) {
 				instance = new ModelInstance(squareJailModel);
-			}else if (sq.isStartSquare()) {
-				for(int i=0;i<4;i++){
-					if(Board.startIndexes.get(i).equals(sq.getIndex())){
-						switch(i) {
+			} else if (sq.isStartSquare()) {
+				for (int i = 0; i < 4; i++) {
+					if (Board.startIndexes.get(i).equals(sq.getIndex())) {
+						switch (i) {
 						case 0:
 							instance = new ModelInstance(squareGreenModel);
 							break;
@@ -191,9 +213,9 @@ public class StaticBoardRenderer {
 						case 3:
 							instance = new ModelInstance(squareBlueModel);
 							break;
+						}
 					}
-					}
-						
+
 				}
 			} else {
 				instance = new ModelInstance(squareModel);

@@ -24,13 +24,13 @@ public class BoardRenderer extends StaticBoardRenderer {
 	protected int moveFinalIndex;
 	private int moveTempIndex;
 	private int moveCount;
-	
-	//flags for animation 
+
+	// flags for animation
 	protected boolean restMovedToStart;
 	private boolean jailMovedToRest;
 	private boolean homeSqMovedToHome;
 	private boolean killMovedToRest;
-	
+
 	protected static final int MOVE_SPEED = 10;
 	protected ModelInstance pieceInstance;
 	private List<Dice> diceList;
@@ -60,15 +60,15 @@ public class BoardRenderer extends StaticBoardRenderer {
 				renderMovingPiece(delta);
 			}
 		}
-		
+
 		renderDice(delta);
 		modelBatch.end();
 		renderContext.end();
 	}
 
 	public void renderMovingPiece(float delta) {
-		
-		if (moveCount == pieceMove.getSquares()-1) {
+
+		if (moveCount == pieceMove.getSquares() - 1) {
 			Vector3 trans = new Vector3();
 			squareInstMap.get(board.getSquares().get(moveFinalIndex)).transform.getTranslation(trans);
 			// set the destination squares translation to the piece
@@ -76,9 +76,8 @@ public class BoardRenderer extends StaticBoardRenderer {
 			pieceMoved = true;
 			return;
 		}
-		//check if it reached its home square or home etc
-	
-		
+		// check if it reached its home square or home etc
+
 		Vector3 currentTranslation = new Vector3();
 		Vector3 finalTranslation = new Vector3();
 		pieceInstance = pieceInstMap.get(pieceMove.getPiece());
@@ -124,8 +123,6 @@ public class BoardRenderer extends StaticBoardRenderer {
 		}
 
 	}
-	
-	
 
 	public void renderDice(float delta) {
 		int count = 0;
@@ -156,8 +153,8 @@ public class BoardRenderer extends StaticBoardRenderer {
 	}
 
 	@Override
-	protected void renderPiece(Piece pc,int index, float delta) {
-		super.renderPiece(pc,index, delta);
+	protected void renderPiece(Piece pc, int index, float delta) {
+		super.renderPiece(pc, index, delta);
 
 		if (pc.isShake()) {
 			ModelInstance inst = pieceInstMap.get(pc);
@@ -181,37 +178,46 @@ public class BoardRenderer extends StaticBoardRenderer {
 	 * @param move
 	 */
 	public void setPieceMovingInTrack(Player player, Move move) {
-		moveCount=0;
+		moveCount = 0;
 		pieceMove = move;
 		pieceMoved = false;
 		if (move.getPiece().isRest()) {
 			moveFinalIndex = player.getStartIndex();
-		}else if (move.getPiece().isKilled()) {
-		//	moveFinalIndex = getFreeSquare(board.getHomeSquaresMap().get(player.getColor());
-		}  else {
+		} else if (move.getPiece().isKilled()) {
+			// moveFinalIndex =
+			// getFreeSquare(board.getHomeSquaresMap().get(player.getColor());
+		} else {
+			moveFinalIndex = 0;
 			moveFinalIndex = LudoUtil.calulateDestIndex(move);
+			moveTempIndex = 0;
 			moveTempIndex = LudoUtil.calulateNextIndex(move, moveCount, moveTempIndex);
 		}
 	}
-	
+
+	private void createBase() {
+
+	}
+
 	public void setPieceMovingOutSideTrack(Player player, Move move) {
-		moveCount=0;
+		moveCount = 0;
 		pieceMove = move;
 		pieceMoved = false;
 		if (move.getPiece().isRest()) {
 			moveFinalIndex = player.getStartIndex();
-		}else if (move.getPiece().isKilled()) {
-		//	moveFinalIndex = getFreeSquare(board.getHomeSquaresMap().get(player.getColor());
-		}  else {
-			moveFinalIndex = move.getPiece().getSittingSuare().getIndex() + move.getSquares()-1;
+		} else if (move.getPiece().isKilled()) {
+			// moveFinalIndex =
+			// getFreeSquare(board.getHomeSquaresMap().get(player.getColor());
+		} else {
+			moveFinalIndex = move.getPiece().getSittingSuare().getIndex() + move.getSquares() - 1;
+			moveTempIndex = 0;
 			moveTempIndex = move.getPiece().getSittingSuare().getIndex() + 1;
 		}
 	}
 
-//	private Square getFreeSquare(List<Square> square){
-//		
-//	}
-	
+	// private Square getFreeSquare(List<Square> square){
+	//
+	// }
+
 	public Dice createDiceInstance() {
 
 		instance = new ModelInstance(diceModel);

@@ -47,7 +47,7 @@
 		{
 			"id": "Material", 
 			"ambient": [ 0.000000,  0.000000,  0.000000], 
-			"diffuse": [ 0.640000,  0.640000,  0.640000], 
+			"diffuse": [ 1,1,1], 
 			"emissive": [ 0.000000,  0.000000,  0.000000], 
 			"opacity":  1.000000, 
 			"specular": [ 0.500000,  0.500000,  0.500000], 
@@ -55,7 +55,7 @@
 			"textures": [
 				{
 					"id": "Material", 
-					"filename": "square_blue.png", 
+					"filename": "woodBlue.jpg", 
 					"type": "DIFFUSE"
 				}
 			]

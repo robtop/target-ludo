@@ -151,7 +151,7 @@ public class LudoGameStateController {
 			// } 
 			else
 			{
-				finalSquare = board.getSquares().get(calulateDestIndex(move));
+				finalSquare = board.getSquares().get(LudoUtil.calulateDestIndex(move));
 			}
 			if (finalSquare == null) {
 				System.out.println("null?");
@@ -163,34 +163,7 @@ public class LudoGameStateController {
 
 	}
 
-	private int calulateDestIndex(Move move) {
 
-		Board.COLOR color = move.getPiece().getColor();
-		int startIndex = 0;
-		switch (color) {
-		case GREEN:
-			startIndex = Board.startIndexes.get(0);
-			break;
-		case YELLOW:
-			startIndex = Board.startIndexes.get(1);
-			break;
-		case RED:
-			startIndex = Board.startIndexes.get(2);
-			break;
-		case BLUE:
-			startIndex = Board.startIndexes.get(3);
-			break;
-		}
-
-		int sittingIndex = move.getPiece().getSittingSuare().getIndex();
-
-		if (move.getSquares() + sittingIndex <= board.TOTAL_NUM_SQUARES) {
-			// move to home square
-		} else if (move.getSquares() + sittingIndex > board.TOTAL_NUM_SQUARES) {
-			return (move.getSquares() + sittingIndex) % board.TOTAL_NUM_SQUARES;
-		}
-		return sittingIndex + move.getSquares();
-	}
 
 	private void giveTurnToNext(Player currentPlayer, int i) {
 		currentPlayer.setTurn(false);
@@ -248,30 +221,26 @@ public class LudoGameStateController {
 
 //		greenPlayer = new ComputerPlayer(((LudoScreen) screen), ruleEngine);
 //		greenPlayer.setColor(COLOR.GREEN);
-//		greenPlayer.setTurn(true);
 //		greenPlayer.setPieces(board.getPiecesMap().get(greenPlayer.getColor()));
 //		players.add(greenPlayer);
 
-		yellowPlayer = new ComputerPlayer(((LudoScreen) screen), ruleEngine);
-		yellowPlayer.setColor(COLOR.YELLOW);
-		yellowPlayer.setTurn(false);
-		yellowPlayer.setStartIndex(Board.DIMENSION * 2 + 1);
-		yellowPlayer.setPieces(board.getPiecesMap().get(yellowPlayer.getColor()));
-		players.add(yellowPlayer);
+//		yellowPlayer = new ComputerPlayer(((LudoScreen) screen), ruleEngine);
+//		yellowPlayer.setColor(COLOR.YELLOW);
+//		yellowPlayer.setStartIndex(Board.DIMENSION * 2 + 1);
+//		yellowPlayer.setPieces(board.getPiecesMap().get(yellowPlayer.getColor()));
+//		players.add(yellowPlayer);
 //
 //		redPlayer = new ComputerPlayer(((LudoScreen) screen), ruleEngine);
 //		redPlayer.setColor(COLOR.RED);
-//		redPlayer.setTurn(false);
 //		redPlayer.setStartIndex(Board.DIMENSION * 4 + 2);
 //		redPlayer.setPieces(board.getPiecesMap().get(redPlayer.getColor()));
 //		players.add(redPlayer);
 //
-//		bluePlayer = new ComputerPlayer(((LudoScreen) screen), ruleEngine);
-//		bluePlayer.setColor(COLOR.BLUE);
-//		bluePlayer.setTurn(false);
-//		bluePlayer.setStartIndex(Board.DIMENSION * 6 + 3);
-//		bluePlayer.setPieces(board.getPiecesMap().get(bluePlayer.getColor()));
-//		players.add(bluePlayer);
+		bluePlayer = new ComputerPlayer(((LudoScreen) screen), ruleEngine);
+		bluePlayer.setColor(COLOR.BLUE);
+		bluePlayer.setStartIndex(Board.DIMENSION * 6 + 3);
+		bluePlayer.setPieces(board.getPiecesMap().get(bluePlayer.getColor()));
+		players.add(bluePlayer);
 	}
 
 	private void shakeDice(boolean shake) {

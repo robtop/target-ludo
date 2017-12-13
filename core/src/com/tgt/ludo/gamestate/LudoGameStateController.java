@@ -1,7 +1,9 @@
 package com.tgt.ludo.gamestate;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import com.badlogic.gdx.Screen;
@@ -26,11 +28,13 @@ import com.tgt.ludo.ui.LudoScreen;
  */
 public class LudoGameStateController implements GameStateController{
 	protected Board board;
+	
 	private Player greenPlayer;
 	private Player yellowPlayer;
 	private Player redPlayer;
 	private Player bluePlayer;
 
+	Map<COLOR,Square> homeMap = new HashMap<Board.COLOR, Square>(); 
 	// needed by human players to get inputs
 	protected LudoScreen screen;
 	protected List<Player> players;
@@ -56,6 +60,7 @@ public class LudoGameStateController implements GameStateController{
 		//createPlayers();
 		createRobotPlayers();
 		gameState = GAME_STATE.PROGRESS;
+		createHomeMap();
 	}
 
 	private boolean movingAnimation = false;
@@ -218,7 +223,6 @@ public class LudoGameStateController implements GameStateController{
 	private void createRobotPlayers() {
 		players = new ArrayList<Player>();
 
-/*	
 		greenPlayer = new ComputerPlayer(((LudoScreen) screen), ruleEngine);
 		greenPlayer.setColor(COLOR.GREEN);
 		greenPlayer.setPieces(board.getPiecesMap().get(greenPlayer.getColor()));
@@ -235,7 +239,7 @@ public class LudoGameStateController implements GameStateController{
 		redPlayer.setStartIndex(Board.DIMENSION * 4 + 2);
 		redPlayer.setPieces(board.getPiecesMap().get(redPlayer.getColor()));
 		players.add(redPlayer);
-  */
+  
 		bluePlayer = new ComputerPlayer(((LudoScreen) screen), ruleEngine);
 		bluePlayer.setColor(COLOR.BLUE);
 		bluePlayer.setStartIndex(Board.DIMENSION * 6 + 3);
@@ -248,6 +252,13 @@ public class LudoGameStateController implements GameStateController{
 		for (Dice dice : diceList) {
 			dice.setShake(shake);
 		}
+	}
+	
+	private void createHomeMap(){
+		homeMap.put(COLOR.GREEN, new Square());
+		homeMap.put(COLOR.YELLOW, new Square());
+		homeMap.put(COLOR.RED, new Square());
+		homeMap.put(COLOR.BLUE, new Square());
 	}
 
 	public Board getBoard() {

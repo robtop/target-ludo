@@ -30,21 +30,62 @@ public class AdvancedLudoGameStateController extends LudoGameStateController {
 
 	}
 
-	private void killCheck(){
+	@Override
+	protected void checkGameState() {
+		killCheck();
+	}
+
+	private void killCheck() {
 
 		Kill kill = ruleEngine.getKills();
 		if (kill.getKilledPiece() != null && kill.getKilledPiece().size() > 0) {
 			Piece killedPiece = kill.getKilledPiece().get(0);
-			killedPiece.setRest(true);
-			//TODO change to animation
-			getFreeRestSquare(killedPiece.getColor()).getPieces().add(killedPiece);
+			sendToRest(killedPiece);
+			System.out.println("Another turn: "+player.getColor());
+			getPlayer(kill.getKillerPiece().getColor()).setTurn(true);
+		}
+	}
+
+	private void sendToRest(Piece piece){
+		piece.setRest(true);
+		piece.getSittingSuare().getPieces().remove(piece);
+		// TODO change to animation
+		getFreeRestSquare(piece.getColor()).getPieces().add(piece);
+	}
+	
+	private void sendToHome(Piece piece){
+		piece.getSittingSuare().getPieces().remove(piece);
+		piece.setSittingSuare(homeMap.get(piece.getColor()));
+		
+	}
+	
+	private void jailCheck(){
+		Piece jailedPiece = ruleEngine.getPieceOnJail();
+		if(jailedPiece!=null){
+			sendToRest(jailedPiece);
 		}
 	}
 	
-	private Square getFreeRestSquare(Board.COLOR color){
-		for(Square square:board.getRestSquaresMap().get(color)){
-			if(square.getPieces().isEmpty()){
+	private void homeCheck(){
+		Piece homePiece = ruleEngine.getPieceOnHomeSquare();
+		if(homePiece!=null){
+			sendToRest(homePiece);
+		}
+	}
+	
+	private Square getFreeRestSquare(Board.COLOR color) {
+		for (Square square : board.getRestSquaresMap().get(color)) {
+			if (square.getPieces().isEmpty()) {
 				return square;
+			}
+		}
+		return null;
+	}
+
+	private Player getPlayer(Board.COLOR color){
+		for (Player player : getPlayers()) {
+			if(player.getColor().equals(color)){
+				return player;
 			}
 		}
 		return null;

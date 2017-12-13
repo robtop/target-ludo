@@ -5,8 +5,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.tgt.ludo.player.Move;
+import com.tgt.ludo.player.action.Move;
 
 /**
  * The main backend class representing a games board data
@@ -23,7 +22,7 @@ public class Board {
 	// index from start point of each color
 	// public static final int JAIL_INDEX = 12;
 	// special home square
-	public static final int HOME_INDEX = 4;
+	public static final int HOME_INDEX = 7;
 
 	public static enum COLOR {
 		GREEN, YELLOW, RED, BLUE
@@ -209,6 +208,10 @@ public class Board {
 
 	public Map<COLOR, List<Piece>> getPiecesMap() {
 		return piecesMap;
+	}
+
+	public void setHomeSquaresMap(Map<COLOR, List<Square>> homeSquaresMap) {
+		this.homeSquaresMap = homeSquaresMap;
 	}
 
 }

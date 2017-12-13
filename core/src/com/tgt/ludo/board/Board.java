@@ -1,6 +1,7 @@
 package com.tgt.ludo.board;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,15 +20,16 @@ public class Board {
 	// start location of a player wrt dimension
 	public static final int START = 0;
 	// index from start point of each color
-	public static final int JAIL_INDEX = 14;
+	//public static final int JAIL_INDEX = 12;
 	// special home square
-	public static final int HOME_INDEX = 14;
+	public static final int HOME_INDEX = 4;
 
 	public static enum COLOR {
 		GREEN, YELLOW, RED, BLUE
 	}
+    
+	private List<Integer> jailIndexes = new ArrayList<Integer>(Arrays.asList(13,30,47,64,80));
 
-	// outer track squares
 	private List<Square> squares;
 
 	private Map<COLOR, List<Square>> homeSquaresMap;
@@ -57,7 +59,7 @@ public class Board {
 			Square sq = new Square();
 			sq.setIndex(i);
 
-			if (i % JAIL_INDEX == 0) {
+			if (jailIndexes.contains(i)) {
 				sq.setJail(true);
 			}
 

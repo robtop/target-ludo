@@ -29,12 +29,12 @@ public class StaticBoardRenderer {
 	protected Model yellowPawnModel;
 	protected Model redPawnModel;
 	protected Model bluePawnModel;
-	
+
 	protected Model squareRedModel;
 	protected Model squareGreenModel;
 	protected Model squareYellowModel;
 	protected Model squareBlueModel;
-	
+
 	protected Model squareJailModel;
 	protected Model squareHomeModel;
 
@@ -53,12 +53,12 @@ public class StaticBoardRenderer {
 		this.environment = environment;
 
 		assetsManager.load("meshes/square_white.g3dj", Model.class);
-		
+
 		assetsManager.load("meshes/square_red.g3dj", Model.class);
 		assetsManager.load("meshes/square_green.g3dj", Model.class);
 		assetsManager.load("meshes/square_yellow.g3dj", Model.class);
 		assetsManager.load("meshes/square_blue.g3dj", Model.class);
-		
+
 		assetsManager.load("meshes/square_jail.g3dj", Model.class);
 		assetsManager.load("meshes/square_home.g3dj", Model.class);
 		// assetsManager.load("meshes/piece.g3db", Model.class);
@@ -68,12 +68,12 @@ public class StaticBoardRenderer {
 		assetsManager.load("meshes/pawnBlue.g3dj", Model.class);
 		assetsManager.finishLoading();
 		squareModel = (Model) assetsManager.get("meshes/square_white.g3dj");
-		
+
 		squareRedModel = (Model) assetsManager.get("meshes/square_red.g3dj");
 		squareGreenModel = (Model) assetsManager.get("meshes/square_green.g3dj");
 		squareYellowModel = (Model) assetsManager.get("meshes/square_yellow.g3dj");
 		squareBlueModel = (Model) assetsManager.get("meshes/square_blue.g3dj");
-		
+
 		squareJailModel = (Model) assetsManager.get("meshes/square_jail.g3dj");
 		squareHomeModel = (Model) assetsManager.get("meshes/square_home.g3dj");
 
@@ -164,12 +164,13 @@ public class StaticBoardRenderer {
 			// pick different model based on square type or use shader to color
 			if (sq.isHome()) {
 				instance = new ModelInstance(squareHomeModel);
-			} if (sq.isJail()) {
+			}else
+			if (sq.isJail()) {
 				instance = new ModelInstance(squareJailModel);
 			} else {
 				instance = new ModelInstance(squareModel);
-			} 
-			//instance.transform.scale(.9f, .9f, .9f);
+			}
+			// instance.transform.scale(.9f, .9f, .9f);
 			if (sq.getIndex() == Board.DIMENSION) {
 				xTranslation += xControl * SQUARE_LENGTH;
 				xControl = 0;
@@ -259,12 +260,12 @@ public class StaticBoardRenderer {
 
 	protected void createHomeSquares() {
 
-		createHomeSquares(squareRedModel,COLOR.GREEN, new Vector3(2 * SQUARE_LENGTH, 1, 1 * SQUARE_LENGTH), 1, 0);
-	
-		createHomeSquares(squareYellowModel,COLOR.YELLOW, new Vector3(0, 0, 1 * SQUARE_LENGTH), 1, 0);
+		createHomeSquares(squareRedModel, COLOR.GREEN, new Vector3(2 * SQUARE_LENGTH, 1, 1 * SQUARE_LENGTH), 1, 0);
+
+		createHomeSquares(squareYellowModel, COLOR.YELLOW, new Vector3(0, 0, 1 * SQUARE_LENGTH), 1, 0);
 	}
 
-	private void createHomeSquares(Model squareModel,COLOR color, Vector3 translation, int xControl, int yControl) {
+	private void createHomeSquares(Model squareModel, COLOR color, Vector3 translation, int xControl, int yControl) {
 
 		for (Square sq : board.getHomeSquaresMap().get(color)) {
 			instance = new ModelInstance(squareModel);
@@ -289,14 +290,8 @@ public class StaticBoardRenderer {
 		int yControl = 0;
 
 		for (Square sq : board.getRestSquaresMap().get(color)) {
-			if (sq.isHome()) {
-				instance = new ModelInstance(squareHomeModel);
-			}
-			if (sq.isJail()) {
-				instance = new ModelInstance(squareJailModel);
-			} else {
-				instance = new ModelInstance(squareModel);
-			}
+			instance = new ModelInstance(squareModel);
+
 			squareInstMap.put(sq, instance);
 			instance.transform.translate(translation);
 

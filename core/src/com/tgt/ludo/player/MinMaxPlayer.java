@@ -13,6 +13,7 @@ public class MinMaxPlayer extends ComputerPlayer {
 		// TODO Auto-generated constructor stub
 	}
 
+	@Override
 	protected Move selectMove(List<Move> moves) {
       Move bestMove = null;
       float prevBestWt =0;
@@ -29,25 +30,30 @@ public class MinMaxPlayer extends ComputerPlayer {
 	public float analyzeMove(Move move) {
 
 		float weight = 0;
-
 		// give a 1 - 10 range for each scenario
+		 //first three are mutually exclusive
 		if (ruleEngine.goToJail(move)) {
 			weight = 1;
 		} else if (ruleEngine.goToHomeSquare(move)) {
 			weight = 10;
-		} else if (ruleEngine.makeAkill(move)) {
+		} if (ruleEngine.reachHome(move)) {
 			weight = 8;
-		} else if (ruleEngine.jumpJail(move)) {
+		} 
+		
+		if (ruleEngine.makeAkill(move)) {
 			weight = 7;
-		} else if (ruleEngine.escapeKill(move)) {
+		}    
+		if (ruleEngine.jumpJail(move)) {
 			weight = 6;
-		} else if (ruleEngine.reachHome(move)) {
-			weight = 5;
-		} else if (ruleEngine.closeToKill(move)) {
-			weight = 5;
-		} else {
-			weight = .1f;
 		}
+		if (ruleEngine.escapeKill(move)) {
+			weight = 5;
+		}
+		if (ruleEngine.closeToKill(move)) {
+			weight = 5;
+		} 
+		
+		
 		return weight / 10;
 	}
 }

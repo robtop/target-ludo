@@ -24,7 +24,7 @@ import com.tgt.ludo.ui.LudoScreen;
  * @author robin
  *
  */
-public class LudoGameStateController {
+public class LudoGameStateController implements GameStateController{
 	private Board board;
 	private Player greenPlayer;
 	private Player yellowPlayer;
@@ -92,7 +92,7 @@ public class LudoGameStateController {
 		}
 	}
 
-	private void play(Player player, int playerIndex) {
+	protected void play(Player player, int playerIndex) {
 		move = player.play();
 		if (move != null) {
 

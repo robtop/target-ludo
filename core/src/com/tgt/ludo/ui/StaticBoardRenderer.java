@@ -23,12 +23,21 @@ public class StaticBoardRenderer {
 	protected PerspectiveCamera cam;
 	protected Board board;
 	public static AssetManager assetsManager = new AssetManager();
-	public static final int SQUARE_LENGTH = 3;
+	public static final int SQUARE_LENGTH = 4;
 	protected Model squareModel;
 	protected Model greenPawnModel;
 	protected Model yellowPawnModel;
 	protected Model redPawnModel;
 	protected Model bluePawnModel;
+	
+	protected Model squareRedModel;
+	protected Model squareGreenModel;
+	protected Model squareYellowModel;
+	protected Model squareBlueModel;
+	
+	protected Model squareJailModel;
+	protected Model squareHomeModel;
+
 	protected ModelInstance instance;
 	public Environment environment;
 	// keep ModelInstance here instead of in the Square to keep the backend
@@ -43,15 +52,30 @@ public class StaticBoardRenderer {
 		this.cam = cam;
 		this.environment = environment;
 
-		assetsManager.load("meshes/square.g3db", Model.class);
+		assetsManager.load("meshes/square_white.g3dj", Model.class);
+		
+		assetsManager.load("meshes/square_red.g3dj", Model.class);
+		assetsManager.load("meshes/square_green.g3dj", Model.class);
+		assetsManager.load("meshes/square_yellow.g3dj", Model.class);
+		assetsManager.load("meshes/square_blue.g3dj", Model.class);
+		
+		assetsManager.load("meshes/square_jail.g3dj", Model.class);
+		assetsManager.load("meshes/square_home.g3dj", Model.class);
 		// assetsManager.load("meshes/piece.g3db", Model.class);
 		assetsManager.load("meshes/pawnGreen.g3dj", Model.class);
 		assetsManager.load("meshes/pawnYellow.g3dj", Model.class);
 		assetsManager.load("meshes/pawnRed.g3dj", Model.class);
 		assetsManager.load("meshes/pawnBlue.g3dj", Model.class);
 		assetsManager.finishLoading();
-		squareModel = (Model) assetsManager.get("meshes/square.g3db");
-		// pieceModel = (Model) assetsManager.get("meshes/piece.g3db");
+		squareModel = (Model) assetsManager.get("meshes/square_white.g3dj");
+		
+		squareRedModel = (Model) assetsManager.get("meshes/square_red.g3dj");
+		squareGreenModel = (Model) assetsManager.get("meshes/square_green.g3dj");
+		squareYellowModel = (Model) assetsManager.get("meshes/square_yellow.g3dj");
+		squareBlueModel = (Model) assetsManager.get("meshes/square_blue.g3dj");
+		
+		squareJailModel = (Model) assetsManager.get("meshes/square_jail.g3dj");
+		squareHomeModel = (Model) assetsManager.get("meshes/square_home.g3dj");
 
 		greenPawnModel = (Model) assetsManager.get("meshes/pawnGreen.g3dj");
 		yellowPawnModel = (Model) assetsManager.get("meshes/pawnYellow.g3dj");
@@ -105,13 +129,13 @@ public class StaticBoardRenderer {
 		}
 	}
 
-	protected void renderSquare(Square sq,float delta) {
+	protected void renderSquare(Square sq, float delta) {
 		modelBatch.render(squareInstMap.get(sq), environment);
 		if (sq.getPieces() != null && !sq.getPieces().isEmpty()) {
 
-			for (int i=0;i<sq.getPieces().size();i++) {
+			for (int i = 0; i < sq.getPieces().size(); i++) {
 				Piece pc = sq.getPieces().get(i);
-				renderPiece(pc,i,delta);
+				renderPiece(pc, i, delta);
 			}
 		}
 	}
@@ -138,8 +162,14 @@ public class StaticBoardRenderer {
 
 		for (Square sq : board.getSquares()) {
 			// pick different model based on square type or use shader to color
-			instance = new ModelInstance(squareModel);
-
+			if (sq.isHome()) {
+				instance = new ModelInstance(squareHomeModel);
+			} if (sq.isJail()) {
+				instance = new ModelInstance(squareJailModel);
+			} else {
+				instance = new ModelInstance(squareModel);
+			} 
+			//instance.transform.scale(.9f, .9f, .9f);
 			if (sq.getIndex() == Board.DIMENSION) {
 				xTranslation += xControl * SQUARE_LENGTH;
 				xControl = 0;
@@ -229,11 +259,12 @@ public class StaticBoardRenderer {
 
 	protected void createHomeSquares() {
 
-		createHomeSquares(COLOR.GREEN, new Vector3(2 * SQUARE_LENGTH, 1, 1 * SQUARE_LENGTH), 1, 0);
-		createHomeSquares(COLOR.YELLOW, new Vector3(0, 0, 1 * SQUARE_LENGTH), 1, 0);
+		createHomeSquares(squareRedModel,COLOR.GREEN, new Vector3(2 * SQUARE_LENGTH, 1, 1 * SQUARE_LENGTH), 1, 0);
+	
+		createHomeSquares(squareYellowModel,COLOR.YELLOW, new Vector3(0, 0, 1 * SQUARE_LENGTH), 1, 0);
 	}
 
-	private void createHomeSquares(COLOR color, Vector3 translation, int xControl, int yControl) {
+	private void createHomeSquares(Model squareModel,COLOR color, Vector3 translation, int xControl, int yControl) {
 
 		for (Square sq : board.getHomeSquaresMap().get(color)) {
 			instance = new ModelInstance(squareModel);
@@ -258,7 +289,14 @@ public class StaticBoardRenderer {
 		int yControl = 0;
 
 		for (Square sq : board.getRestSquaresMap().get(color)) {
-			instance = new ModelInstance(squareModel);
+			if (sq.isHome()) {
+				instance = new ModelInstance(squareHomeModel);
+			}
+			if (sq.isJail()) {
+				instance = new ModelInstance(squareJailModel);
+			} else {
+				instance = new ModelInstance(squareModel);
+			}
 			squareInstMap.put(sq, instance);
 			instance.transform.translate(translation);
 

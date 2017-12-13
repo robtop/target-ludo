@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.badlogic.gdx.assets.loaders.ModelLoader;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.Model;
@@ -14,6 +13,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.tgt.ludo.board.Board;
 import com.tgt.ludo.board.Dice;
 import com.tgt.ludo.board.Piece;
+import com.tgt.ludo.board.Square;
 import com.tgt.ludo.player.Move;
 import com.tgt.ludo.player.Player;
 
@@ -169,17 +169,36 @@ public class BoardRenderer extends StaticBoardRenderer {
 
 	}
 
-	public void setPiecetoMove(Player player, Move move) {
+	public void setPieceMovingInTrack(Player player, Move move) {
 		pieceMove = move;
 		pieceMoved = false;
 		if (move.getPiece().isRest()) {
 			moveFinalIndex = player.getStartIndex();
-		} else {
+		}else if (move.getPiece().isKilled()) {
+		//	moveFinalIndex = getFreeSquare(board.getHomeSquaresMap().get(player.getColor());
+		}  else {
+			moveFinalIndex = move.getPiece().getSittingSuare().getIndex() + move.getSquares();
+			moveTempIndex = move.getPiece().getSittingSuare().getIndex() + 1;
+		}
+	}
+	
+	public void setPieceMovingOutSideTrack(Player player, Move move) {
+		pieceMove = move;
+		pieceMoved = false;
+		if (move.getPiece().isRest()) {
+			moveFinalIndex = player.getStartIndex();
+		}else if (move.getPiece().isKilled()) {
+		//	moveFinalIndex = getFreeSquare(board.getHomeSquaresMap().get(player.getColor());
+		}  else {
 			moveFinalIndex = move.getPiece().getSittingSuare().getIndex() + move.getSquares();
 			moveTempIndex = move.getPiece().getSittingSuare().getIndex() + 1;
 		}
 	}
 
+//	private Square getFreeSquare(List<Square> square){
+//		
+//	}
+	
 	public Dice createDiceInstance() {
 
 		instance = new ModelInstance(diceModel);

@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.tgt.ludo.board.Board;
 import com.tgt.ludo.board.Piece;
+import com.tgt.ludo.board.Square;
 import com.tgt.ludo.player.Move;
 import com.tgt.ludo.player.Player;
 
@@ -76,5 +77,33 @@ public class BasicRuleEngine implements RuleEngine {
 	}
 	public BasicRuleEngine(Board board) {
 		this.board = board;
+	}
+
+	@Override
+	public List<Piece> getKills() {
+		List<Piece> kills = new ArrayList<Piece>();
+		for(Square square:board.getSquares()){
+			if(square.getPieces().size()>1){
+				//checking two is enough, otherwise it would be a block
+				if(!square.getPieces().get(0).getColor().equals(square.getPieces().get(1).getColor())){
+					//older piece gets killed
+					kills.add(square.getPieces().get(0));
+					System.out.println("Killed");
+				}
+			}
+		}
+		return kills;
+	}
+
+	@Override
+	public Piece getPieceOnHomeSquare() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Piece getPieceOnJail() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

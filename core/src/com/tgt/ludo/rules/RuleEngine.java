@@ -19,4 +19,10 @@ public interface RuleEngine {
 	public List<Move> getValidMoves(Player player,int diceVal);
 	
 	public  int getSingleDiceRoll();
+	
+	public  List<Piece> getKills();
+	
+	public Piece getPieceOnHomeSquare();
+	
+	public  Piece getPieceOnJail();
 }

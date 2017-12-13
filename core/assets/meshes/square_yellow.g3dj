@@ -55,7 +55,7 @@
 			"textures": [
 				{
 					"id": "Material", 
-					"filename": "square_green.png", 
+					"filename": "square_yellow.png", 
 					"type": "DIFFUSE"
 				}
 			]

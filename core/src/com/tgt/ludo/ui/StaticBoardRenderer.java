@@ -94,6 +94,15 @@ public class StaticBoardRenderer {
 		for (Square sq : board.getHomeSquaresMap().get(COLOR.GREEN)) {
 			renderSquare(sq, delta);
 		}
+		for (Square sq : board.getHomeSquaresMap().get(COLOR.YELLOW)) {
+			renderSquare(sq, delta);
+		}
+		for (Square sq : board.getHomeSquaresMap().get(COLOR.RED)) {
+			renderSquare(sq, delta);
+		}
+		for (Square sq : board.getHomeSquaresMap().get(COLOR.BLUE)) {
+			renderSquare(sq, delta);
+		}
 	}
 
 	protected void renderRestSquares(float delta) {
@@ -164,8 +173,7 @@ public class StaticBoardRenderer {
 			// pick different model based on square type or use shader to color
 			if (sq.isHome()) {
 				instance = new ModelInstance(squareHomeModel);
-			}else
-			if (sq.isJail()) {
+			} else if (sq.isJail()) {
 				instance = new ModelInstance(squareJailModel);
 			} else {
 				instance = new ModelInstance(squareModel);
@@ -260,9 +268,13 @@ public class StaticBoardRenderer {
 
 	protected void createHomeSquares() {
 
-		createHomeSquares(squareRedModel, COLOR.GREEN, new Vector3(2 * SQUARE_LENGTH, 1, 1 * SQUARE_LENGTH), 1, 0);
+		createHomeSquares(squareGreenModel, COLOR.GREEN, new Vector3(2 * SQUARE_LENGTH, 1, 1 * SQUARE_LENGTH), 1, 0);
 
-		createHomeSquares(squareYellowModel, COLOR.YELLOW, new Vector3(0, 0, 1 * SQUARE_LENGTH), 1, 0);
+		createHomeSquares(squareYellowModel, COLOR.YELLOW,
+				(new Vector3((board.DIMENSION + 2)* SQUARE_LENGTH, 0, (-1)* SQUARE_LENGTH)) , 0, -1);
+		createHomeSquares(squareBlueModel, COLOR.BLUE,
+				new Vector3((board.DIMENSION + 1)* SQUARE_LENGTH , 0, (board.DIMENSION - 1)* SQUARE_LENGTH ),0, 1);
+		createHomeSquares(squareRedModel, COLOR.RED, new Vector3(0, 0, -1 * SQUARE_LENGTH), 1, 0);
 	}
 
 	private void createHomeSquares(Model squareModel, COLOR color, Vector3 translation, int xControl, int yControl) {

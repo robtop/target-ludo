@@ -142,7 +142,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 			Vector3 trans = new Vector3();
 			squareInstMap.get(board.getSquares().get(moveFinalIndex)).transform.getTranslation(trans);
 			pieceMove.getPiece().reset();
-			
+			pieceMove.getPiece().setSittingSuare(moveToRestSq);
 			pieceMove.setPiece(null);
 			// set the destination squares translation to the piece
 			pieceInstance.transform.setTranslation(trans);
@@ -225,7 +225,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 		moveCount = 0;
 		pieceMove = move;
 		pieceMoved = false;
-		if(move.getPiece()==null){
+		if(move== null || move.getPiece()==null){
 			return;
 		}
 		if (move.getPiece().isRest()) {

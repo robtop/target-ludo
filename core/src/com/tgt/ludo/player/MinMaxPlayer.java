@@ -15,7 +15,7 @@ public class MinMaxPlayer extends ComputerPlayer {
 
 	@Override
 	protected Move selectMove(List<Move> moves) {
-      Move bestMove = null;
+      Move bestMove = new Move(true);
       float prevBestWt =0;
 		for (Move move : moves) {
 			float newWt = analyzeMove(move);
@@ -24,6 +24,7 @@ public class MinMaxPlayer extends ComputerPlayer {
         	   bestMove = move;
            }
 		}
+		
 		return bestMove;
 	}
 

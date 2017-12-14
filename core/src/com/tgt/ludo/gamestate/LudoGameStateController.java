@@ -27,15 +27,14 @@ import com.tgt.ludo.util.LudoUtil;
  * @author robin
  *
  */
-public class LudoGameStateController implements GameStateController{
+public class LudoGameStateController implements GameStateController {
 	protected Board board;
-	
+
 	private Player greenPlayer;
 	private Player yellowPlayer;
 	private Player redPlayer;
 	private Player bluePlayer;
 
-	
 	// needed by human players to get inputs
 	protected LudoScreen screen;
 	protected List<Player> players;
@@ -58,9 +57,9 @@ public class LudoGameStateController implements GameStateController{
 		board.setup();
 		ruleEngine = new BasicRuleEngine(board);
 		this.screen = (LudoScreen) screen;
-		//createPlayers();
-		createRobotPlayers();
-		//createMinMaxPlayers();
+		// createPlayers();
+		//createRobotPlayers();
+		 createMinMaxPlayers();
 		gameState = GAME_STATE.PROGRESS;
 	}
 
@@ -93,7 +92,7 @@ public class LudoGameStateController implements GameStateController{
 	}
 
 	protected void checkGameState() {
-	
+
 	}
 
 	protected void play(Player player, int playerIndex) {
@@ -128,6 +127,9 @@ public class LudoGameStateController implements GameStateController{
 
 	protected void movePieceInTrack(Player player) {
 		movingAnimation = true;
+		if (move == null || move.getPiece() == null) {
+			return;
+		}
 		((LudoScreen) screen).getBoardRenderer().setPieceMovingInTrack(player, move);
 		move.getPiece().getSittingSuare().getPieces().remove(move.getPiece());
 		sittingSquareIndex = move.getPiece().getSittingSuare().getIndex();
@@ -139,6 +141,8 @@ public class LudoGameStateController implements GameStateController{
 		if (((LudoScreen) screen).getBoardRenderer().isPieceMoved()) {
 			movingAnimation = false;
 			Square finalSquare = null;
+			if (move.getPiece() == null)
+				return;
 			if (move.getPiece().isRest()) {
 				finalSquare = board.getSquares().get(player.getStartIndex());
 				move.getPiece().setRest(false);
@@ -152,9 +156,8 @@ public class LudoGameStateController implements GameStateController{
 			// } else if (move.getPiece().isKilled()) {
 			// finalSquare = board.getSquares().get(sittingSquareIndex +
 			// move.getSquares());
-			// } 
-			else
-			{
+			// }
+			else {
 				finalSquare = board.getSquares().get(LudoUtil.calulateDestIndex(move));
 			}
 			if (finalSquare == null) {
@@ -165,10 +168,7 @@ public class LudoGameStateController implements GameStateController{
 			move.getPiece().setSittingSuare(finalSquare);
 			return;
 		}
-
 	}
-
-
 
 	private void giveTurnToNext(Player currentPlayer, int i) {
 		currentPlayer.setTurn(false);
@@ -223,7 +223,7 @@ public class LudoGameStateController implements GameStateController{
 
 	private void createRobotPlayers() {
 		players = new ArrayList<Player>();
-/*
+
 		greenPlayer = new ComputerPlayer(((LudoScreen) screen), ruleEngine);
 		greenPlayer.setColor(COLOR.GREEN);
 		greenPlayer.setPieces(board.getPiecesMap().get(greenPlayer.getColor()));
@@ -240,14 +240,14 @@ public class LudoGameStateController implements GameStateController{
 		redPlayer.setStartIndex(Board.DIMENSION * 4 + 2);
 		redPlayer.setPieces(board.getPiecesMap().get(redPlayer.getColor()));
 		players.add(redPlayer);
-  */
+
 		bluePlayer = new ComputerPlayer(((LudoScreen) screen), ruleEngine);
 		bluePlayer.setColor(COLOR.BLUE);
 		bluePlayer.setStartIndex(Board.DIMENSION * 6 + 3);
 		bluePlayer.setPieces(board.getPiecesMap().get(bluePlayer.getColor()));
 		players.add(bluePlayer);
 	}
-	
+
 	private void createMinMaxPlayers() {
 		players = new ArrayList<Player>();
 
@@ -267,7 +267,7 @@ public class LudoGameStateController implements GameStateController{
 		redPlayer.setStartIndex(Board.DIMENSION * 4 + 2);
 		redPlayer.setPieces(board.getPiecesMap().get(redPlayer.getColor()));
 		players.add(redPlayer);
-  
+
 		bluePlayer = new MinMaxPlayer(((LudoScreen) screen), ruleEngine);
 		bluePlayer.setColor(COLOR.BLUE);
 		bluePlayer.setStartIndex(Board.DIMENSION * 6 + 3);
@@ -281,8 +281,6 @@ public class LudoGameStateController implements GameStateController{
 			dice.setShake(shake);
 		}
 	}
-	
-	
 
 	public Board getBoard() {
 		return board;

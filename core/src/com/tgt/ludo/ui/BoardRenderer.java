@@ -59,7 +59,10 @@ public class BoardRenderer extends StaticBoardRenderer {
 		if (!pieceMoved) {
 			if (pieceMove.getPiece().isRest()) {
 				renderMovingRestPiece(delta);
-			} else {
+			} else if (pieceMove.getPiece().isJailed() || pieceMove.getPiece().isKilled()) {
+				renderMovingToRestPiece(delta);
+			}
+			else {
 				renderMovingPiece(delta);
 			}
 		}
@@ -138,6 +141,9 @@ public class BoardRenderer extends StaticBoardRenderer {
 		if (movedToRest) {
 			Vector3 trans = new Vector3();
 			squareInstMap.get(board.getSquares().get(moveFinalIndex)).transform.getTranslation(trans);
+			pieceMove.getPiece().reset();
+			pieceMove.getPiece().setSittingSuare(moveToRestSq);
+			pieceMove.setPiece(null);
 			// set the destination squares translation to the piece
 			pieceInstance.transform.setTranslation(trans);
 			pieceMove.setRest(true);
@@ -219,6 +225,9 @@ public class BoardRenderer extends StaticBoardRenderer {
 		moveCount = 0;
 		pieceMove = move;
 		pieceMoved = false;
+		if(move== null || move.getPiece()==null){
+			return;
+		}
 		if (move.getPiece().isRest()) {
 			moveFinalIndex = player.getStartIndex();
 		} else if (move.getPiece().isKilled()) {

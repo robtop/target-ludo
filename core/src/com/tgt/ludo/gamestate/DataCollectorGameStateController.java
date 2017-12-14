@@ -7,7 +7,7 @@ import com.badlogic.gdx.Screen;
  * @author robin
  *
  */
-public class DataCollectorGameStateController extends LudoGameStateController{
+public class DataCollectorGameStateController extends AdvancedLudoGameStateController{
 	
 	public DataCollectorGameStateController(Screen screen) {
 		super(screen);
@@ -16,7 +16,7 @@ public class DataCollectorGameStateController extends LudoGameStateController{
 
 	public void update() {
 		super.update();
-		updateServer();
+
 	}
 
 	private void updateServer() {

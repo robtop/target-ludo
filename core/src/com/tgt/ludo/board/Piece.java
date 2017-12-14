@@ -27,6 +27,8 @@ public class Piece {
 		sittingSuare = null;
 		shake = false;
 		killed = false;
+		jailed=false;
+		moveCount=0;
 	}
 	
 	public Board.COLOR getColor() {

@@ -59,7 +59,11 @@ public class BoardRenderer extends StaticBoardRenderer {
 		if (!pieceMoved) {
 			if (pieceMove.getPiece().isRest()) {
 				renderMovingRestPiece(delta);
-			} else {
+			}
+			//if (pieceMove.getPiece().isJailed() || pieceMove.getPiece().isKilled()) {
+				//renderMovingToRestPiece(delta);
+			//}
+			else {
 				renderMovingPiece(delta);
 			}
 		}

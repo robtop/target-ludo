@@ -52,14 +52,11 @@ public class AdvancedLudoGameStateController extends LudoGameStateController {
 	}
 
 	private void sendToRest(Piece piece){
-		piece.getSittingSuare().getPieces().remove(piece);
-		move = new Move(piece);
-		movePieceOutsideTrack(move);
+		movePieceOutsideTrack(new Move(piece));
 	}
 	
 	private void sendToHome(Piece piece){
-		piece.getSittingSuare().getPieces().remove(piece);
-		piece.setSittingSuare(board.getHomeMap().get(piece.getColor()));
+		movePieceOutsideTrack(new Move(piece));
 		//give chance back to player
 		getPlayer(piece.getColor()).setTurn(true);
 	}
@@ -76,6 +73,7 @@ public class AdvancedLudoGameStateController extends LudoGameStateController {
 	private void homeCheck(){
 		Piece homePiece = ruleEngine.getPieceOnHomeSquare();
 		if(homePiece!=null){
+			System.out.println("Home Square");
 			sendToHome(homePiece);
 		}
 		

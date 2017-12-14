@@ -13,6 +13,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.tgt.ludo.board.Board;
 import com.tgt.ludo.board.Dice;
 import com.tgt.ludo.board.Piece;
+import com.tgt.ludo.board.Square;
 import com.tgt.ludo.player.Player;
 import com.tgt.ludo.player.action.Move;
 import com.tgt.ludo.util.LudoUtil;
@@ -27,8 +28,10 @@ public class BoardRenderer extends StaticBoardRenderer {
 
 	// flags for animation
 	protected boolean restMovedToStart;
-	private boolean jailMovedToRest;
+	private boolean movedToRest;
 	private boolean homeSqMovedToHome;
+	
+	private Square moveToRestSq;
 	private boolean killMovedToRest;
 
 	protected static final int MOVE_SPEED = 10;
@@ -131,6 +134,34 @@ public class BoardRenderer extends StaticBoardRenderer {
 
 	}
 
+	public void renderMovingToRestPiece(float delta) {
+		if (movedToRest) {
+			Vector3 trans = new Vector3();
+			squareInstMap.get(board.getSquares().get(moveFinalIndex)).transform.getTranslation(trans);
+			// set the destination squares translation to the piece
+			pieceInstance.transform.setTranslation(trans);
+			pieceMove.setRest(true);
+			pieceMoved = true;
+			movedToRest = false;
+			return;
+		}
+
+		Vector3 currentTranslation = new Vector3();
+		Vector3 finalTranslation = new Vector3();
+		pieceInstance = pieceInstMap.get(pieceMove.getPiece());
+		pieceInstance.transform.getTranslation(currentTranslation);
+		squareInstMap.get(moveToRestSq).transform.getTranslation(finalTranslation);
+
+		Vector3 diff = finalTranslation.sub(currentTranslation);
+		modelBatch.render(pieceInstance, environment);
+		if (diff.len() < .1f) {
+			movedToRest = true;
+		} else {
+
+			pieceInstance.transform.translate(diff.scl(delta * MOVE_SPEED));
+		}
+
+	}
 	public void renderDice(float delta) {
 		int count = 0;
 		for (Dice dice : diceList) {
@@ -201,24 +232,15 @@ public class BoardRenderer extends StaticBoardRenderer {
 			moveTempIndex = LudoUtil.calulateNextIndex(move, moveCount);
 		}
 	}
-
-	private void createBase() {
-
-	}
-
-	public void setPieceMovingOutSideTrack(Player player, Move move) {
-		moveCount = 0;
+	
+	public void setPieceMovingOutSideTrack(Move move) {
 		pieceMove = move;
 		pieceMoved = false;
-		if (move.getPiece().isRest()) {
-			moveFinalIndex = player.getStartIndex();
-		} else if (move.getPiece().isKilled()) {
-			// moveFinalIndex =
-			// getFreeSquare(board.getHomeSquaresMap().get(player.getColor());
+       
+		if (move.getPiece().isKilled() || move.getPiece().isJailed()) {
+			moveToRestSq = LudoUtil.getFreeRestSquare(move.getPiece().getColor(),board);
 		} else {
-			moveFinalIndex = move.getPiece().getSittingSuare().getIndex() + move.getSquares() - 1;
-			moveTempIndex = move.getPiece().getSittingSuare().getIndex();
-			moveTempIndex = move.getPiece().getSittingSuare().getIndex() + 1;
+			
 		}
 	}
 

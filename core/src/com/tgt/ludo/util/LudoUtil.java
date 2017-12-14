@@ -1,6 +1,8 @@
 package com.tgt.ludo.util;
 
 import com.tgt.ludo.board.Board;
+import com.tgt.ludo.board.Piece;
+import com.tgt.ludo.board.Square;
 import com.tgt.ludo.player.action.Move;
 
 public class LudoUtil {
@@ -81,5 +83,15 @@ public class LudoUtil {
 		//		"total moves: " +pieceMove.getPiece().getMoveCount());
 		return newMoveTempIndex;
 	}
-
+	
+	public static Square getFreeRestSquare(Board.COLOR color,Board board) {
+		for (Square square : board.getRestSquaresMap().get(color)) {
+			if (square.getPieces().isEmpty()) {
+				return square;
+			}
+		}
+		//TODO: bug returns null sometimes - shouldnt
+		return board.getRestSquaresMap().get(color).get(0);
+		//return null;
+	}
 }

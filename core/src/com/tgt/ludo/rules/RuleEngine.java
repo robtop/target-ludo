@@ -2,7 +2,9 @@ package com.tgt.ludo.rules;
 
 import java.util.List;
 
+import com.tgt.ludo.board.Board;
 import com.tgt.ludo.board.Piece;
+import com.tgt.ludo.board.Square;
 import com.tgt.ludo.player.Player;
 import com.tgt.ludo.player.action.Kill;
 import com.tgt.ludo.player.action.Move;
@@ -41,5 +43,6 @@ public interface RuleEngine {
 	public boolean escapeKill(Move move);
 	
 	public boolean reachHome(Move move);
+
 	
 }

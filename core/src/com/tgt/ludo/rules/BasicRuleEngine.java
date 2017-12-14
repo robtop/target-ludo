@@ -180,6 +180,8 @@ public class BasicRuleEngine implements RuleEngine {
 		return false;
 	}
 
+	
+	
 	@Override
 	public boolean escapeKill(Move move) {
 		// TODO Auto-generated method stub

@@ -1,9 +1,7 @@
 package com.tgt.ludo.player;
 
-import java.util.Arrays;
 import java.util.List;
 
-import com.badlogic.gdx.utils.Array;
 import com.tgt.ludo.player.action.Move;
 import com.tgt.ludo.rules.RuleEngine;
 import com.tgt.ludo.ui.LudoScreen;

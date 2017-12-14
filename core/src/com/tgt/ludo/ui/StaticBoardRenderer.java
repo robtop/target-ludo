@@ -353,17 +353,23 @@ public class StaticBoardRenderer {
 
 	private void createMainHome() {
 		instance = new ModelInstance(squareGreenModel);
-		instance.transform.translate((Board.DIMENSION + 1) * SQUARE_LENGTH, .6f, 0);
+		instance.transform.translate((Board.DIMENSION + 1) * SQUARE_LENGTH, .6f, SQUARE_LENGTH);
 		instance.transform.scale(1.5f, 1.5f, 1.5f);
 		squareInstMap.put(board.getHomeMap().get(COLOR.GREEN), instance);
+		
 		instance = new ModelInstance(squareYellowModel);
 		instance.transform.translate((Board.DIMENSION + 2) * SQUARE_LENGTH, .6f, 0);
+		instance.transform.scale(1.5f, 1.5f, 1.5f);
 		squareInstMap.put(board.getHomeMap().get(COLOR.YELLOW), instance);
+		
 		instance = new ModelInstance(squareBlueModel);
-		instance.transform.translate((Board.DIMENSION + 1) * SQUARE_LENGTH, .6f, 1 * SQUARE_LENGTH);
+		instance.transform.translate((Board.DIMENSION + 2) * SQUARE_LENGTH, .6f, 2 * SQUARE_LENGTH);
+		instance.transform.scale(1.5f, 1.5f, 1.5f);
 		squareInstMap.put(board.getHomeMap().get(COLOR.BLUE), instance);
+		
 		instance = new ModelInstance(squareRedModel);
-		instance.transform.translate((Board.DIMENSION + 1) * SQUARE_LENGTH, .6f, -1 * SQUARE_LENGTH);
+		instance.transform.translate((Board.DIMENSION + 3) * SQUARE_LENGTH, .6f, 1 * SQUARE_LENGTH);
+		instance.transform.scale(1.5f, 1.5f, 1.5f);
 		squareInstMap.put(board.getHomeMap().get(COLOR.RED), instance);
 	}
 

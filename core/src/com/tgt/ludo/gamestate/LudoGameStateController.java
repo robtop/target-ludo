@@ -19,6 +19,7 @@ import com.tgt.ludo.player.action.Move;
 import com.tgt.ludo.rules.BasicRuleEngine;
 import com.tgt.ludo.rules.RuleEngine;
 import com.tgt.ludo.ui.LudoScreen;
+import com.tgt.ludo.util.LudoUtil;
 
 /***
  * Main class controlling a single game session
@@ -58,13 +59,13 @@ public class LudoGameStateController implements GameStateController{
 		ruleEngine = new BasicRuleEngine(board);
 		this.screen = (LudoScreen) screen;
 		//createPlayers();
-		//createRobotPlayers();
-		createMinMaxPlayers();
+		createRobotPlayers();
+		//createMinMaxPlayers();
 		gameState = GAME_STATE.PROGRESS;
 	}
 
-	private boolean movingAnimation = false;
-	private Move move;
+	protected boolean movingAnimation = false;
+	protected Move move;
 	int sittingSquareIndex = 0;
 
 	/***
@@ -113,7 +114,7 @@ public class LudoGameStateController implements GameStateController{
 			}
 
 			// do the actual move in the board backend
-			movePiece(player);
+			movePieceInTrack(player);
 
 			// check game state for win etc after the animation completes
 		}
@@ -125,7 +126,7 @@ public class LudoGameStateController implements GameStateController{
 		}
 	}
 
-	private void movePiece(Player player) {
+	protected void movePieceInTrack(Player player) {
 		movingAnimation = true;
 		((LudoScreen) screen).getBoardRenderer().setPieceMovingInTrack(player, move);
 		move.getPiece().getSittingSuare().getPieces().remove(move.getPiece());
@@ -222,7 +223,7 @@ public class LudoGameStateController implements GameStateController{
 
 	private void createRobotPlayers() {
 		players = new ArrayList<Player>();
-
+/*
 		greenPlayer = new ComputerPlayer(((LudoScreen) screen), ruleEngine);
 		greenPlayer.setColor(COLOR.GREEN);
 		greenPlayer.setPieces(board.getPiecesMap().get(greenPlayer.getColor()));
@@ -239,7 +240,7 @@ public class LudoGameStateController implements GameStateController{
 		redPlayer.setStartIndex(Board.DIMENSION * 4 + 2);
 		redPlayer.setPieces(board.getPiecesMap().get(redPlayer.getColor()));
 		players.add(redPlayer);
-  
+  */
 		bluePlayer = new ComputerPlayer(((LudoScreen) screen), ruleEngine);
 		bluePlayer.setColor(COLOR.BLUE);
 		bluePlayer.setStartIndex(Board.DIMENSION * 6 + 3);
@@ -274,7 +275,7 @@ public class LudoGameStateController implements GameStateController{
 		players.add(bluePlayer);
 	}
 
-	private void shakeDice(boolean shake) {
+	protected void shakeDice(boolean shake) {
 		List<Dice> diceList = screen.getBoardRenderer().getDiceList();
 		for (Dice dice : diceList) {
 			dice.setShake(shake);

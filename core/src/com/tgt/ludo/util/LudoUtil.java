@@ -1,6 +1,8 @@
-package com.tgt.ludo.gamestate;
+package com.tgt.ludo.util;
 
 import com.tgt.ludo.board.Board;
+import com.tgt.ludo.board.Piece;
+import com.tgt.ludo.board.Square;
 import com.tgt.ludo.player.action.Move;
 
 public class LudoUtil {
@@ -38,7 +40,14 @@ public class LudoUtil {
 		return dest;
 	}
 
-	public static int calulateNextIndex(Move pieceMove, int moveCount, int moveTempIndex) {
+	public static int calulateNextIndex(Move pieceMove, int moveCount) {
+		
+		//shouldnt come here
+		if(pieceMove.getPiece().isHomeSq())
+		{
+			return -99;
+		}
+		 int newMoveTempIndex=0;
 		Board.COLOR color = pieceMove.getPiece().getColor();
 		int startIndex = 0;
 		switch (color) {
@@ -55,24 +64,34 @@ public class LudoUtil {
 			startIndex = Board.startIndexes.get(3);
 			break;
 		}
-
-		if (moveTempIndex == 0) {
-			moveTempIndex = startIndex + 1;
-		} else if (pieceMove.getPiece().getMoveCount()+1 == Board.TOTAL_NUM_SQUARES) {
+		int currentIndex =  (pieceMove.getPiece().getSittingSuare().getIndex() + moveCount) % 68;
+		
+		newMoveTempIndex = currentIndex;
+	if ((pieceMove.getPiece().getMoveCount()+1)%Board.TOTAL_NUM_SQUARES == 0) {
 			// move to home square
 			pieceMove.getPiece().setHomeSq(true);
-			moveTempIndex = 0;
-		} else if (moveTempIndex+1 >= Board.TOTAL_NUM_SQUARES) {
-			moveTempIndex = 0;
+			newMoveTempIndex = 0;
+		} else if (newMoveTempIndex+1 >= Board.TOTAL_NUM_SQUARES) {
+			newMoveTempIndex = 0;
 		} else {
-			moveTempIndex += 1;
+			newMoveTempIndex += 1;
 		}
 		//System.out.println("calulateNextIndex: " + moveTempIndex);
 		
 		pieceMove.getPiece().setMoveCount(pieceMove.getPiece().getMoveCount()+1);
 	//	System.out.println(
 		//		"total moves: " +pieceMove.getPiece().getMoveCount());
-		return moveTempIndex;
+		return newMoveTempIndex;
 	}
-
+	
+	public static Square getFreeRestSquare(Board.COLOR color,Board board) {
+		for (Square square : board.getRestSquaresMap().get(color)) {
+			if (square.getPieces().isEmpty()) {
+				return square;
+			}
+		}
+		//TODO: bug returns null sometimes - shouldnt
+		return board.getRestSquaresMap().get(color).get(0);
+		//return null;
+	}
 }

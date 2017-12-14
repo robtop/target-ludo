@@ -6,6 +6,8 @@ import com.tgt.ludo.board.Piece;
 import com.tgt.ludo.board.Square;
 import com.tgt.ludo.player.Player;
 import com.tgt.ludo.player.action.Kill;
+import com.tgt.ludo.player.action.Move;
+import com.tgt.ludo.ui.LudoScreen;
 
 /***
  * Main class controlling a single game session
@@ -42,6 +44,7 @@ public class AdvancedLudoGameStateController extends LudoGameStateController {
 		Kill kill = ruleEngine.getKills();
 		if (kill.getKilledPiece() != null && kill.getKilledPiece().size() > 0) {
 			Piece killedPiece = kill.getKilledPiece().get(0);
+			killedPiece.setKilled(true);
 			sendToRest(killedPiece);
 			System.out.println("Another turn: "+player.getColor());
 			getPlayer(kill.getKillerPiece().getColor()).setTurn(true);
@@ -49,21 +52,23 @@ public class AdvancedLudoGameStateController extends LudoGameStateController {
 	}
 
 	private void sendToRest(Piece piece){
-		piece.setRest(true);
 		piece.getSittingSuare().getPieces().remove(piece);
-		// TODO change to animation
-		getFreeRestSquare(piece.getColor()).getPieces().add(piece);
+		move = new Move(piece);
+		movePieceOutsideTrack(move);
 	}
 	
 	private void sendToHome(Piece piece){
 		piece.getSittingSuare().getPieces().remove(piece);
 		piece.setSittingSuare(board.getHomeMap().get(piece.getColor()));
-		
+		//give chance back to player
+		getPlayer(piece.getColor()).setTurn(true);
 	}
 	
 	private void jailCheck(){
 		Piece jailedPiece = ruleEngine.getPieceOnJail();
+		
 		if(jailedPiece!=null){
+			jailedPiece.setJailed(true);
 			sendToRest(jailedPiece);
 		}
 	}
@@ -73,18 +78,10 @@ public class AdvancedLudoGameStateController extends LudoGameStateController {
 		if(homePiece!=null){
 			sendToHome(homePiece);
 		}
+		
 	}
 	
-	private Square getFreeRestSquare(Board.COLOR color) {
-		for (Square square : board.getRestSquaresMap().get(color)) {
-			if (square.getPieces().isEmpty()) {
-				return square;
-			}
-		}
-		//TODO: bug returns null sometimes - shouldnt
-		return board.getRestSquaresMap().get(color).get(0);
-		//return null;
-	}
+	
 
 	private Player getPlayer(Board.COLOR color){
 		for (Player player : getPlayers()) {
@@ -93,5 +90,14 @@ public class AdvancedLudoGameStateController extends LudoGameStateController {
 			}
 		}
 		return null;
+	}
+	
+	protected void movePieceOutsideTrack(Move move) {
+		movingAnimation = true;
+		((LudoScreen) screen).getBoardRenderer().setPieceMovingOutSideTrack( move);
+		move.getPiece().getSittingSuare().getPieces().remove(move.getPiece());
+		sittingSquareIndex = move.getPiece().getSittingSuare().getIndex();
+		move.getPiece().setShake(false);
+		shakeDice(false);
 	}
 }

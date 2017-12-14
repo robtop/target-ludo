@@ -10,13 +10,25 @@ public class Piece {
 	private boolean rest;
 	// at homesuares
 	private boolean homeSq;
+	
 	private Square sittingSuare;
 	private boolean shake;
-	private boolean killed;
 	
+	private boolean killed;
+	private boolean jailed;
+	private boolean toHome;
 	//track how much it moved
 	private int moveCount = 0;
 
+	//after a kill 
+	public void reset(){
+		rest = false;
+		homeSq = false;
+		sittingSuare = null;
+		shake = false;
+		killed = false;
+	}
+	
 	public Board.COLOR getColor() {
 		return color;
 	}
@@ -71,6 +83,22 @@ public class Piece {
 
 	public void setMoveCount(int moveCount) {
 		this.moveCount = moveCount;
+	}
+
+	public boolean isJailed() {
+		return jailed;
+	}
+
+	public void setJailed(boolean jailed) {
+		this.jailed = jailed;
+	}
+
+	public boolean isToHome() {
+		return toHome;
+	}
+
+	public void setToHome(boolean toHome) {
+		this.toHome = toHome;
 	}
 
 }

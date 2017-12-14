@@ -13,9 +13,9 @@ import com.badlogic.gdx.math.Vector3;
 import com.tgt.ludo.board.Board;
 import com.tgt.ludo.board.Dice;
 import com.tgt.ludo.board.Piece;
-import com.tgt.ludo.gamestate.LudoUtil;
 import com.tgt.ludo.player.Player;
 import com.tgt.ludo.player.action.Move;
+import com.tgt.ludo.util.LudoUtil;
 
 public class BoardRenderer extends StaticBoardRenderer {
 

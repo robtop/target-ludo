@@ -14,7 +14,7 @@
  * limitations under the License.
  ******************************************************************************/
 
-package de.tomgrill.gdxtesting.examples;
+package com.tgt.ludo;
 
 import static org.junit.Assert.assertTrue;
 
@@ -23,10 +23,8 @@ import org.junit.runner.RunWith;
 
 import com.badlogic.gdx.Gdx;
 
-import de.tomgrill.gdxtesting.GdxTestRunner;
-
 @RunWith(GdxTestRunner.class)
-public class AssetExistsExampleTest {
+public class AssetModelsExist {
 
 	@Test
 	public void meshFileExists() {

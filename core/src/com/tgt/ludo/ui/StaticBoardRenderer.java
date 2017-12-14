@@ -100,6 +100,11 @@ public class StaticBoardRenderer {
 		modelBatch = new ModelBatch();
 	}
 
+	/**
+	 * Colored squares that lead to the central home
+	 * 
+	 * @param delta
+	 */
 	protected void renderHomeSquares(float delta) {
 		for (Square sq : board.getHomeSquaresMap().get(COLOR.GREEN)) {
 			renderSquare(sq, delta);
@@ -150,6 +155,9 @@ public class StaticBoardRenderer {
 		}
 	}
 
+	/**
+	 * Center home squares
+	 */
 	private void renderMainHome() {
 		modelBatch.render(squareInstMap.get(board.getHomeMap().get(COLOR.GREEN)), environment);
 		modelBatch.render(squareInstMap.get(board.getHomeMap().get(COLOR.YELLOW)), environment);

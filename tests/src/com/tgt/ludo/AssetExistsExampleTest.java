@@ -14,17 +14,21 @@
  * limitations under the License.
  ******************************************************************************/
 
-package de.tomgrill.gdxtesting.examples;
+package com.tgt.ludo;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
-public class UnitTestExample {
+import com.badlogic.gdx.Gdx;
+
+@RunWith(GdxTestRunner.class)
+public class AssetExistsExampleTest {
 
 	@Test
-	public void oneEqualsOne() {
-		assertEquals(1, 1);
+	public void meshFileExists() {
+		assertTrue("This test will only pass when the piece.g3db file exists", Gdx.files
+				.internal("../core/assets/meshes/pawnBlue.g3dj").exists());
 	}
-
 }

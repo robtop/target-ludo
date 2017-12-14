@@ -1,4 +1,4 @@
-package com.tgt.ludo.gamestate;
+package com.tgt.ludo.util;
 
 import com.tgt.ludo.board.Board;
 import com.tgt.ludo.player.action.Move;
@@ -56,14 +56,14 @@ public class LudoUtil {
 			break;
 		}
 
-		if (moveTempIndex == 0) {
+		if (moveTempIndex == 0 && !pieceMove.getPiece().isHomeSq()) {
 			moveTempIndex = startIndex + 1;
-		} else if (pieceMove.getPiece().getMoveCount()+1 == Board.TOTAL_NUM_SQUARES) {
+		} else if ((pieceMove.getPiece().getSittingSuare().getIndex() +  pieceMove.getPiece().getMoveCount()+1)%68 == startIndex) {
 			// move to home square
 			pieceMove.getPiece().setHomeSq(true);
 			moveTempIndex = 0;
 		} else if (moveTempIndex+1 >= Board.TOTAL_NUM_SQUARES) {
-			moveTempIndex = 0;
+			moveTempIndex = startIndex + 1;
 		} else {
 			moveTempIndex += 1;
 		}

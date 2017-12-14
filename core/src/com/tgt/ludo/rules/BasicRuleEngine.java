@@ -6,10 +6,10 @@ import java.util.List;
 import com.tgt.ludo.board.Board;
 import com.tgt.ludo.board.Piece;
 import com.tgt.ludo.board.Square;
-import com.tgt.ludo.gamestate.LudoUtil;
 import com.tgt.ludo.player.Player;
 import com.tgt.ludo.player.action.Kill;
 import com.tgt.ludo.player.action.Move;
+import com.tgt.ludo.util.LudoUtil;
 
 /**
  * Engine to enfocre rule of ludo.

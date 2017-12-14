@@ -38,7 +38,14 @@ public class LudoUtil {
 		return dest;
 	}
 
-	public static int calulateNextIndex(Move pieceMove, int moveCount, int moveTempIndex) {
+	public static int calulateNextIndex(Move pieceMove, int moveCount) {
+		
+		//shouldnt come here
+		if(pieceMove.getPiece().isHomeSq())
+		{
+			return -99;
+		}
+		 int newMoveTempIndex=0;
 		Board.COLOR color = pieceMove.getPiece().getColor();
 		int startIndex = 0;
 		switch (color) {
@@ -55,24 +62,26 @@ public class LudoUtil {
 			startIndex = Board.startIndexes.get(3);
 			break;
 		}
-
-		if (moveTempIndex == 0 && !pieceMove.getPiece().isHomeSq()) {
-			moveTempIndex = startIndex + 1;
-		} else if ((pieceMove.getPiece().getSittingSuare().getIndex() +  pieceMove.getPiece().getMoveCount()+1)%68 == startIndex) {
+		int currentIndex =  (pieceMove.getPiece().getSittingSuare().getIndex() + moveCount) % 68;
+		
+		newMoveTempIndex = currentIndex;
+		if (currentIndex == 0 && !pieceMove.getPiece().isHomeSq()) {
+			newMoveTempIndex = startIndex + 1;
+		} else if ((pieceMove.getPiece().getMoveCount()+1)%Board.TOTAL_NUM_SQUARES == 0) {
 			// move to home square
 			pieceMove.getPiece().setHomeSq(true);
-			moveTempIndex = 0;
-		} else if (moveTempIndex+1 >= Board.TOTAL_NUM_SQUARES) {
-			moveTempIndex = startIndex + 1;
+			newMoveTempIndex = 0;
+		} else if (newMoveTempIndex+1 >= Board.TOTAL_NUM_SQUARES) {
+			newMoveTempIndex = 0;
 		} else {
-			moveTempIndex += 1;
+			newMoveTempIndex += 1;
 		}
 		//System.out.println("calulateNextIndex: " + moveTempIndex);
 		
 		pieceMove.getPiece().setMoveCount(pieceMove.getPiece().getMoveCount()+1);
 	//	System.out.println(
 		//		"total moves: " +pieceMove.getPiece().getMoveCount());
-		return moveTempIndex;
+		return newMoveTempIndex;
 	}
 
 }

@@ -94,7 +94,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 		Vector3 diff = finalTranslation.sub(currentTranslation);
 		modelBatch.render(pieceInstance, environment);
 		if (diff.len() < .1f) {
-			moveTempIndex = LudoUtil.calulateNextIndex(pieceMove,moveCount,moveTempIndex );
+			moveTempIndex = LudoUtil.calulateNextIndex(pieceMove,moveCount);
 			moveCount++;
 		} else {
 
@@ -198,7 +198,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 			moveFinalIndex = LudoUtil.calulateDestIndex(move);
 			moveTempIndex = move.getPiece().getSittingSuare().getIndex();
 			moveCount =0;
-			moveTempIndex = LudoUtil.calulateNextIndex(move, moveCount, moveTempIndex);
+			moveTempIndex = LudoUtil.calulateNextIndex(move, moveCount);
 		}
 	}
 

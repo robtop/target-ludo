@@ -67,15 +67,46 @@ public class LudoUtilTests {
 	}
 	
 	@Test
+	public void destforBlueAtOuterTrackEnd() {
+		assertEquals(1, 1);
+	
+		testPiece.setColor(Board.COLOR.BLUE);
+		sittingSquare.setIndex(67);
+		testPiece.setSittingSuare(sittingSquare);
+
+		move = new Move(testPiece, 10);
+		int dest =LudoUtil.calulateDestIndex(move);
+		System.out.println(dest);
+		assert(dest==9);
+	}
+	
+	@Test
+	public void destforRedAtOuterTrackEnd() {
+		assertEquals(1, 1);
+	
+		testPiece.setColor(Board.COLOR.RED);
+		sittingSquare.setIndex(Board.startIndexes.get(2));
+		testPiece.setSittingSuare(sittingSquare);
+
+		move = new Move(testPiece, 5);
+		int dest =LudoUtil.calulateDestIndex(move);
+		System.out.println(dest);
+		assert(dest==Board.startIndexes.get(2)+5);
+	}
+	
+	
+	
+	@Test
 	public void nextIndexOuterTrackEnd() {
 		assertEquals(1, 1);
 	
 		testPiece.setColor(Board.COLOR.GREEN);
 		sittingSquare.setIndex(Board.TOTAL_NUM_SQUARES-1);
+		testPiece.setMoveCount(Board.TOTAL_NUM_SQUARES-1);
 		testPiece.setSittingSuare(sittingSquare);
 		
 		Move move = new Move(testPiece, 5);
-		int next =LudoUtil.calulateNextIndex(move, 5, 1);
+		int next =LudoUtil.calulateNextIndex(move, 0);
 		//System.out.println(dest);
 		//on home square
 		assert(move.getPiece().isHomeSq());
@@ -90,26 +121,45 @@ public class LudoUtilTests {
 		testPiece.setColor(Board.COLOR.BLUE);
 		sittingSquare.setIndex(Board.TOTAL_NUM_SQUARES-1);
 		testPiece.setSittingSuare(sittingSquare);
-		
-		move = new Move(testPiece, 5);
-		int next =LudoUtil.calulateNextIndex(move, 5, 1);
+		testPiece.setMoveCount(Board.TOTAL_NUM_SQUARES-Board.startIndexes.get(3));
+		move = new Move(testPiece, 6);
+		int next =LudoUtil.calulateNextIndex(move, 0);
 		System.out.println(next);
 		//not on home square
 		assert(!move.getPiece().isHomeSq());
-		assert(next==2);
+		assert(next==0);
 	}
+	
+	@Test
+	public void nextIndexOuterTrackforRed() {
+		assertEquals(1, 1);
+	
+		testPiece.setColor(Board.COLOR.BLUE);
+		sittingSquare.setIndex(Board.startIndexes.get(2));
+		testPiece.setMoveCount(0);
+		testPiece.setSittingSuare(sittingSquare);
+		
+		move = new Move(testPiece, 6);
+		int next =LudoUtil.calulateNextIndex(move, 5);
+		System.out.println(next);
+		//not on home square
+		assert(!move.getPiece().isHomeSq());
+		assert(next==Board.startIndexes.get(2)+6);
+	}
+	
 	
 	@Test
 	public void getIntoHomeforBlue() {
 		assertEquals(1, 1);
 	
 		testPiece.setColor(Board.COLOR.BLUE);
-		sittingSquare.setIndex(Board.TOTAL_NUM_SQUARES-1);
+
 		sittingSquare.setIndex(Board.startIndexes.get(3)-1);
+		testPiece.setMoveCount(Board.TOTAL_NUM_SQUARES-1);
 		testPiece.setSittingSuare(sittingSquare);
 		
 		move = new Move(testPiece, 5);
-		int next =LudoUtil.calulateNextIndex(move, 5, 1);
+		int next =LudoUtil.calulateNextIndex(move, 0);
 		System.out.println(next);
 		//not on home square
 		assert(move.getPiece().isHomeSq());

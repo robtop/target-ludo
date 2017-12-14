@@ -58,7 +58,8 @@ public class AdvancedLudoGameStateController extends LudoGameStateController {
 	private void sendToHome(Piece piece){
 		piece.getSittingSuare().getPieces().remove(piece);
 		piece.setSittingSuare(board.getHomeMap().get(piece.getColor()));
-		
+		//give chance back to player
+		getPlayer(piece.getColor()).setTurn(true);
 	}
 	
 	private void jailCheck(){
@@ -73,6 +74,7 @@ public class AdvancedLudoGameStateController extends LudoGameStateController {
 		if(homePiece!=null){
 			sendToHome(homePiece);
 		}
+		
 	}
 	
 	private Square getFreeRestSquare(Board.COLOR color) {

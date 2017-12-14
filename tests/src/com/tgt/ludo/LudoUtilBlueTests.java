@@ -27,7 +27,7 @@ import com.tgt.ludo.board.Square;
 import com.tgt.ludo.player.action.Move;
 import com.tgt.ludo.util.LudoUtil;
 
-public class LudoUtilTests {
+public class LudoUtilBlueTests {
 
 	Piece testPiece;
 	Square sittingSquare ;
@@ -39,8 +39,68 @@ public class LudoUtilTests {
 		 sittingSquare = new Square();
 	}
 	
+	@Test
+	public void basicDestCalculation() {
+		assertEquals(1, 1);
+	
+		testPiece.setColor(Board.COLOR.GREEN);
+		sittingSquare.setIndex(0);
+		testPiece.setSittingSuare(sittingSquare);
+		
+		move = new Move(testPiece, 10);
+		int dest =LudoUtil.calulateDestIndex(move);
+		assert(dest==10);
+	}
+	
+	@Test
+	public void destAtOuterTrackEnd() {
+		assertEquals(1, 1);
+	
+		testPiece.setColor(Board.COLOR.GREEN);
+		sittingSquare.setIndex(67);
+		testPiece.setSittingSuare(sittingSquare);
+
+		move = new Move(testPiece, 10);
+		int dest =LudoUtil.calulateDestIndex(move);
+		System.out.println(dest);
+		assert(dest==9);
+	}
+	
+
+	
+	@Test
+	public void destforRedAtOuterTrackEnd() {
+		assertEquals(1, 1);
+	
+		testPiece.setColor(Board.COLOR.RED);
+		sittingSquare.setIndex(Board.startIndexes.get(2));
+		testPiece.setSittingSuare(sittingSquare);
+
+		move = new Move(testPiece, 5);
+		int dest =LudoUtil.calulateDestIndex(move);
+		System.out.println(dest);
+		assert(dest==Board.startIndexes.get(2)+5);
+	}
 	
 	
+	
+	@Test
+	public void nextIndexOuterTrackEnd() {
+		assertEquals(1, 1);
+	
+		testPiece.setColor(Board.COLOR.GREEN);
+		sittingSquare.setIndex(Board.TOTAL_NUM_SQUARES-1);
+		testPiece.setMoveCount(Board.TOTAL_NUM_SQUARES-1);
+		testPiece.setSittingSuare(sittingSquare);
+		
+		Move move = new Move(testPiece, 5);
+		int next =LudoUtil.calulateNextIndex(move, 0);
+		//System.out.println(dest);
+		//on home square
+		assert(move.getPiece().isHomeSq());
+		
+
+	}
 	
 	@Test
 	public void destforBlueAtOuterTrackEnd() {
@@ -63,7 +123,7 @@ public class LudoUtilTests {
 		testPiece.setColor(Board.COLOR.BLUE);
 		sittingSquare.setIndex(Board.TOTAL_NUM_SQUARES-1);
 		testPiece.setSittingSuare(sittingSquare);
-		testPiece.setMoveCount(Board.TOTAL_NUM_SQUARES-Board.startIndexes.get(3)-1);
+		testPiece.setMoveCount(Board.TOTAL_NUM_SQUARES-Board.startIndexes.get(3));
 		move = new Move(testPiece, 6);
 		int next =LudoUtil.calulateNextIndex(move, 0);
 		System.out.println(next);
@@ -73,19 +133,20 @@ public class LudoUtilTests {
 	}
 	
 	@Test
-	public void nextIndexOuterTrackEndforBlue1() {
+	public void nextIndexOuterTrackforRed() {
 		assertEquals(1, 1);
 	
-		testPiece.setColor(Board.COLOR.BLUE);
-		sittingSquare.setIndex(0);
+		testPiece.setColor(Board.COLOR.RED);
+		sittingSquare.setIndex(Board.startIndexes.get(2));
+		testPiece.setMoveCount(0);
 		testPiece.setSittingSuare(sittingSquare);
-		testPiece.setMoveCount(Board.TOTAL_NUM_SQUARES-Board.startIndexes.get(3)+1);
+		
 		move = new Move(testPiece, 6);
-		int next =LudoUtil.calulateNextIndex(move, 0);
+		int next =LudoUtil.calulateNextIndex(move, 5);
 		System.out.println(next);
 		//not on home square
 		assert(!move.getPiece().isHomeSq());
-		assert(next==1);
+		assert(next==Board.startIndexes.get(2)+6);
 	}
 	
 	@Test

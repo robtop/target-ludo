@@ -65,9 +65,7 @@ public class LudoUtil {
 		int currentIndex =  (pieceMove.getPiece().getSittingSuare().getIndex() + moveCount) % 68;
 		
 		newMoveTempIndex = currentIndex;
-		if (currentIndex == 0 && !pieceMove.getPiece().isHomeSq()) {
-			newMoveTempIndex = startIndex + 1;
-		} else if ((pieceMove.getPiece().getMoveCount()+1)%Board.TOTAL_NUM_SQUARES == 0) {
+	if ((pieceMove.getPiece().getMoveCount()+1)%Board.TOTAL_NUM_SQUARES == 0) {
 			// move to home square
 			pieceMove.getPiece().setHomeSq(true);
 			newMoveTempIndex = 0;

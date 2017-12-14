@@ -26,6 +26,7 @@ public class ANNPlayer extends ComputerPlayer{
 			return super.selectMove(moves);
 		}
 
+	
 	public int[] createInput(Move move) {
 
 	   int[] input = new int[7];

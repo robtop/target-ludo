@@ -145,7 +145,7 @@ public class Board {
 
 	private List<Piece> createPiecesList(Board.COLOR color) {
 		List<Piece> list = new ArrayList<Piece>();
-		for (int i = 0; i < 1; i++) {
+		for (int i = 0; i < 4; i++) {
 			Piece piece = new Piece();
 			piece.setColor(color);
 			piece.setRest(true);

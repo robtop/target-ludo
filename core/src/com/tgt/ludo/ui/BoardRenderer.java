@@ -153,6 +153,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 			pieceMove.getPiece().getSittingSuare().getPieces().remove(pieceMove.getPiece());
 			pieceMove.getPiece().reset();
 			pieceMove.getPiece().setSittingSuare(moveToRestSq);
+			moveToRestSq.getPieces().add(pieceMove.getPiece());
 			pieceMove.getPiece().setRest(true);
 			pieceMove.setPiece(null);
 			// set the destination squares translation to the piece

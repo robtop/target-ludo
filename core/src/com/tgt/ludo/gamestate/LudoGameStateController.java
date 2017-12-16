@@ -63,7 +63,6 @@ public class LudoGameStateController implements GameStateController {
 		gameState = GAME_STATE.PROGRESS;
 	}
 
-	protected boolean movingAnimation = false;
 	protected Move move;
 	int sittingSquareIndex = 0;
 
@@ -72,8 +71,7 @@ public class LudoGameStateController implements GameStateController {
 	 */
 	public void update() {
 		// wait for piece motion animation to complete
-		if (movingAnimation) {
-			animationCheck();
+		if (!((LudoScreen) screen).getBoardRenderer().isAnimationComplete()) {
 			return;
 		}
 
@@ -127,7 +125,6 @@ public class LudoGameStateController implements GameStateController {
 	}
 
 	protected void movePieceInTrack(Player player) {
-		movingAnimation = true;
 		if (move == null || move.getPiece() == null) {
 			return;
 		}
@@ -138,11 +135,7 @@ public class LudoGameStateController implements GameStateController {
 		shakeDice(false);
 	}
 
-	private void animationCheck() {
-		if (((LudoScreen) screen).getBoardRenderer().isAnimationComplete()) {
-			movingAnimation = false;
-		}
-	}
+	
 
 	private void giveTurnToNext(Player currentPlayer, int i) {
 		currentPlayer.setTurn(false);

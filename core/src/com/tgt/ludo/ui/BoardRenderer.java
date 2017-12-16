@@ -30,7 +30,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 	protected boolean restMovedToStart;
 	private boolean movedToRest;
 	private boolean homeSqMovedToHome;
-	
+
 	private Square moveToRestSq;
 	private boolean killMovedToRest;
 
@@ -61,8 +61,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 				renderMovingRestPiece(delta);
 			} else if (pieceMove.getPiece().isJailed() || pieceMove.getPiece().isKilled()) {
 				renderMovingToRestPiece(delta);
-			}
-			else {
+			} else {
 				renderMovingPiece(delta);
 			}
 		}
@@ -104,7 +103,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 		Vector3 diff = finalTranslation.sub(currentTranslation);
 		modelBatch.render(pieceInstance, environment);
 		if (diff.len() < .1f) {
-			moveTempIndex = LudoUtil.calulateNextIndex(pieceMove,moveCount);
+			moveTempIndex = LudoUtil.calulateNextIndex(pieceMove, moveCount);
 			moveCount++;
 		} else {
 
@@ -120,9 +119,13 @@ public class BoardRenderer extends StaticBoardRenderer {
 			// set the destination squares translation to the piece
 			pieceInstance.transform.setTranslation(trans);
 			Square finalSquare = board.getSquares().get(LudoUtil.getStartIndex(pieceMove.getPiece().getColor()));
+			pieceMove.getPiece().setSittingSuare(finalSquare);
+			finalSquare.getPieces().add(pieceMove.getPiece());
+
 			pieceMove.getPiece().setRest(false);
 			animationComplete = true;
 			restMovedToStart = false;
+			pieceMove = null;
 			return;
 		}
 
@@ -175,6 +178,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 		}
 
 	}
+
 	public void renderDice(float delta) {
 		int count = 0;
 		for (Dice dice : diceList) {
@@ -232,7 +236,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 		moveCount = 0;
 		pieceMove = move;
 		animationComplete = false;
-		if(move== null || move.getPiece()==null){
+		if (move == null || move.getPiece() == null) {
 			return;
 		}
 		if (move.getPiece().isRest()) {
@@ -244,19 +248,19 @@ public class BoardRenderer extends StaticBoardRenderer {
 			moveFinalIndex = 0;
 			moveFinalIndex = LudoUtil.calulateDestIndex(move);
 			moveTempIndex = move.getPiece().getSittingSuare().getIndex();
-			moveCount =0;
+			moveCount = 0;
 			moveTempIndex = LudoUtil.calulateNextIndex(move, moveCount);
 		}
 	}
-	
+
 	public void setPieceMovingOutSideTrack(Move move) {
 		pieceMove = move;
 		animationComplete = false;
-       
+
 		if (move.getPiece().isKilled() || move.getPiece().isJailed()) {
-			moveToRestSq = LudoUtil.getFreeRestSquare(move.getPiece().getColor(),board);
+			moveToRestSq = LudoUtil.getFreeRestSquare(move.getPiece().getColor(), board);
 		} else {
-			
+
 		}
 	}
 
@@ -271,8 +275,6 @@ public class BoardRenderer extends StaticBoardRenderer {
 		dice.setDiceInstance(instance);
 		return dice;
 	}
-
-	
 
 	public boolean isAnimationComplete() {
 		return animationComplete;

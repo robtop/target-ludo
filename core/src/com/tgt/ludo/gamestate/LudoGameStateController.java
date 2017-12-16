@@ -217,29 +217,29 @@ public class LudoGameStateController implements GameStateController {
 
 	private void createMinMaxPlayers() {
 		players = new ArrayList<Player>();
+//
+//		greenPlayer = new ANNPlayer(((LudoScreen) screen), ruleEngine);
+//		greenPlayer.setColor(COLOR.GREEN);
+//		greenPlayer.setPieces(board.getPiecesMap().get(greenPlayer.getColor()));
+//		players.add(greenPlayer);
 
-		greenPlayer = new ANNPlayer(((LudoScreen) screen), ruleEngine);
-		greenPlayer.setColor(COLOR.GREEN);
-		greenPlayer.setPieces(board.getPiecesMap().get(greenPlayer.getColor()));
-		players.add(greenPlayer);
-
-		// yellowPlayer = new MinMaxPlayer(((LudoScreen) screen), ruleEngine);
-		// yellowPlayer.setColor(COLOR.YELLOW);
-		// yellowPlayer.setStartIndex(Board.DIMENSION * 2 + 1);
-		// yellowPlayer.setPieces(board.getPiecesMap().get(yellowPlayer.getColor()));
-		// players.add(yellowPlayer);
-		//
-		// redPlayer = new MinMaxPlayer(((LudoScreen) screen), ruleEngine);
-		// redPlayer.setColor(COLOR.RED);
-		// redPlayer.setStartIndex(Board.DIMENSION * 4 + 2);
-		// redPlayer.setPieces(board.getPiecesMap().get(redPlayer.getColor()));
-		// players.add(redPlayer);
-		//
-		// bluePlayer = new MinMaxPlayer(((LudoScreen) screen), ruleEngine);
-		// bluePlayer.setColor(COLOR.BLUE);
-		// bluePlayer.setStartIndex(Board.DIMENSION * 6 + 3);
-		// bluePlayer.setPieces(board.getPiecesMap().get(bluePlayer.getColor()));
-		// players.add(bluePlayer);
+		 yellowPlayer = new MinMaxPlayer(((LudoScreen) screen), ruleEngine);
+		 yellowPlayer.setColor(COLOR.YELLOW);
+		 yellowPlayer.setStartIndex(Board.DIMENSION * 2 + 1);
+		 yellowPlayer.setPieces(board.getPiecesMap().get(yellowPlayer.getColor()));
+		 players.add(yellowPlayer);
+		
+		 redPlayer = new MinMaxPlayer(((LudoScreen) screen), ruleEngine);
+		 redPlayer.setColor(COLOR.RED);
+		 redPlayer.setStartIndex(Board.DIMENSION * 4 + 2);
+		 redPlayer.setPieces(board.getPiecesMap().get(redPlayer.getColor()));
+		 players.add(redPlayer);
+		
+		 bluePlayer = new MinMaxPlayer(((LudoScreen) screen), ruleEngine);
+		 bluePlayer.setColor(COLOR.BLUE);
+		 bluePlayer.setStartIndex(Board.DIMENSION * 6 + 3);
+		 bluePlayer.setPieces(board.getPiecesMap().get(bluePlayer.getColor()));
+		 players.add(bluePlayer);
 	}
 
 	protected void shakeDice(boolean shake) {

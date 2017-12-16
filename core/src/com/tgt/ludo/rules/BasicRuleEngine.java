@@ -12,7 +12,7 @@ import com.tgt.ludo.player.action.Move;
 import com.tgt.ludo.util.LudoUtil;
 
 /**
- * Engine to enfocre rule of ludo.
+ * Engine to enforce rules of ludo.
  * 
  * @author robin
  *
@@ -54,7 +54,6 @@ public class BasicRuleEngine implements RuleEngine {
 			if (piece.isRest() && diceVal == 6) {
 				Move move = new Move(piece);
 				move.setSquares(0);
-				System.out.println("Starter 6: "+player.getColor()+player );
 				moves.add(move);
 			}
 
@@ -93,7 +92,6 @@ public class BasicRuleEngine implements RuleEngine {
 					killePieces.add(square.getPieces().get(0));
 					kill.setKilledPiece(killePieces);
 					kill.setKillerPiece(square.getPieces().get(1));
-					System.out.println("Killed: " + killePieces.get(0).getColor()+killePieces);
 				}
 			}
 		}
@@ -115,7 +113,6 @@ public class BasicRuleEngine implements RuleEngine {
 		for (Integer i : board.jailIndexes) {
 			if (!board.getSquares().get(i).getPieces().isEmpty()) {
 				Piece jailedPiece = board.getSquares().get(i).getPieces().get(0);
-				System.out.println("Jailed: " + jailedPiece.getColor() + jailedPiece);
 				return jailedPiece;
 			}
 		}

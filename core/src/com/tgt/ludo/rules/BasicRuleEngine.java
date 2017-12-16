@@ -54,7 +54,7 @@ public class BasicRuleEngine implements RuleEngine {
 			if (piece.isRest() && diceVal == 6) {
 				Move move = new Move(piece);
 				move.setSquares(0);
-				move.setStart(true);
+				System.out.println("Starter 6: "+player.getColor()+player );
 				moves.add(move);
 			}
 
@@ -93,7 +93,7 @@ public class BasicRuleEngine implements RuleEngine {
 					killePieces.add(square.getPieces().get(0));
 					kill.setKilledPiece(killePieces);
 					kill.setKillerPiece(square.getPieces().get(1));
-					System.out.println("Killed: " + killePieces.get(0).getColor());
+					System.out.println("Killed: " + killePieces.get(0).getColor()+killePieces);
 				}
 			}
 		}
@@ -114,8 +114,9 @@ public class BasicRuleEngine implements RuleEngine {
 	public Piece getPieceOnJail() {
 		for (Integer i : board.jailIndexes) {
 			if (!board.getSquares().get(i).getPieces().isEmpty()) {
-				System.out.println("Jailed: ");
-				return board.getSquares().get(i).getPieces().get(0);
+				Piece jailedPiece = board.getSquares().get(i).getPieces().get(0);
+				System.out.println("Jailed: " + jailedPiece.getColor() + jailedPiece);
+				return jailedPiece;
 			}
 		}
 		return null;

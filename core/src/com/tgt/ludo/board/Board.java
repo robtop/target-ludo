@@ -23,13 +23,13 @@ public class Board {
 	// index from start point of each color
 	// public static final int JAIL_INDEX = 12;
 	// special home square
-	public static final int HOME_INDEX = 7;
+	public static final int HOME_INDEX = 50;
 
 	public static enum COLOR {
 		GREEN, YELLOW, RED, BLUE
 	}
 
-	public static final  List<Integer> jailIndexes = new ArrayList<Integer>(Arrays.asList(13, 30, 47, 64));
+	public static final  List<Integer> jailIndexes = new ArrayList<Integer>(Arrays.asList(6,9,11,13));//new ArrayList<Integer>(Arrays.asList(13, 30, 47, 64));
 
 	public static final List<Integer> startIndexes = new ArrayList<Integer>(
 			Arrays.asList(0, DIMENSION * 2 + 1, DIMENSION * 4 + 2, DIMENSION * 6 + 3));
@@ -145,7 +145,7 @@ public class Board {
 
 	private List<Piece> createPiecesList(Board.COLOR color) {
 		List<Piece> list = new ArrayList<Piece>();
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < 1; i++) {
 			Piece piece = new Piece();
 			piece.setColor(color);
 			piece.setRest(true);

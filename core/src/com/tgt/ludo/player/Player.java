@@ -177,6 +177,9 @@ public abstract class Player {
 		this.startIndex = startIndex;
 	}
 
-	
+	@Override
+	public String toString(){
+		return super.toString().replaceAll("com.tgt.ludo.player", "");
+	}
 
 }

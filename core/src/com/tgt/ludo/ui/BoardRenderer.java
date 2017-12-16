@@ -20,7 +20,7 @@ import com.tgt.ludo.util.LudoUtil;
 
 public class BoardRenderer extends StaticBoardRenderer {
 
-	protected boolean pieceMoved = true;
+	protected boolean animationComplete = true;
 	protected Move pieceMove;
 	protected int moveFinalIndex;
 	private int moveTempIndex;
@@ -30,7 +30,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 	protected boolean restMovedToStart;
 	private boolean movedToRest;
 	private boolean homeSqMovedToHome;
-	
+
 	private Square moveToRestSq;
 	private boolean killMovedToRest;
 
@@ -56,13 +56,12 @@ public class BoardRenderer extends StaticBoardRenderer {
 
 		renderContext.begin();
 		modelBatch.begin(cam);
-		if (!pieceMoved) {
+		if (!animationComplete) {
 			if (pieceMove.getPiece().isRest()) {
 				renderMovingRestPiece(delta);
 			} else if (pieceMove.getPiece().isJailed() || pieceMove.getPiece().isKilled()) {
 				renderMovingToRestPiece(delta);
-			}
-			else {
+			} else {
 				renderMovingPiece(delta);
 			}
 		}
@@ -79,7 +78,11 @@ public class BoardRenderer extends StaticBoardRenderer {
 			squareInstMap.get(board.getSquares().get(moveFinalIndex)).transform.getTranslation(trans);
 			// set the destination squares translation to the piece
 			pieceInstance.transform.setTranslation(trans);
-			pieceMoved = true;
+			Square finalSquare = board.getSquares().get(LudoUtil.calulateDestIndex(pieceMove));
+			finalSquare.getPieces().add(pieceMove.getPiece());
+			pieceMove.getPiece().getSittingSuare().getPieces().remove(pieceMove.getPiece());
+			pieceMove.getPiece().setSittingSuare(finalSquare);
+			animationComplete = true;
 			return;
 		}
 		// check if it reached its home square or home etc
@@ -100,7 +103,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 		Vector3 diff = finalTranslation.sub(currentTranslation);
 		modelBatch.render(pieceInstance, environment);
 		if (diff.len() < .1f) {
-			moveTempIndex = LudoUtil.calulateNextIndex(pieceMove,moveCount);
+			moveTempIndex = LudoUtil.calulateNextIndex(pieceMove, moveCount);
 			moveCount++;
 		} else {
 
@@ -115,8 +118,14 @@ public class BoardRenderer extends StaticBoardRenderer {
 			squareInstMap.get(board.getSquares().get(moveFinalIndex)).transform.getTranslation(trans);
 			// set the destination squares translation to the piece
 			pieceInstance.transform.setTranslation(trans);
-			pieceMoved = true;
+			Square finalSquare = board.getSquares().get(LudoUtil.getStartIndex(pieceMove.getPiece().getColor()));
+			pieceMove.getPiece().setSittingSuare(finalSquare);
+			finalSquare.getPieces().add(pieceMove.getPiece());
+
+			pieceMove.getPiece().setRest(false);
+			animationComplete = true;
 			restMovedToStart = false;
+			pieceMove = null;
 			return;
 		}
 
@@ -140,14 +149,17 @@ public class BoardRenderer extends StaticBoardRenderer {
 	public void renderMovingToRestPiece(float delta) {
 		if (movedToRest) {
 			Vector3 trans = new Vector3();
-			squareInstMap.get(board.getSquares().get(moveFinalIndex)).transform.getTranslation(trans);
+			squareInstMap.get(moveToRestSq).transform.getTranslation(trans);
+			pieceMove.getPiece().getSittingSuare().getPieces().remove(pieceMove.getPiece());
 			pieceMove.getPiece().reset();
 			pieceMove.getPiece().setSittingSuare(moveToRestSq);
+			pieceMove.getPiece().setRest(true);
 			pieceMove.setPiece(null);
 			// set the destination squares translation to the piece
 			pieceInstance.transform.setTranslation(trans);
-			pieceMove.setRest(true);
-			pieceMoved = true;
+			
+			pieceMove = null;
+			animationComplete = true;
 			movedToRest = false;
 			return;
 		}
@@ -168,6 +180,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 		}
 
 	}
+
 	public void renderDice(float delta) {
 		int count = 0;
 		for (Dice dice : diceList) {
@@ -224,8 +237,8 @@ public class BoardRenderer extends StaticBoardRenderer {
 	public void setPieceMovingInTrack(Player player, Move move) {
 		moveCount = 0;
 		pieceMove = move;
-		pieceMoved = false;
-		if(move== null || move.getPiece()==null){
+		animationComplete = false;
+		if (move == null || move.getPiece() == null) {
 			return;
 		}
 		if (move.getPiece().isRest()) {
@@ -237,19 +250,19 @@ public class BoardRenderer extends StaticBoardRenderer {
 			moveFinalIndex = 0;
 			moveFinalIndex = LudoUtil.calulateDestIndex(move);
 			moveTempIndex = move.getPiece().getSittingSuare().getIndex();
-			moveCount =0;
+			moveCount = 0;
 			moveTempIndex = LudoUtil.calulateNextIndex(move, moveCount);
 		}
 	}
-	
+
 	public void setPieceMovingOutSideTrack(Move move) {
 		pieceMove = move;
-		pieceMoved = false;
-       
+		animationComplete = false;
+
 		if (move.getPiece().isKilled() || move.getPiece().isJailed()) {
-			moveToRestSq = LudoUtil.getFreeRestSquare(move.getPiece().getColor(),board);
+			moveToRestSq = LudoUtil.getFreeRestSquare(move.getPiece().getColor(), board);
 		} else {
-			
+
 		}
 	}
 
@@ -265,8 +278,8 @@ public class BoardRenderer extends StaticBoardRenderer {
 		return dice;
 	}
 
-	public boolean isPieceMoved() {
-		return pieceMoved;
+	public boolean isAnimationComplete() {
+		return animationComplete;
 	}
 
 	public Map<Piece, ModelInstance> getPieceInstMap() {

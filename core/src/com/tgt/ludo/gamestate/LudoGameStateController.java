@@ -9,17 +9,14 @@ import com.tgt.ludo.board.Board;
 import com.tgt.ludo.board.Board.COLOR;
 import com.tgt.ludo.board.Dice;
 import com.tgt.ludo.board.Piece;
-import com.tgt.ludo.board.Square;
 import com.tgt.ludo.player.ANNPlayer;
 import com.tgt.ludo.player.ComputerPlayer;
 import com.tgt.ludo.player.HumanPlayer;
-import com.tgt.ludo.player.MinMaxPlayer;
 import com.tgt.ludo.player.Player;
 import com.tgt.ludo.player.action.Move;
 import com.tgt.ludo.rules.BasicRuleEngine;
 import com.tgt.ludo.rules.RuleEngine;
 import com.tgt.ludo.ui.LudoScreen;
-import com.tgt.ludo.util.LudoUtil;
 
 /***
  * Main class controlling a single game session
@@ -58,27 +55,25 @@ public class LudoGameStateController implements GameStateController {
 		ruleEngine = new BasicRuleEngine(board);
 		this.screen = (LudoScreen) screen;
 		// createPlayers();
-		//createRobotPlayers();
-		 createMinMaxPlayers();
+		// createRobotPlayers();
+		createMinMaxPlayers();
 		gameState = GAME_STATE.PROGRESS;
 	}
 
-	protected boolean movingAnimation = false;
 	protected Move move;
-	int sittingSquareIndex = 0;
 
 	/***
 	 * Main game loop to update the backend and allow play
 	 */
 	public void update() {
 		// wait for piece motion animation to complete
-		if (movingAnimation) {
-			animationCheck();
+		if (!((LudoScreen) screen).getBoardRenderer().isAnimationComplete()) {
 			return;
 		}
 
 		// check for any events after animation/piece moves
-		checkGameState();
+		if (checkGameState())
+			return;
 
 		for (int i = 0; i < players.size(); i++) {
 			Player player = players.get(i);
@@ -91,8 +86,8 @@ public class LudoGameStateController implements GameStateController {
 		}
 	}
 
-	protected void checkGameState() {
-
+	protected boolean checkGameState() {
+		return false;
 	}
 
 	protected void play(Player player, int playerIndex) {
@@ -126,49 +121,16 @@ public class LudoGameStateController implements GameStateController {
 	}
 
 	protected void movePieceInTrack(Player player) {
-		movingAnimation = true;
 		if (move == null || move.getPiece() == null) {
 			return;
 		}
 		((LudoScreen) screen).getBoardRenderer().setPieceMovingInTrack(player, move);
 		move.getPiece().getSittingSuare().getPieces().remove(move.getPiece());
-		sittingSquareIndex = move.getPiece().getSittingSuare().getIndex();
 		move.getPiece().setShake(false);
 		shakeDice(false);
 	}
 
-	private void animationCheck() {
-		if (((LudoScreen) screen).getBoardRenderer().isPieceMoved()) {
-			movingAnimation = false;
-			Square finalSquare = null;
-			if (move.getPiece() == null)
-				return;
-			if (move.getPiece().isRest()) {
-				finalSquare = board.getSquares().get(player.getStartIndex());
-				move.getPiece().setRest(false);
-			}
-			// else if (move.getPiece().getSittingSuare().isSpecialHome()) {
-			// finalSquare = board.getSquares().get(sittingSquareIndex +
-			// move.getSquares());
-			// } else if (move.getPiece().getSittingSuare().isJail()) {
-			// finalSquare = board.getSquares().get(sittingSquareIndex +
-			// move.getSquares());
-			// } else if (move.getPiece().isKilled()) {
-			// finalSquare = board.getSquares().get(sittingSquareIndex +
-			// move.getSquares());
-			// }
-			else {
-				finalSquare = board.getSquares().get(LudoUtil.calulateDestIndex(move));
-			}
-			if (finalSquare == null) {
-				System.out.println("null?");
-			}
-			finalSquare.getPieces().add(move.getPiece());
-			move.getPiece().getSittingSuare().getPieces().remove(move.getPiece());
-			move.getPiece().setSittingSuare(finalSquare);
-			return;
-		}
-	}
+	
 
 	private void giveTurnToNext(Player currentPlayer, int i) {
 		currentPlayer.setTurn(false);
@@ -256,23 +218,23 @@ public class LudoGameStateController implements GameStateController {
 		greenPlayer.setPieces(board.getPiecesMap().get(greenPlayer.getColor()));
 		players.add(greenPlayer);
 
-		yellowPlayer = new MinMaxPlayer(((LudoScreen) screen), ruleEngine);
-		yellowPlayer.setColor(COLOR.YELLOW);
-		yellowPlayer.setStartIndex(Board.DIMENSION * 2 + 1);
-		yellowPlayer.setPieces(board.getPiecesMap().get(yellowPlayer.getColor()));
-		players.add(yellowPlayer);
-
-		redPlayer = new MinMaxPlayer(((LudoScreen) screen), ruleEngine);
-		redPlayer.setColor(COLOR.RED);
-		redPlayer.setStartIndex(Board.DIMENSION * 4 + 2);
-		redPlayer.setPieces(board.getPiecesMap().get(redPlayer.getColor()));
-		players.add(redPlayer);
-
-		bluePlayer = new MinMaxPlayer(((LudoScreen) screen), ruleEngine);
-		bluePlayer.setColor(COLOR.BLUE);
-		bluePlayer.setStartIndex(Board.DIMENSION * 6 + 3);
-		bluePlayer.setPieces(board.getPiecesMap().get(bluePlayer.getColor()));
-		players.add(bluePlayer);
+//		 yellowPlayer = new MinMaxPlayer(((LudoScreen) screen), ruleEngine);
+//		 yellowPlayer.setColor(COLOR.YELLOW);
+//		 yellowPlayer.setStartIndex(Board.DIMENSION * 2 + 1);
+//		 yellowPlayer.setPieces(board.getPiecesMap().get(yellowPlayer.getColor()));
+//		 players.add(yellowPlayer);
+//		
+//		 redPlayer = new MinMaxPlayer(((LudoScreen) screen), ruleEngine);
+//		 redPlayer.setColor(COLOR.RED);
+//		 redPlayer.setStartIndex(Board.DIMENSION * 4 + 2);
+//		 redPlayer.setPieces(board.getPiecesMap().get(redPlayer.getColor()));
+//		 players.add(redPlayer);
+//		
+//		 bluePlayer = new MinMaxPlayer(((LudoScreen) screen), ruleEngine);
+//		 bluePlayer.setColor(COLOR.BLUE);
+//		 bluePlayer.setStartIndex(Board.DIMENSION * 6 + 3);
+//		 bluePlayer.setPieces(board.getPiecesMap().get(bluePlayer.getColor()));
+//		 players.add(bluePlayer);
 	}
 
 	protected void shakeDice(boolean shake) {

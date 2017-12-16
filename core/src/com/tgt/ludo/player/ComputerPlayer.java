@@ -44,9 +44,9 @@ public class ComputerPlayer extends Player{
 		int diceRole = ruleEngine.getSingleDiceRoll();
 		rolls.add(diceRole);
 		
-		while(diceRole==6){
-			diceRole = ruleEngine.getSingleDiceRoll();
-			rolls.add(diceRole);
+		if(diceRole==6){
+			System.out.println("Got 6 ");
+			rolls.addAll(rollDice());
 		}
 		return rolls;
 	}

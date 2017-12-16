@@ -32,69 +32,82 @@ public class AdvancedLudoGameStateController extends LudoGameStateController {
 
 	}
 
+	/***
+	 * 
+	 */
 	@Override
-	protected void checkGameState() {
-		killCheck();
-		jailCheck();
-		homeCheck();
+	protected boolean checkGameState() {
+		
+		if (killCheck())
+			return true;
+		
+		if (jailCheck())
+			return true;
+
+		if (homeCheck())
+			return true;
+
+		return false;
 	}
 
-	private void killCheck() {
+	private boolean killCheck() {
 
 		Kill kill = ruleEngine.getKills();
 		if (kill.getKilledPiece() != null && kill.getKilledPiece().size() > 0) {
 			Piece killedPiece = kill.getKilledPiece().get(0);
 			killedPiece.setKilled(true);
 			sendToRest(killedPiece);
-			System.out.println("Another turn: "+player.getColor());
+			System.out.println("Another turn: " + player.getColor());
 			getPlayer(kill.getKillerPiece().getColor()).setTurn(true);
+			return true;
 		}
+		return false;
 	}
 
-	private void sendToRest(Piece piece){
+	private void sendToRest(Piece piece) {
 		movePieceOutsideTrack(new Move(piece));
 	}
-	
-	private void sendToHome(Piece piece){
+
+	private void sendToHome(Piece piece) {
 		movePieceOutsideTrack(new Move(piece));
-		//give chance back to player
+		// give chance back to player
 		getPlayer(piece.getColor()).setTurn(true);
 	}
-	
-	private void jailCheck(){
+
+	private boolean jailCheck() {
 		Piece jailedPiece = ruleEngine.getPieceOnJail();
-		
-		if(jailedPiece!=null){
+
+		if (jailedPiece != null) {
 			jailedPiece.setJailed(true);
 			sendToRest(jailedPiece);
+			return true;
 		}
+		return false;
 	}
-	
-	private void homeCheck(){
+
+	private boolean homeCheck() {
 		Piece homePiece = ruleEngine.getPieceOnHomeSquare();
-		if(homePiece!=null){
+		if (homePiece != null) {
 			System.out.println("Home Square");
 			sendToHome(homePiece);
+			return true;
 		}
-		
+		return false;
 	}
-	
-	
 
-	private Player getPlayer(Board.COLOR color){
+	private Player getPlayer(Board.COLOR color) {
 		for (Player player : getPlayers()) {
-			if(player.getColor().equals(color)){
+			if (player.getColor().equals(color)) {
 				return player;
 			}
 		}
 		return null;
 	}
-	
+
 	protected void movePieceOutsideTrack(Move move) {
-		movingAnimation = true;
-		((LudoScreen) screen).getBoardRenderer().setPieceMovingOutSideTrack( move);
+		((LudoScreen) screen).getBoardRenderer().setPieceMovingOutSideTrack(move);
 		move.getPiece().getSittingSuare().getPieces().remove(move.getPiece());
-		sittingSquareIndex = move.getPiece().getSittingSuare().getIndex();
+		//sittingSquareIndex = move.getPiece().getSittingSuare().getIndex();
 		move.getPiece().setShake(false);
 		shakeDice(false);
 	}

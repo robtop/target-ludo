@@ -30,7 +30,7 @@ public class MinMaxPlayer extends ComputerPlayer {
 
 	public float analyzeMove(Move move) {
 
-		float weight = 0;
+		float weight = 5;
 		// give a 1 - 10 range for each scenario
 		 //first three are mutually exclusive
 		if (ruleEngine.goToJail(move)) {
@@ -52,8 +52,7 @@ public class MinMaxPlayer extends ComputerPlayer {
 		}
 		if (ruleEngine.closeToKill(move)) {
 			weight = 5;
-		} 
-		
+		}
 		
 		return weight / 10;
 	}

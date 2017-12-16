@@ -31,7 +31,7 @@ public class ActiveGameBoardRenderer extends BoardRenderer {
 			squareInstMap.get(board.getSquares().get(moveFinalIndex)).transform.getTranslation(trans);
 			// set the destination squares translation to the piece
 			pieceInstance.transform.setTranslation(trans);
-			pieceMoved = true;
+			animationComplete = true;
 			restMovedToStart = false;
 			return;
 		}
@@ -60,7 +60,7 @@ public class ActiveGameBoardRenderer extends BoardRenderer {
 			squareInstMap.get(board.getSquares().get(moveFinalIndex)).transform.getTranslation(trans);
 			// set the destination squares translation to the piece
 			pieceInstance.transform.setTranslation(trans);
-			pieceMoved = true;
+			animationComplete = true;
 			restMovedToStart = false;
 			return;
 		}

@@ -149,7 +149,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 	public void renderMovingToRestPiece(float delta) {
 		if (movedToRest) {
 			Vector3 trans = new Vector3();
-			squareInstMap.get(board.getSquares().get(moveFinalIndex)).transform.getTranslation(trans);
+			squareInstMap.get(moveToRestSq).transform.getTranslation(trans);
 			pieceMove.getPiece().getSittingSuare().getPieces().remove(pieceMove.getPiece());
 			pieceMove.getPiece().reset();
 			pieceMove.getPiece().setSittingSuare(moveToRestSq);

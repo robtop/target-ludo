@@ -61,7 +61,6 @@ public class LudoGameStateController implements GameStateController {
 	}
 
 	protected Move move;
-	int sittingSquareIndex = 0;
 
 	/***
 	 * Main game loop to update the backend and allow play
@@ -127,7 +126,6 @@ public class LudoGameStateController implements GameStateController {
 		}
 		((LudoScreen) screen).getBoardRenderer().setPieceMovingInTrack(player, move);
 		move.getPiece().getSittingSuare().getPieces().remove(move.getPiece());
-		sittingSquareIndex = move.getPiece().getSittingSuare().getIndex();
 		move.getPiece().setShake(false);
 		shakeDice(false);
 	}

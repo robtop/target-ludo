@@ -9,9 +9,6 @@ public class Move {
 	//move the piece by this many squares
 	private int squares;
 	//move the piece to start
-    private boolean start;
-    private boolean rest;
-    private boolean home;
     private boolean skipTurn;
     
     //signifies we need another move to complet the players turn
@@ -45,29 +42,6 @@ public class Move {
 		this.squares = squares;
 	}
 
-	public boolean isStart() {
-		return start;
-	}
-
-	public void setStart(boolean start) {
-		this.start = start;
-	}
-
-	public boolean isRest() {
-		return rest;
-	}
-
-	public void setRest(boolean rest) {
-		this.rest = rest;
-	}
-
-	public boolean isHome() {
-		return home;
-	}
-
-	public void setHome(boolean home) {
-		this.home = home;
-	}
 
 	public boolean isSkipTurn() {
 		return skipTurn;

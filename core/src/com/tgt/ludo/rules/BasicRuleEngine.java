@@ -54,7 +54,6 @@ public class BasicRuleEngine implements RuleEngine {
 			if (piece.isRest() && diceVal == 6) {
 				Move move = new Move(piece);
 				move.setSquares(0);
-				move.setStart(true);
 				System.out.println("Starter 6: "+player.getColor()+player );
 				moves.add(move);
 			}

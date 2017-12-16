@@ -150,12 +150,14 @@ public class BoardRenderer extends StaticBoardRenderer {
 		if (movedToRest) {
 			Vector3 trans = new Vector3();
 			squareInstMap.get(board.getSquares().get(moveFinalIndex)).transform.getTranslation(trans);
+			pieceMove.getPiece().getSittingSuare().getPieces().remove(pieceMove.getPiece());
 			pieceMove.getPiece().reset();
 			pieceMove.getPiece().setSittingSuare(moveToRestSq);
+			pieceMove.getPiece().setRest(true);
 			pieceMove.setPiece(null);
 			// set the destination squares translation to the piece
 			pieceInstance.transform.setTranslation(trans);
-			pieceMove.setRest(true);
+			
 			pieceMove = null;
 			animationComplete = true;
 			movedToRest = false;

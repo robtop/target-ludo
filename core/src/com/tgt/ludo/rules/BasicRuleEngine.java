@@ -12,7 +12,7 @@ import com.tgt.ludo.player.action.Move;
 import com.tgt.ludo.util.LudoUtil;
 
 /**
- * Engine to enfocre rule of ludo.
+ * Engine to enforce rules of ludo.
  * 
  * @author robin
  *

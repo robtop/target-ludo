@@ -1,7 +1,7 @@
 package com.tgt.ludo.util;
 
 import com.tgt.ludo.board.Board;
-import com.tgt.ludo.board.Piece;
+import com.tgt.ludo.board.Board.COLOR;
 import com.tgt.ludo.board.Square;
 import com.tgt.ludo.player.action.Move;
 
@@ -10,6 +10,22 @@ public class LudoUtil {
 	public static int calulateDestIndex(Move move) {
 
 		Board.COLOR color = move.getPiece().getColor();
+		int startIndex = getStartIndex(color);
+		int sittingIndex = move.getPiece().getSittingSuare().getIndex();
+		int dest = sittingIndex + move.getSquares();
+//		System.out.println("sittingIndex: " + sittingIndex);
+//		if (move.getSquares() + sittingIndex == Board.TOTAL_NUM_SQUARES - 1) {
+//			// move to home square
+//		} else
+			if (dest >= Board.TOTAL_NUM_SQUARES) {
+			return (move.getSquares() + sittingIndex) % Board.TOTAL_NUM_SQUARES;
+		}
+		
+		//System.out.println("calulateDestIndex: " + dest);
+		return dest;
+	}
+
+	public static int getStartIndex(COLOR color){
 		int startIndex = 0;
 		switch (color) {
 		case GREEN:
@@ -25,21 +41,9 @@ public class LudoUtil {
 			startIndex = Board.startIndexes.get(3);
 			break;
 		}
-
-		int sittingIndex = move.getPiece().getSittingSuare().getIndex();
-		int dest = sittingIndex + move.getSquares();
-//		System.out.println("sittingIndex: " + sittingIndex);
-//		if (move.getSquares() + sittingIndex == Board.TOTAL_NUM_SQUARES - 1) {
-//			// move to home square
-//		} else
-			if (dest >= Board.TOTAL_NUM_SQUARES) {
-			return (move.getSquares() + sittingIndex) % Board.TOTAL_NUM_SQUARES;
-		}
-		
-		//System.out.println("calulateDestIndex: " + dest);
-		return dest;
+      return startIndex;
 	}
-
+	
 	public static int calulateNextIndex(Move pieceMove, int moveCount) {
 		
 		//shouldnt come here

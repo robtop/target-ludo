@@ -58,8 +58,8 @@ public class LudoGameStateController implements GameStateController {
 		ruleEngine = new BasicRuleEngine(board);
 		this.screen = (LudoScreen) screen;
 		// createPlayers();
-		//createRobotPlayers();
-		 createMinMaxPlayers();
+		// createRobotPlayers();
+		createMinMaxPlayers();
 		gameState = GAME_STATE.PROGRESS;
 	}
 
@@ -78,7 +78,8 @@ public class LudoGameStateController implements GameStateController {
 		}
 
 		// check for any events after animation/piece moves
-		checkGameState();
+		if (checkGameState())
+			return;
 
 		for (int i = 0; i < players.size(); i++) {
 			Player player = players.get(i);
@@ -91,8 +92,8 @@ public class LudoGameStateController implements GameStateController {
 		}
 	}
 
-	protected void checkGameState() {
-
+	protected boolean checkGameState() {
+		return false;
 	}
 
 	protected void play(Player player, int playerIndex) {
@@ -138,35 +139,8 @@ public class LudoGameStateController implements GameStateController {
 	}
 
 	private void animationCheck() {
-		if (((LudoScreen) screen).getBoardRenderer().isPieceMoved()) {
+		if (((LudoScreen) screen).getBoardRenderer().isAnimationComplete()) {
 			movingAnimation = false;
-			Square finalSquare = null;
-			if (move.getPiece() == null)
-				return;
-			if (move.getPiece().isRest()) {
-				finalSquare = board.getSquares().get(player.getStartIndex());
-				move.getPiece().setRest(false);
-			}
-			// else if (move.getPiece().getSittingSuare().isSpecialHome()) {
-			// finalSquare = board.getSquares().get(sittingSquareIndex +
-			// move.getSquares());
-			// } else if (move.getPiece().getSittingSuare().isJail()) {
-			// finalSquare = board.getSquares().get(sittingSquareIndex +
-			// move.getSquares());
-			// } else if (move.getPiece().isKilled()) {
-			// finalSquare = board.getSquares().get(sittingSquareIndex +
-			// move.getSquares());
-			// }
-			else {
-				finalSquare = board.getSquares().get(LudoUtil.calulateDestIndex(move));
-			}
-			if (finalSquare == null) {
-				System.out.println("null?");
-			}
-			finalSquare.getPieces().add(move.getPiece());
-			move.getPiece().getSittingSuare().getPieces().remove(move.getPiece());
-			move.getPiece().setSittingSuare(finalSquare);
-			return;
 		}
 	}
 
@@ -256,23 +230,23 @@ public class LudoGameStateController implements GameStateController {
 		greenPlayer.setPieces(board.getPiecesMap().get(greenPlayer.getColor()));
 		players.add(greenPlayer);
 
-		yellowPlayer = new MinMaxPlayer(((LudoScreen) screen), ruleEngine);
-		yellowPlayer.setColor(COLOR.YELLOW);
-		yellowPlayer.setStartIndex(Board.DIMENSION * 2 + 1);
-		yellowPlayer.setPieces(board.getPiecesMap().get(yellowPlayer.getColor()));
-		players.add(yellowPlayer);
-
-		redPlayer = new MinMaxPlayer(((LudoScreen) screen), ruleEngine);
-		redPlayer.setColor(COLOR.RED);
-		redPlayer.setStartIndex(Board.DIMENSION * 4 + 2);
-		redPlayer.setPieces(board.getPiecesMap().get(redPlayer.getColor()));
-		players.add(redPlayer);
-
-		bluePlayer = new MinMaxPlayer(((LudoScreen) screen), ruleEngine);
-		bluePlayer.setColor(COLOR.BLUE);
-		bluePlayer.setStartIndex(Board.DIMENSION * 6 + 3);
-		bluePlayer.setPieces(board.getPiecesMap().get(bluePlayer.getColor()));
-		players.add(bluePlayer);
+		// yellowPlayer = new MinMaxPlayer(((LudoScreen) screen), ruleEngine);
+		// yellowPlayer.setColor(COLOR.YELLOW);
+		// yellowPlayer.setStartIndex(Board.DIMENSION * 2 + 1);
+		// yellowPlayer.setPieces(board.getPiecesMap().get(yellowPlayer.getColor()));
+		// players.add(yellowPlayer);
+		//
+		// redPlayer = new MinMaxPlayer(((LudoScreen) screen), ruleEngine);
+		// redPlayer.setColor(COLOR.RED);
+		// redPlayer.setStartIndex(Board.DIMENSION * 4 + 2);
+		// redPlayer.setPieces(board.getPiecesMap().get(redPlayer.getColor()));
+		// players.add(redPlayer);
+		//
+		// bluePlayer = new MinMaxPlayer(((LudoScreen) screen), ruleEngine);
+		// bluePlayer.setColor(COLOR.BLUE);
+		// bluePlayer.setStartIndex(Board.DIMENSION * 6 + 3);
+		// bluePlayer.setPieces(board.getPiecesMap().get(bluePlayer.getColor()));
+		// players.add(bluePlayer);
 	}
 
 	protected void shakeDice(boolean shake) {

@@ -15,11 +15,7 @@ public class Dice {
    //is this rolled or waiting to be rolled by the player
    boolean rolled=false;
    boolean shake = false;
-   
-   public void dispose(){
-	   diceInstance.model.dispose();
-   }
-
+  
 public ModelInstance getDiceInstance() {
 	
 	//rotate to display in value in board
@@ -57,6 +53,10 @@ public boolean isShake() {
 public void setShake(boolean shake) {
 	this.shake = shake;
 }
-   
+   @Override
+	protected void finalize() throws Throwable {
+		super.finalize();
+		diceInstance.model.dispose();
+	}
    
 }

@@ -17,10 +17,7 @@ import com.tgt.ludo.ui.LudoScreen;
  */
 public class AdvancedLudoGameStateController extends LudoGameStateController {
 
-	public static enum GAME_STATE {
-		WAITING, PROGRESS, COMPLETE
-	}
-
+	
 	public AdvancedLudoGameStateController(Screen screen) {
 		super(screen);
 	}

@@ -191,4 +191,9 @@ public class BasicRuleEngine implements RuleEngine {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	@Override
+	public int dicePerGame() {
+		return 1;
+	}
 }

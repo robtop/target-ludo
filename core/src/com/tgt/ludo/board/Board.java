@@ -29,7 +29,7 @@ public class Board {
 		GREEN, YELLOW, RED, BLUE
 	}
 
-	public static final  List<Integer> jailIndexes = new ArrayList<Integer>(Arrays.asList(6,9,11,13));//new ArrayList<Integer>(Arrays.asList(13, 30, 47, 64));
+	public static final  List<Integer> jailIndexes = new ArrayList<Integer>(Arrays.asList(13, 30, 47, 64)); //new ArrayList<Integer>(Arrays.asList(6,9,11,13));
 
 	public static final List<Integer> startIndexes = new ArrayList<Integer>(
 			Arrays.asList(0, DIMENSION * 2 + 1, DIMENSION * 4 + 2, DIMENSION * 6 + 3));

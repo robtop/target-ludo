@@ -1,17 +1,13 @@
 package com.tgt.ludo.gamestate;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import com.badlogic.gdx.Screen;
 import com.tgt.ludo.board.Board;
-import com.tgt.ludo.board.Board.COLOR;
 import com.tgt.ludo.board.Dice;
 import com.tgt.ludo.board.Piece;
-import com.tgt.ludo.player.ANNPlayer;
-import com.tgt.ludo.player.ComputerPlayer;
-import com.tgt.ludo.player.HumanPlayer;
+import com.tgt.ludo.gamestate.util.GameStateUtil;
 import com.tgt.ludo.player.Player;
 import com.tgt.ludo.player.action.Move;
 import com.tgt.ludo.rules.BasicRuleEngine;
@@ -27,24 +23,16 @@ import com.tgt.ludo.ui.LudoScreen;
 public class LudoGameStateController implements GameStateController {
 	protected Board board;
 
-	private Player greenPlayer;
-	private Player yellowPlayer;
-	private Player redPlayer;
-	private Player bluePlayer;
-
 	// needed by human players to get inputs
 	protected LudoScreen screen;
 	protected List<Player> players;
 
+	// TODO: used in games supporting remote players
 	private UUID gameID;
 	private GAME_STATE gameState;
 	private Player winner;
 	protected RuleEngine ruleEngine;
 	protected Player player;
-
-	public static enum GAME_STATE {
-		WAITING, PROGRESS, COMPLETE
-	}
 
 	public LudoGameStateController(Screen screen) {
 
@@ -56,7 +44,8 @@ public class LudoGameStateController implements GameStateController {
 		this.screen = (LudoScreen) screen;
 		// createPlayers();
 		// createRobotPlayers();
-		createMinMaxPlayers();
+		players = GameStateUtil.createMinMaxPlayers(screen, ruleEngine, board);
+
 		gameState = GAME_STATE.PROGRESS;
 	}
 
@@ -130,8 +119,6 @@ public class LudoGameStateController implements GameStateController {
 		shakeDice(false);
 	}
 
-	
-
 	private void giveTurnToNext(Player currentPlayer, int i) {
 		currentPlayer.setTurn(false);
 		Player selectedPlayer;
@@ -145,96 +132,12 @@ public class LudoGameStateController implements GameStateController {
 		List<Dice> diceList = ((LudoScreen) screen).getBoardRenderer().getDiceList();
 		diceList.clear();
 
-		Dice newDice = ((LudoScreen) screen).getBoardRenderer().createDiceInstance();
-		newDice.setShake(true);
-
-		diceList.add(newDice);
+		for (int d = 0; d < ruleEngine.dicePerGame(); d++) {
+			Dice newDice = ((LudoScreen) screen).getBoardRenderer().createDiceInstance();
+			newDice.setShake(true);
+			diceList.add(newDice);
+		}
 		((LudoScreen) screen).getBoardRenderer().setSelectedPlayer(selectedPlayer);
-	}
-
-	private void createPlayers() {
-		players = new ArrayList<Player>();
-
-		greenPlayer = new HumanPlayer(((LudoScreen) screen), ruleEngine);
-		greenPlayer.setColor(COLOR.GREEN);
-		greenPlayer.setTurn(true);
-		greenPlayer.setPieces(board.getPiecesMap().get(greenPlayer.getColor()));
-		players.add(greenPlayer);
-
-		yellowPlayer = new HumanPlayer(((LudoScreen) screen), ruleEngine);
-		yellowPlayer.setColor(COLOR.YELLOW);
-		yellowPlayer.setTurn(false);
-		yellowPlayer.setStartIndex(Board.DIMENSION * 2 + 1);
-		yellowPlayer.setPieces(board.getPiecesMap().get(yellowPlayer.getColor()));
-		players.add(yellowPlayer);
-
-		redPlayer = new HumanPlayer(((LudoScreen) screen), ruleEngine);
-		redPlayer.setColor(COLOR.RED);
-		redPlayer.setTurn(false);
-		redPlayer.setStartIndex(Board.DIMENSION * 4 + 2);
-		redPlayer.setPieces(board.getPiecesMap().get(redPlayer.getColor()));
-		players.add(redPlayer);
-
-		bluePlayer = new HumanPlayer(((LudoScreen) screen), ruleEngine);
-		bluePlayer.setColor(COLOR.BLUE);
-		bluePlayer.setTurn(false);
-		bluePlayer.setStartIndex(Board.DIMENSION * 6 + 3);
-		bluePlayer.setPieces(board.getPiecesMap().get(bluePlayer.getColor()));
-		players.add(bluePlayer);
-	}
-
-	private void createRobotPlayers() {
-		players = new ArrayList<Player>();
-
-		greenPlayer = new ComputerPlayer(((LudoScreen) screen), ruleEngine);
-		greenPlayer.setColor(COLOR.GREEN);
-		greenPlayer.setPieces(board.getPiecesMap().get(greenPlayer.getColor()));
-		players.add(greenPlayer);
-
-		yellowPlayer = new ComputerPlayer(((LudoScreen) screen), ruleEngine);
-		yellowPlayer.setColor(COLOR.YELLOW);
-		yellowPlayer.setStartIndex(Board.DIMENSION * 2 + 1);
-		yellowPlayer.setPieces(board.getPiecesMap().get(yellowPlayer.getColor()));
-		players.add(yellowPlayer);
-
-		redPlayer = new ComputerPlayer(((LudoScreen) screen), ruleEngine);
-		redPlayer.setColor(COLOR.RED);
-		redPlayer.setStartIndex(Board.DIMENSION * 4 + 2);
-		redPlayer.setPieces(board.getPiecesMap().get(redPlayer.getColor()));
-		players.add(redPlayer);
-
-		bluePlayer = new ComputerPlayer(((LudoScreen) screen), ruleEngine);
-		bluePlayer.setColor(COLOR.BLUE);
-		bluePlayer.setStartIndex(Board.DIMENSION * 6 + 3);
-		bluePlayer.setPieces(board.getPiecesMap().get(bluePlayer.getColor()));
-		players.add(bluePlayer);
-	}
-
-	private void createMinMaxPlayers() {
-		players = new ArrayList<Player>();
-
-		greenPlayer = new ANNPlayer(((LudoScreen) screen), ruleEngine);
-		greenPlayer.setColor(COLOR.GREEN);
-		greenPlayer.setPieces(board.getPiecesMap().get(greenPlayer.getColor()));
-		players.add(greenPlayer);
-
-//		 yellowPlayer = new MinMaxPlayer(((LudoScreen) screen), ruleEngine);
-//		 yellowPlayer.setColor(COLOR.YELLOW);
-//		 yellowPlayer.setStartIndex(Board.DIMENSION * 2 + 1);
-//		 yellowPlayer.setPieces(board.getPiecesMap().get(yellowPlayer.getColor()));
-//		 players.add(yellowPlayer);
-//		
-//		 redPlayer = new MinMaxPlayer(((LudoScreen) screen), ruleEngine);
-//		 redPlayer.setColor(COLOR.RED);
-//		 redPlayer.setStartIndex(Board.DIMENSION * 4 + 2);
-//		 redPlayer.setPieces(board.getPiecesMap().get(redPlayer.getColor()));
-//		 players.add(redPlayer);
-//		
-//		 bluePlayer = new MinMaxPlayer(((LudoScreen) screen), ruleEngine);
-//		 bluePlayer.setColor(COLOR.BLUE);
-//		 bluePlayer.setStartIndex(Board.DIMENSION * 6 + 3);
-//		 bluePlayer.setPieces(board.getPiecesMap().get(bluePlayer.getColor()));
-//		 players.add(bluePlayer);
 	}
 
 	protected void shakeDice(boolean shake) {
@@ -246,10 +149,6 @@ public class LudoGameStateController implements GameStateController {
 
 	public Board getBoard() {
 		return board;
-	}
-
-	public Player getGreenPlayer() {
-		return greenPlayer;
 	}
 
 	public GAME_STATE getGameState() {

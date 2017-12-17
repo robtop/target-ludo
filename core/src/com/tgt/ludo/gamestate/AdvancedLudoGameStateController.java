@@ -85,7 +85,7 @@ public class AdvancedLudoGameStateController extends LudoGameStateController {
 	private boolean homeCheck() {
 		Piece homePiece = ruleEngine.getPieceOnHomeSquare();
 		if (homePiece != null) {
-			System.out.println("Home Square");
+			homePiece.setToHome(true);
 			sendToHome(homePiece);
 			return true;
 		}

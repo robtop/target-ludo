@@ -23,11 +23,21 @@ public class BasicRuleEngine implements RuleEngine {
 
 	@Override
 	public boolean validMove(Piece piece, int diceVal) {
-
+		if (piece.isMainHome()) {
+			return false;
+		}
 		if (piece.isRest()) {
 			if (diceVal == 6)
 				return true;
-		} else {
+		} else if (piece.isHomeSq()) {
+			if (piece.getSittingSuare().getIndex() + diceVal <= Board.DIMENSION) {
+				return true;
+			}else {
+				return false;
+			}
+
+		} else
+		{
 			return true;
 		}
 
@@ -51,6 +61,9 @@ public class BasicRuleEngine implements RuleEngine {
 	public List<Move> getValidMoves(Player player, int diceVal) {
 		List<Move> moves = new ArrayList<Move>();
 		for (Piece piece : player.getPieces()) {
+			if (piece.isMainHome()) {
+				continue;
+			}
 			if (piece.isRest() && diceVal == 6) {
 				Move move = new Move(piece);
 				move.setSquares(0);
@@ -153,14 +166,14 @@ public class BasicRuleEngine implements RuleEngine {
 	@Override
 	public boolean closeToKill(Move move) {
 		int dest = LudoUtil.calulateDestIndex(move);
-		for(int i=dest;i<6;i++){
-		if(!board.getSquares().get(i).getPieces().isEmpty()){
-			for(Piece piece:board.getSquares().get(i).getPieces()){
-				if(piece.getColor()!= move.getPiece().getColor()){
-					return true;
+		for (int i = dest; i < 6; i++) {
+			if (!board.getSquares().get(i).getPieces().isEmpty()) {
+				for (Piece piece : board.getSquares().get(i).getPieces()) {
+					if (piece.getColor() != move.getPiece().getColor()) {
+						return true;
+					}
 				}
 			}
-		}
 		}
 		return false;
 	}
@@ -169,17 +182,15 @@ public class BasicRuleEngine implements RuleEngine {
 	public boolean jumpJail(Move move) {
 		int currentIndex = move.getPiece().getSittingSuare().getIndex();
 		int dest = LudoUtil.calulateDestIndex(move);
-		//wont work around the track corner coz dest < currentIndex
-		for(int i=currentIndex;i<dest;i++){
-			if(board.jailIndexes.contains(i)){
+		// wont work around the track corner coz dest < currentIndex
+		for (int i = currentIndex; i < dest; i++) {
+			if (board.jailIndexes.contains(i)) {
 				return true;
 			}
 		}
 		return false;
 	}
 
-	
-	
 	@Override
 	public boolean escapeKill(Move move) {
 		// TODO Auto-generated method stub

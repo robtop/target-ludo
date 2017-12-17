@@ -408,7 +408,7 @@ public class StaticBoardRenderer {
 
 	public void dispose() {
 		for (Square sq : squareInstMap.keySet()) {
-			squareInstMap.get(sq).model.dispose();
+			//squareInstMap.get(sq).model.dispose();
 		}
 		for (Piece pc : pieceInstMap.keySet()) {
 			squareInstMap.get(pc).model.dispose();

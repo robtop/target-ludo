@@ -8,9 +8,10 @@ public class Piece {
 
 	// at rest
 	private boolean rest;
-	// at homesuares
+	// at homesuares 
 	private boolean homeSq;
-	
+	// main triangle home
+	private boolean mainHome;
 	private Square sittingSuare;
 	private boolean shake;
 	
@@ -101,6 +102,14 @@ public class Piece {
 
 	public void setToHome(boolean toHome) {
 		this.toHome = toHome;
+	}
+
+	public boolean isMainHome() {
+		return mainHome;
+	}
+
+	public void setMainHome(boolean mainHome) {
+		this.mainHome = mainHome;
 	}
 
 }

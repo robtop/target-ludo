@@ -23,7 +23,7 @@ public class Board {
 	// index from start point of each color
 	// public static final int JAIL_INDEX = 12;
 	// special home square
-	public static final int HOME_INDEX = 50;
+	public static final int HOME_INDEX = 7;
 
 	public static enum COLOR {
 		GREEN, YELLOW, RED, BLUE

@@ -21,7 +21,7 @@ public ModelInstance getDiceInstance() {
 	//rotate to display in value in board
 	if(!rolled){
 		//funny position
-		diceInstance.transform.rotate(new Vector3(),3);
+		//diceInstance.transform.rotate(new Vector3(),3);
 	}
 	return diceInstance;
 }

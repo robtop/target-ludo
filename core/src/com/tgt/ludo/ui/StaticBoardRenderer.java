@@ -142,7 +142,7 @@ public class StaticBoardRenderer {
 		renderHomeSquares(delta);
 		renderRestSquares(delta);
 		renderBase();
-		renderMainHome();
+		renderMainHome(delta);
 		modelBatch.end();
 		renderContext.end();
 
@@ -157,15 +157,24 @@ public class StaticBoardRenderer {
 	/**
 	 * Center home squares
 	 */
-	private void renderMainHome() {
+	private void renderMainHome( float delta) {
 		modelBatch.render(squareInstMap.get(board.getHomeMap().get(COLOR.GREEN)), environment);
+		renderPiecesInSquare(board.getHomeMap().get(COLOR.GREEN), delta);
 		modelBatch.render(squareInstMap.get(board.getHomeMap().get(COLOR.YELLOW)), environment);
+		renderPiecesInSquare(board.getHomeMap().get(COLOR.YELLOW), delta);
+		
 		modelBatch.render(squareInstMap.get(board.getHomeMap().get(COLOR.RED)), environment);
+		renderPiecesInSquare(board.getHomeMap().get(COLOR.RED), delta);
 		modelBatch.render(squareInstMap.get(board.getHomeMap().get(COLOR.BLUE)), environment);
+		renderPiecesInSquare(board.getHomeMap().get(COLOR.BLUE), delta);
 	}
 
 	protected void renderSquare(Square sq, float delta) {
 		modelBatch.render(squareInstMap.get(sq), environment);
+		renderPiecesInSquare(sq, delta);
+	}
+	
+	private void renderPiecesInSquare(Square sq, float delta){
 		if (sq.getPieces() != null && !sq.getPieces().isEmpty()) {
 
 			for (int i = 0; i < sq.getPieces().size(); i++) {

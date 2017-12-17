@@ -64,6 +64,8 @@ public class BoardRenderer extends StaticBoardRenderer {
 				renderMovingToRestSquare(delta);
 			} else if (pieceMove.getPiece().isToHome()) {
 				renderMovingToHome(delta);
+			} else if (pieceMove.getPiece().isHomeSq()) {
+				renderMovingPieceInHomeSquares(delta);
 			} else {
 				renderMovingPiece(delta);
 			}
@@ -95,18 +97,53 @@ public class BoardRenderer extends StaticBoardRenderer {
 		pieceInstance = pieceInstMap.get(pieceMove.getPiece());
 		pieceInstance.transform.getTranslation(currentTranslation);
 
-		if (pieceMove.getPiece().isHomeSq()) {
-			squareInstMap
-					.get(board.getHomeSquaresMap().get(pieceMove.getPiece().getColor()).get(moveTempIndex)).transform
-							.getTranslation(finalTranslation);
-		} else {
-			squareInstMap.get(board.getSquares().get(moveTempIndex)).transform.getTranslation(finalTranslation);
-		}
+		squareInstMap.get(board.getSquares().get(moveTempIndex)).transform.getTranslation(finalTranslation);
 
 		Vector3 diff = finalTranslation.sub(currentTranslation);
 		modelBatch.render(pieceInstance, environment);
 		if (diff.len() < .1f) {
 			moveTempIndex = LudoUtil.calulateNextIndex(pieceMove, moveCount);
+			moveCount++;
+		} else {
+
+			pieceInstance.transform.translate(diff.scl(delta * MOVE_SPEED));
+		}
+
+	}
+
+	public void renderMovingPieceInHomeSquares(float delta) {
+
+		if (moveCount == pieceMove.getSquares() - 1) {
+			Vector3 trans = new Vector3();
+			squareInstMap
+					.get(board.getHomeSquaresMap().get(pieceMove.getPiece().getColor()).get(moveFinalIndex)).transform
+							.getTranslation(trans);
+			// set the destination squares translation to the piece
+			pieceInstance.transform.setTranslation(trans);
+			Square finalSquare = board.getHomeSquaresMap().get(pieceMove.getPiece().getColor())
+					.get(LudoUtil.calulateDestIndex(pieceMove));
+			finalSquare.getPieces().add(pieceMove.getPiece());
+			pieceMove.getPiece().getSittingSuare().getPieces().remove(pieceMove.getPiece());
+			pieceMove.getPiece().setSittingSuare(finalSquare);
+			animationComplete = true;
+			return;
+		}
+		// check if it reached its home square or home etc
+
+		Vector3 currentTranslation = new Vector3();
+		Vector3 finalTranslation = new Vector3();
+		pieceInstance = pieceInstMap.get(pieceMove.getPiece());
+		pieceInstance.transform.getTranslation(currentTranslation);
+
+		if (pieceMove.getPiece().isHomeSq()) {
+			squareInstMap
+					.get(board.getHomeSquaresMap().get(pieceMove.getPiece().getColor()).get(moveTempIndex)).transform
+							.getTranslation(finalTranslation);
+		}
+		Vector3 diff = finalTranslation.sub(currentTranslation);
+		modelBatch.render(pieceInstance, environment);
+		if (diff.len() < .1f) {
+			moveTempIndex += 1;
 			moveCount++;
 		} else {
 
@@ -291,6 +328,9 @@ public class BoardRenderer extends StaticBoardRenderer {
 		} else if (move.getPiece().isKilled()) {
 			// moveFinalIndex =
 			// getFreeSquare(board.getHomeSquaresMap().get(player.getColor());
+		} else if (move.getPiece().isHomeSq()) {
+			moveFinalIndex = move.getPiece().getSittingSuare().getIndex()+move.getSquares();
+			moveTempIndex = moveCount+1;
 		} else {
 			moveFinalIndex = 0;
 			moveFinalIndex = LudoUtil.calulateDestIndex(move);

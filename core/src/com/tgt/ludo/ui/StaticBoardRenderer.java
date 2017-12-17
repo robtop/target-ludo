@@ -188,7 +188,7 @@ public class StaticBoardRenderer {
 		Vector3 translation = new Vector3();
 		ModelInstance inst = pieceInstMap.get(pc);
 		// if more then one piece, give some space
-
+		//translation.set(translation.x+index*2, translation.y+index*2, translation.z);
 		inst.transform.translate(translation);
 		modelBatch.render(inst, environment);
 		translation.z = translation.z + 1;

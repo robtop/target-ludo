@@ -56,6 +56,30 @@ public class LudoUtil {
 		int currentIndex = (pieceMove.getPiece().getSittingSuare().getIndex() + moveCount) % 68;
 
 		newMoveTempIndex = currentIndex;
+		if (pieceMove.getPiece().getMoveCount() ==  Board.TOTAL_NUM_SQUARES) {
+			// move to home square
+			pieceMove.getPiece().setHomeSq(true);
+			newMoveTempIndex = 0;
+		} else if (newMoveTempIndex + 1 >= Board.TOTAL_NUM_SQUARES) {
+			newMoveTempIndex = 0;
+		} else {
+			newMoveTempIndex += 1;
+		}
+		// System.out.println("calulateNextIndex: " + moveTempIndex);
+
+		pieceMove.getPiece().setMoveCount(pieceMove.getPiece().getMoveCount() + 1);
+		// System.out.println(
+		// "total moves: " +pieceMove.getPiece().getMoveCount());
+		return newMoveTempIndex;
+	}
+	
+	public static int calulateNextHomeSqIndex(Move pieceMove, int moveCount) {
+
+		int newMoveTempIndex = 0;
+
+		int currentIndex = (pieceMove.getPiece().getSittingSuare().getIndex() + moveCount) % 68;
+
+		newMoveTempIndex = currentIndex;
 		if ((pieceMove.getPiece().getMoveCount() + 1) % Board.TOTAL_NUM_SQUARES == 0) {
 			// move to home square
 			pieceMove.getPiece().setHomeSq(true);

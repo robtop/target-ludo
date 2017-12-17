@@ -44,5 +44,7 @@ public interface RuleEngine {
 	
 	public boolean reachHome(Move move);
 
+	//how many dice to give for a throw
+	public int dicePerGame();
 	
 }

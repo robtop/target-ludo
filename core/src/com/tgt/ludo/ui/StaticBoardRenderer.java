@@ -40,7 +40,6 @@ public class StaticBoardRenderer {
 
 	protected Model baseModel;
 
-	protected ModelInstance instance;
 	public Environment environment;
 	// keep ModelInstance here instead of in the Square to keep the backend
 	// independent of the UI
@@ -206,7 +205,7 @@ public class StaticBoardRenderer {
 		int yTranslation = 0;
 		int xControl = 1;
 		int yControl = 0;
-
+		ModelInstance instance = null;
 		for (Square sq : board.getSquares()) {
 			// pick different model based on square type or use shader to color
 			if (sq.isHome()) {
@@ -303,7 +302,7 @@ public class StaticBoardRenderer {
 	}
 
 	protected ModelInstance createPieceInstance(Piece piece, COLOR color) {
-
+		ModelInstance instance = null;
 		switch (color) {
 		case GREEN:
 			instance = new ModelInstance(greenPawnModel);
@@ -342,7 +341,7 @@ public class StaticBoardRenderer {
 	private void createHomeSquares(Model squareModel, COLOR color, Vector3 translation, int xControl, int yControl) {
 
 		for (Square sq : board.getHomeSquaresMap().get(color)) {
-			instance = new ModelInstance(squareModel);
+			ModelInstance instance = new ModelInstance(squareModel);
 			squareInstMap.put(sq, instance);
 			instance.transform.translate(translation);
 			translation.x += xControl * SQUARE_LENGTH;
@@ -352,7 +351,7 @@ public class StaticBoardRenderer {
 	}
 
 	private void createMainHome() {
-		instance = new ModelInstance(squareGreenModel);
+		ModelInstance instance = new ModelInstance(squareGreenModel);
 		instance.transform.translate((Board.DIMENSION + 1) * SQUARE_LENGTH, .6f, SQUARE_LENGTH);
 		instance.transform.scale(1.5f, 1.5f, 1.5f);
 		squareInstMap.put(board.getHomeMap().get(COLOR.GREEN), instance);
@@ -386,7 +385,7 @@ public class StaticBoardRenderer {
 		int yControl = 0;
 
 		for (Square sq : board.getRestSquaresMap().get(color)) {
-			instance = new ModelInstance(squareModel);
+			ModelInstance instance = new ModelInstance(squareModel);
 
 			squareInstMap.put(sq, instance);
 			instance.transform.translate(translation);

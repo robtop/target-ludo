@@ -27,14 +27,13 @@ public class LudoGameStateController implements GameStateController {
 	protected LudoScreen screen;
 	protected List<Player> players;
 
-	//TODO: used in games supporting remote players
+	// TODO: used in games supporting remote players
 	private UUID gameID;
 	private GAME_STATE gameState;
 	private Player winner;
 	protected RuleEngine ruleEngine;
 	protected Player player;
 
-	
 	public LudoGameStateController(Screen screen) {
 
 		gameID = UUID.randomUUID();
@@ -46,7 +45,7 @@ public class LudoGameStateController implements GameStateController {
 		// createPlayers();
 		// createRobotPlayers();
 		players = GameStateUtil.createMinMaxPlayers(screen, ruleEngine, board);
-		
+
 		gameState = GAME_STATE.PROGRESS;
 	}
 
@@ -120,8 +119,6 @@ public class LudoGameStateController implements GameStateController {
 		shakeDice(false);
 	}
 
-	
-
 	private void giveTurnToNext(Player currentPlayer, int i) {
 		currentPlayer.setTurn(false);
 		Player selectedPlayer;
@@ -135,14 +132,13 @@ public class LudoGameStateController implements GameStateController {
 		List<Dice> diceList = ((LudoScreen) screen).getBoardRenderer().getDiceList();
 		diceList.clear();
 
-		Dice newDice = ((LudoScreen) screen).getBoardRenderer().createDiceInstance();
-		newDice.setShake(true);
-
-		diceList.add(newDice);
+		for (int d = 0; d < ruleEngine.dicePerGame(); d++) {
+			Dice newDice = ((LudoScreen) screen).getBoardRenderer().createDiceInstance();
+			newDice.setShake(true);
+			diceList.add(newDice);
+		}
 		((LudoScreen) screen).getBoardRenderer().setSelectedPlayer(selectedPlayer);
 	}
-
-	
 
 	protected void shakeDice(boolean shake) {
 		List<Dice> diceList = screen.getBoardRenderer().getDiceList();
@@ -154,8 +150,6 @@ public class LudoGameStateController implements GameStateController {
 	public Board getBoard() {
 		return board;
 	}
-
-	
 
 	public GAME_STATE getGameState() {
 		return gameState;

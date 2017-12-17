@@ -267,13 +267,9 @@ public class BoardRenderer extends StaticBoardRenderer {
 		}
 	}
 
-	// private Square getFreeSquare(List<Square> square){
-	//
-	// }
-
 	public Dice createDiceInstance() {
 
-		instance = new ModelInstance(diceModel);
+		ModelInstance instance = new ModelInstance(diceModel);
 		Dice dice = new Dice();
 		dice.setDiceInstance(instance);
 		return dice;

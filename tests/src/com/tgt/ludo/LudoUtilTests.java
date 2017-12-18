@@ -113,7 +113,7 @@ public class LudoUtilTests {
 		testPiece.setColor(Board.COLOR.BLUE);
 
 		sittingSquare.setIndex(Board.startIndexes.get(3)-1);
-		testPiece.setMoveCount(Board.TOTAL_NUM_SQUARES-1);
+		testPiece.setMoveCount(Board.TOTAL_NUM_SQUARES);
 		testPiece.setSittingSuare(sittingSquare);
 		
 		move = new Move(testPiece, 5);

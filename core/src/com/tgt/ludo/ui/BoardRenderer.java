@@ -272,21 +272,22 @@ public class BoardRenderer extends StaticBoardRenderer {
 			inst.transform.getTranslation(translation);
 
 			dice.getDiceInstance().transform.setTranslation(
-					(selectedPlayer.getLocX() * Board.DIMENSION * 2 * SQUARE_LENGTH * 1.4f), translation.y,
+					(selectedPlayer.getLocX() * Board.DIMENSION * 2 * SQUARE_LENGTH * 1.4f), translation.y+1,
 					(selectedPlayer.getLocY() * Board.DIMENSION * SQUARE_LENGTH * 2 + count * SQUARE_LENGTH * 1.5f)
 							- (Board.DIMENSION * SQUARE_LENGTH));
+
 			modelBatch.render(dice.getDiceInstance(), environment);
 			count++;
-
+			//inst.transform.setToRotation(new Vector3(1,0,1),180);
 			if (dice.isShake()) {
 				inst.transform.getTranslation(translation);
-				if (translation.y < 1) {
+				if (translation.y < 2) {
 					inst.transform.translate(0, delta, 0);
 				} else {
-					translation.y = 0;
+					translation.y = 1f;
 					inst.transform.setTranslation(translation);
 				}
-			}
+			}  
 		}
 
 	}
@@ -357,7 +358,6 @@ public class BoardRenderer extends StaticBoardRenderer {
 
 		ModelInstance instance = new ModelInstance(diceModel);
 		instance.transform.scale(2.5f, 2.5f, 2.5f);
-
 		Dice dice = new Dice();
 		dice.setDiceInstance(instance);
 		return dice;

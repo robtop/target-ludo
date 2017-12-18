@@ -19,9 +19,10 @@ public class Dice {
 public ModelInstance getDiceInstance() {
 	
 	//rotate to display in value in board
-	if(!rolled){
+	if(rolled && !shake){
 		//funny position
-		//diceInstance.transform.rotate(new Vector3(),3);
+		//diceInstance.transform.rotate(new Vector3(1,1,1),90);
+		//diceInstance.transform.setToRotation(new Vector3(1,1,1),90);
 	}
 	return diceInstance;
 }

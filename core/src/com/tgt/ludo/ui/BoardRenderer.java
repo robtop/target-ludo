@@ -1,6 +1,7 @@
 package com.tgt.ludo.ui;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -45,7 +46,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 		super(board, renderContext, cam, environment);
 		assetsManager.load("meshes/dice.g3db", Model.class);
 		assetsManager.finishLoading();
-		diceModel = (Model) assetsManager.get("meshes/dice.g3db");
+	
 		diceList = new ArrayList<Dice>();
 		Dice newDice = createDiceInstance();
 		newDice.setShake(true);
@@ -268,26 +269,27 @@ public class BoardRenderer extends StaticBoardRenderer {
 		for (Dice dice : diceList) {
 
 			Vector3 translation = new Vector3();
-			ModelInstance inst = dice.getDiceInstance();
+			ModelInstance inst = dice.getDiceInstance(dice.getDiceValue());
 			inst.transform.getTranslation(translation);
-
-			dice.getDiceInstance().transform.setTranslation(
-					(selectedPlayer.getLocX() * Board.DIMENSION * 2 * SQUARE_LENGTH * 1.4f), translation.y+1,
+			
+			dice.getDiceInstance(dice.getDiceValue()).transform.setTranslation(
+					(selectedPlayer.getLocX() * Board.DIMENSION * 2 * SQUARE_LENGTH * 1.4f), translation.y,
 					(selectedPlayer.getLocY() * Board.DIMENSION * SQUARE_LENGTH * 2 + count * SQUARE_LENGTH * 1.5f)
 							- (Board.DIMENSION * SQUARE_LENGTH));
 
-			modelBatch.render(dice.getDiceInstance(), environment);
+			modelBatch.render(dice.getDiceInstance(dice.getDiceValue()), environment);
 			count++;
-			//inst.transform.setToRotation(new Vector3(1,0,1),180);
+
 			if (dice.isShake()) {
 				inst.transform.getTranslation(translation);
-				if (translation.y < 2) {
+				if (translation.y < 4) {
 					inst.transform.translate(0, delta, 0);
 				} else {
-					translation.y = 1f;
+					translation.y = 2.1f;
 					inst.transform.setTranslation(translation);
 				}
 			}  
+			//inst.transform.setToRotation(new Vector3(1,0,1),180);
 		}
 
 	}
@@ -355,11 +357,14 @@ public class BoardRenderer extends StaticBoardRenderer {
 	}
 
 	public Dice createDiceInstance() {
-
+		//create 6 diff dice to avoid rotation complication
+		diceModel = (Model) assetsManager.get("meshes/dice.g3db");
 		ModelInstance instance = new ModelInstance(diceModel);
+		//diceModel.getNode("dice_root").
+		Map<Integer,ModelInstance> map = new HashMap<Integer,ModelInstance>();
 		instance.transform.scale(2.5f, 2.5f, 2.5f);
 		Dice dice = new Dice();
-		dice.setDiceInstance(instance);
+		dice.setDiceInstanceMap(map);
 		return dice;
 	}
 

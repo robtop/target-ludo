@@ -420,7 +420,7 @@ public class StaticBoardRenderer {
 			//squareInstMap.get(sq).model.dispose();
 		}
 		for (Piece pc : pieceInstMap.keySet()) {
-			squareInstMap.get(pc).model.dispose();
+		//squareInstMap.get(pc).model.dispose();
 		}
 		assetsManager.clear();
 		assetsManager.dispose();

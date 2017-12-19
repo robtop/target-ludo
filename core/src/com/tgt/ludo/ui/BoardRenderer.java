@@ -76,9 +76,14 @@ public class BoardRenderer extends StaticBoardRenderer {
 
 		moveToRestSq = null;
 		moveToHome = null;
-		diceList = new ArrayList<Dice>();
-		Dice newDice = createDiceInstance();
-		diceList.add(newDice);
+		
+		diceList = new ArrayList<>();
+		for (int d = 0; d < selectedPlayer.getRuleEngine().dicePerGame(); d++) {
+			Dice newDice = createDiceInstance();
+			newDice.setShake(true);
+			diceList.add(newDice);
+		}
+		
 	}
 
 	public void render(float delta) {
@@ -348,6 +353,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 	 * @param move
 	 */
 	public void setPieceMovingInTrack(Player player, Move move) {
+		resetRenderer();
 		moveCount = 0;
 		pieceMove = move;
 		animationComplete = false;
@@ -372,6 +378,8 @@ public class BoardRenderer extends StaticBoardRenderer {
 	}
 
 	public void setPieceMovingOutSideTrack(Move move) {
+		resetRenderer();
+		moveCount =0;
 		pieceMove = move;
 		animationComplete = false;
 

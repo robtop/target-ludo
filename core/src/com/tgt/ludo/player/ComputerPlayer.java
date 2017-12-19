@@ -35,7 +35,7 @@ public class ComputerPlayer extends Player{
 
 	protected Move selectMove(List<Move> moves){
 		int move = (int) Math.floor(Math.random()*moves.size());
-		//give first valid move
+	
 		return moves.get(move);
 	}
 	protected  List<Integer> rollDice() {

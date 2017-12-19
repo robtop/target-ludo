@@ -10,7 +10,7 @@ import com.tgt.ludo.ui.LudoScreen;
 public class ComputerPlayer extends Player{
 
 	public ComputerPlayer(LudoScreen screen,RuleEngine ruleEngine) {
-		super(screen, ruleEngine);
+		super( ruleEngine);
 		// TODO Auto-generated constructor stub
 	}
 

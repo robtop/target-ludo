@@ -29,7 +29,7 @@ public abstract class Player {
 	//if multiple dice
 	protected boolean selectDice = false;
 
-	public Player(LudoScreen screen, RuleEngine ruleEngine) {
+	public Player(RuleEngine ruleEngine) {
 		this.ruleEngine = ruleEngine;
 	}
 

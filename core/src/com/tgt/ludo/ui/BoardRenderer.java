@@ -116,7 +116,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 
 	public void renderMovingPiece(float delta) {
 		ModelInstance pieceInstance = pieceInstMap.get(pieceMove.getPiece());
-		if (moveCount == pieceMove.getSquares()) {
+		if (moveCount == pieceMove.getSquares()-1) {
 			Vector3 trans = new Vector3();
 			//TODO: bug moveFinalIndex getting the old piece value if same color
 			squareInstMap.get(board.getSquares().get(moveFinalIndex)).transform.getTranslation(trans);
@@ -143,7 +143,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 		modelBatch.render(pieceInstance, environment);
 		if (diff.len() < .1f) {
 			moveTempIndex = LudoUtil.calulateNextIndex(pieceMove, moveCount);
-			  // System.out.println(pieceMove.getPiece() + ": "+moveTempIndex);
+			System.out.println(pieceMove.getPiece() + ": "+pieceMove.getPiece().getMoveCount());
 			moveCount++;
 		} else {
 
@@ -154,7 +154,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 
 	public void renderMovingPieceInHomeSquares(float delta) {
         ModelInstance pieceInstance = pieceInstMap.get(pieceMove.getPiece());
-		if (moveCount == pieceMove.getSquares()) {
+		if (moveCount == pieceMove.getSquares()-1) {
 			
 				
 			Vector3 trans = new Vector3();
@@ -372,7 +372,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 	 * @param move
 	 */
 	public void setPieceMovingInTrack(Player player, Move move) {
-		resetRenderer();
+		//resetRenderer();
 		moveCount = 0;
 		pieceMove = move;
 		animationComplete = false;
@@ -397,7 +397,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 	}
 
 	public void setPieceMovingOutSideTrack(Move move) {
-		resetRenderer();
+		//resetRenderer();
 		moveCount =0;
 		pieceMove = move;
 		animationComplete = false;

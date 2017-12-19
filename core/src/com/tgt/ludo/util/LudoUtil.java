@@ -99,7 +99,7 @@ public class LudoUtil {
 		}
 		// System.out.println("calulateNextIndex: " + moveTempIndex);
 
-		pieceMove.getPiece().setMoveCount(pieceMove.getPiece().getMoveCount() + 1);
+		//pieceMove.getPiece().setMoveCount(pieceMove.getPiece().getMoveCount() + 1);
 		// System.out.println(
 		// "total moves: " +pieceMove.getPiece().getMoveCount());
 		return newMoveTempIndex;

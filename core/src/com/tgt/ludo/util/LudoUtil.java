@@ -12,7 +12,7 @@ public class LudoUtil {
 		Board.COLOR color = move.getPiece().getColor();
 
 		int sittingIndex = move.getPiece().getSittingSuare().getIndex();
-		int dest = getStartIndex(color) + sittingIndex + move.getSquares();
+		int dest =   sittingIndex + move.getSquares();
 		// System.out.println("sittingIndex: " + sittingIndex);
 		// if (move.getSquares() + sittingIndex == Board.TOTAL_NUM_SQUARES - 1)
 		// {
@@ -21,8 +21,16 @@ public class LudoUtil {
 		if (dest >= Board.TOTAL_NUM_SQUARES) {
 			return (dest) % Board.TOTAL_NUM_SQUARES;
 		}
-
 		// System.out.println("calulateDestIndex: " + dest);
+		return dest;
+	}
+	
+	public static int calulateDestIndexInHome(Move move) {
+
+		Board.COLOR color = move.getPiece().getColor();
+
+		int sittingIndex = move.getPiece().getSittingSuare().getIndex();
+		int dest =   sittingIndex + move.getSquares();
 		return dest;
 	}
 

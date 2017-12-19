@@ -179,19 +179,23 @@ public class StaticBoardRenderer {
 
 			for (int i = 0; i < sq.getPieces().size(); i++) {
 				Piece pc = sq.getPieces().get(i);
+				if(pc.getSittingSuare()!=sq){
+					//TODO: create cutom exception class
+					//throw new RuntimeException("Something wrong in sitting piece!");
+				}
 				renderPiece(pc, i, delta);
 			}
 		}
 	}
 
 	protected void renderPiece(Piece pc, int index, float delta) {
-		Vector3 translation = new Vector3();
+		//Vector3 translation = new Vector3();
 		ModelInstance inst = pieceInstMap.get(pc);
 		// if more then one piece, give some space
 		//translation.set(translation.x+index*2, translation.y+index*2, translation.z);
-		inst.transform.translate(translation);
+		//inst.transform.translate(translation);
 		modelBatch.render(inst, environment);
-		translation.z = translation.z + 1;
+		//translation.z = translation.z + 1;
 	}
 
 	private void createBase() {

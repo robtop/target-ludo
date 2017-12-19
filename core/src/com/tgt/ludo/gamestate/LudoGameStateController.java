@@ -44,8 +44,8 @@ public class LudoGameStateController implements GameStateController {
 		this.screen = (LudoScreen) screen;
 		// createPlayers();
 		// createRobotPlayers();
-		players = GameStateUtil.createPlayers(screen, ruleEngine, board);
-		//players = GameStateUtil.createRobotPlayers(screen, ruleEngine, board);
+		//players = GameStateUtil.createPlayers(screen, ruleEngine, board);
+		players = GameStateUtil.createRobotPlayers(screen, ruleEngine, board);
 		gameState = GAME_STATE.PROGRESS;
 	}
 
@@ -114,7 +114,7 @@ public class LudoGameStateController implements GameStateController {
 			return;
 		}
 		((LudoScreen) screen).getBoardRenderer().setPieceMovingInTrack(player, move);
-		move.getPiece().getSittingSuare().getPieces().remove(move.getPiece());
+		//move.getPiece().getSittingSuare().getPieces().remove(move.getPiece());
 		move.getPiece().setShake(false);
 		shakeDice(false);
 	}

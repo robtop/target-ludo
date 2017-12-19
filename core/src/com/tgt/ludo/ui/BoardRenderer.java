@@ -65,6 +65,10 @@ public class BoardRenderer extends StaticBoardRenderer {
 	public void resetRenderer() {
 
 		animationComplete = true;
+		if(pieceMove!=null){
+			pieceMove.setPiece(null);
+			pieceMove.setSquares(-99);
+		}
 		pieceMove = null;
 		moveFinalIndex = -999;
 		moveTempIndex = -999;
@@ -121,6 +125,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 			finalSquare.getPieces().add(pieceMove.getPiece());
 			pieceMove.getPiece().getSittingSuare().getPieces().remove(pieceMove.getPiece());
 			pieceMove.getPiece().setSittingSuare(finalSquare);
+         
 			animationComplete = true;
 			return;
 		}
@@ -137,6 +142,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 		modelBatch.render(pieceInstance, environment);
 		if (diff.len() < .1f) {
 			moveTempIndex = LudoUtil.calulateNextIndex(pieceMove, moveCount);
+			   System.out.println(pieceMove.getPiece() + ": "+moveTempIndex);
 			moveCount++;
 		} else {
 
@@ -148,6 +154,8 @@ public class BoardRenderer extends StaticBoardRenderer {
 	public void renderMovingPieceInHomeSquares(float delta) {
 
 		if (moveCount == pieceMove.getSquares() - 1) {
+			
+				
 			Vector3 trans = new Vector3();
 			squareInstMap
 					.get(board.getHomeSquaresMap().get(pieceMove.getPiece().getColor()).get(moveFinalIndex)).transform
@@ -156,9 +164,16 @@ public class BoardRenderer extends StaticBoardRenderer {
 			pieceInstance.transform.setTranslation(trans);
 			Square finalSquare = board.getHomeSquaresMap().get(pieceMove.getPiece().getColor())
 					.get(LudoUtil.calulateDestIndex(pieceMove));
+			
+			//DO some checks to catch some issues
+			if(pieceMove.getPiece().getSittingSuare().getIndex()+moveCount>finalSquare.getIndex()){
+				System.out.println("Check!!!");
+			}
+		
 			finalSquare.getPieces().add(pieceMove.getPiece());
 			pieceMove.getPiece().getSittingSuare().getPieces().remove(pieceMove.getPiece());
 			pieceMove.getPiece().setSittingSuare(finalSquare);
+			
 			animationComplete = true;
 			return;
 		}

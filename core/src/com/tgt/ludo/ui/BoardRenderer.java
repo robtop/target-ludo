@@ -275,15 +275,15 @@ public class BoardRenderer extends StaticBoardRenderer {
 		for (Dice dice : diceList) {
 
 			Vector3 translation = new Vector3();
-			ModelInstance inst = dice.getDiceInstance(dice.getDiceValue());
+			ModelInstance inst = dice.getDiceInstance();
 			inst.transform.getTranslation(translation);
 
-			dice.getDiceInstance(dice.getDiceValue()).transform.setTranslation(
+			dice.getDiceInstance().transform.setTranslation(
 					(selectedPlayer.getLocX() * Board.DIMENSION * 2 * SQUARE_LENGTH * 1.4f), translation.y,
 					(selectedPlayer.getLocY() * Board.DIMENSION * SQUARE_LENGTH * 2 + count * SQUARE_LENGTH * 1.5f)
 							- (Board.DIMENSION * SQUARE_LENGTH));
 
-			modelBatch.render(dice.getDiceInstance(dice.getDiceValue()), environment);
+			modelBatch.render(dice.getDiceInstance(), environment);
 			count++;
 
 			if (dice.isShake()) {

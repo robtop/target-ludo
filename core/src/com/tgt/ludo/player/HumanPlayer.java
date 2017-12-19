@@ -2,7 +2,6 @@ package com.tgt.ludo.player;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.math.Intersector;
@@ -93,6 +92,11 @@ public class HumanPlayer extends Player {
 		return capturePieceInput();
 	}
 
+	/**
+	 * Which piece does the human touch?
+	 * 
+	 * @return
+	 */
 	private Move capturePieceInput() {
 		// dice is rolled in previous play loop - now select the piece to move
 		if (Gdx.input.justTouched()) {
@@ -136,6 +140,9 @@ public class HumanPlayer extends Player {
 		}
 	}
 
+	/**
+	 * Fire a ray at touched point (by human) and see which piece it intersects
+	 */
 	public Piece getSelectedPiece() {
 		// check if touched
 		pickRay = cam3D.getPickRay(touchPoint.x, touchPoint.y, 0, 0, Gdx.app.getGraphics().getWidth(),
@@ -184,6 +191,11 @@ public class HumanPlayer extends Player {
 		}
 	}
 
+	/**
+	 * Multiple dice, which does the human touch?
+	 * 
+	 * @return
+	 */
 	protected Dice captureDiceInput() {
 		List<Dice> diceList = screen.getBoardRenderer().getDiceList();
 		// only last dice eligible to be touched - others should be six -
@@ -195,7 +207,7 @@ public class HumanPlayer extends Player {
 						Gdx.app.getGraphics().getHeight());
 				Vector3 intersection = new Vector3();
 				Vector3 tran = new Vector3();
-				dice.getDiceInstance(1).transform.getTranslation(tran);
+				dice.getDiceInstance().transform.getTranslation(tran);
 				if (Intersector.intersectRaySphere(pickRay, tran, BoardRenderer.SQUARE_LENGTH, intersection)) {
 					return dice;
 				}
@@ -206,6 +218,7 @@ public class HumanPlayer extends Player {
 
 	/**
 	 *  player has rolled dice and selected a piece - capture the user input of the die value to apply to the piece
+	 *
 	 * @return
 	 */
 	protected List<Integer> captureDiceRollInput() {
@@ -219,7 +232,7 @@ public class HumanPlayer extends Player {
 					Gdx.app.getGraphics().getHeight());
 			Vector3 intersection = new Vector3();
 			Vector3 tran = new Vector3();
-			dice.getDiceInstance(1).transform.getTranslation(tran);
+			dice.getDiceInstance().transform.getTranslation(tran);
 			if (Intersector.intersectRaySphere(pickRay, tran, BoardRenderer.SQUARE_LENGTH, intersection)) {
 				return super.rollDice(dice, screen.getBoardRenderer());
 			}

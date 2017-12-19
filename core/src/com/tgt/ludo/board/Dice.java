@@ -18,8 +18,8 @@ public class Dice {
    boolean rolled=false;
    boolean shake = false;
   
-public ModelInstance getDiceInstance(int val) {
-		return diceInstanceMap.get(val);
+public ModelInstance getDiceInstance() {
+		return diceInstanceMap.get(diceValue);
 }
 
 

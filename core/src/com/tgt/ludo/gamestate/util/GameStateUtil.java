@@ -38,12 +38,12 @@ public static  List<Player> createPlayers(Screen screen,RuleEngine ruleEngine,Bo
 //		yellowPlayer.setPieces(board.getPiecesMap().get(yellowPlayer.getColor()));
 //		players.add(yellowPlayer);
 //
-//		Player redPlayer = new HumanPlayer(((LudoScreen) screen), ruleEngine);
-//		redPlayer.setColor(COLOR.RED);
-//		redPlayer.setTurn(false);
-//		redPlayer.setStartIndex(Board.DIMENSION * 4 + 2);
-//		redPlayer.setPieces(board.getPiecesMap().get(redPlayer.getColor()));
-//		players.add(redPlayer);
+		Player redPlayer = new HumanPlayer(((LudoScreen) screen), ruleEngine);
+		redPlayer.setColor(COLOR.RED);
+		redPlayer.setTurn(false);
+		redPlayer.setStartIndex(Board.DIMENSION * 4 + 2);
+		redPlayer.setPieces(board.getPiecesMap().get(redPlayer.getColor()));
+		players.add(redPlayer);
 //
 //		Player bluePlayer = new HumanPlayer(((LudoScreen) screen), ruleEngine);
 //		bluePlayer.setColor(COLOR.BLUE);

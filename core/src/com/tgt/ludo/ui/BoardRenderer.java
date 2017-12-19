@@ -50,12 +50,34 @@ public class BoardRenderer extends StaticBoardRenderer {
 		assetsManager.load("meshes/dice4.g3dj", Model.class);
 		assetsManager.load("meshes/dice5.g3dj", Model.class);
 		assetsManager.load("meshes/dice6.g3dj", Model.class);
-		
+
 		assetsManager.finishLoading();
 
 		diceList = new ArrayList<Dice>();
 		Dice newDice = createDiceInstance();
 		newDice.setShake(true);
+		diceList.add(newDice);
+	}
+
+	/**
+	 * Clear all flags and temp variables when a new player starts
+	 */
+	public void resetRenderer() {
+
+		animationComplete = true;
+		pieceMove = null;
+		moveFinalIndex = -999;
+		moveTempIndex = -999;
+		moveCount = -999;
+
+		restMovedToStart = false;
+		movedToRest = false;
+		homeSqMovedToHome = false;
+
+		moveToRestSq = null;
+		moveToHome = null;
+		diceList = new ArrayList<Dice>();
+		Dice newDice = createDiceInstance();
 		diceList.add(newDice);
 	}
 
@@ -363,10 +385,10 @@ public class BoardRenderer extends StaticBoardRenderer {
 	}
 
 	public Dice createDiceInstance() {
-		Map<Integer, ModelInstance> map =  new HashMap<Integer, ModelInstance>();
+		Map<Integer, ModelInstance> map = new HashMap<Integer, ModelInstance>();
 		// create 6 diff dice to avoid rotation complication
 		for (int i = 1; i < 7; i++) {
-			diceModel = (Model) assetsManager.get("meshes/dice"+i+".g3dj");
+			diceModel = (Model) assetsManager.get("meshes/dice" + i + ".g3dj");
 			ModelInstance instance = new ModelInstance(diceModel);
 			map.put(i, instance);
 			instance.transform.scale(2.5f, 2.5f, 2.5f);
@@ -386,10 +408,6 @@ public class BoardRenderer extends StaticBoardRenderer {
 
 	public List<Dice> getDiceList() {
 		return diceList;
-	}
-
-	public void setDiceList(List<Dice> diceList) {
-		this.diceList = diceList;
 	}
 
 	public Player getSelectedPlayer() {

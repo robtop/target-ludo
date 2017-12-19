@@ -137,6 +137,7 @@ public class LudoGameStateController implements GameStateController {
 			newDice.setShake(true);
 			diceList.add(newDice);
 		}
+		((LudoScreen) screen).getBoardRenderer().resetRenderer();
 		((LudoScreen) screen).getBoardRenderer().setSelectedPlayer(selectedPlayer);
 	}
 

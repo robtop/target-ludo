@@ -54,7 +54,7 @@ public class AdvancedLudoGameStateController extends LudoGameStateController {
 			Piece killedPiece = kill.getKilledPiece().get(0);
 			killedPiece.setKilled(true);
 			sendToRest(killedPiece);
-			System.out.println("Another turn: " + player.getColor());
+			//System.out.println("Another turn: " + player.getColor());
 			getPlayer(kill.getKillerPiece().getColor()).setTurn(true);
 			return true;
 		}

@@ -37,7 +37,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 	private boolean killMovedToRest;
 
 	protected static final int MOVE_SPEED = 10;
-	protected ModelInstance pieceInstance;
+	//protected ModelInstance pieceInstance;
 	private List<Dice> diceList;
 	protected Model diceModel;
 	protected Player selectedPlayer;
@@ -115,9 +115,10 @@ public class BoardRenderer extends StaticBoardRenderer {
 	}
 
 	public void renderMovingPiece(float delta) {
-
-		if (moveCount == pieceMove.getSquares() - 1) {
+		ModelInstance pieceInstance = pieceInstMap.get(pieceMove.getPiece());
+		if (moveCount == pieceMove.getSquares()) {
 			Vector3 trans = new Vector3();
+			//TODO: bug moveFinalIndex getting the old piece value if same color
 			squareInstMap.get(board.getSquares().get(moveFinalIndex)).transform.getTranslation(trans);
 			// set the destination squares translation to the piece
 			pieceInstance.transform.setTranslation(trans);
@@ -125,7 +126,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 			finalSquare.getPieces().add(pieceMove.getPiece());
 			pieceMove.getPiece().getSittingSuare().getPieces().remove(pieceMove.getPiece());
 			pieceMove.getPiece().setSittingSuare(finalSquare);
-         
+			// System.out.println(pieceMove.getPiece() + ": "+finalSquare.getIndex() + "  Completed");
 			animationComplete = true;
 			return;
 		}
@@ -133,7 +134,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 
 		Vector3 currentTranslation = new Vector3();
 		Vector3 finalTranslation = new Vector3();
-		pieceInstance = pieceInstMap.get(pieceMove.getPiece());
+		
 		pieceInstance.transform.getTranslation(currentTranslation);
 
 		squareInstMap.get(board.getSquares().get(moveTempIndex)).transform.getTranslation(finalTranslation);
@@ -142,7 +143,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 		modelBatch.render(pieceInstance, environment);
 		if (diff.len() < .1f) {
 			moveTempIndex = LudoUtil.calulateNextIndex(pieceMove, moveCount);
-			   System.out.println(pieceMove.getPiece() + ": "+moveTempIndex);
+			  // System.out.println(pieceMove.getPiece() + ": "+moveTempIndex);
 			moveCount++;
 		} else {
 
@@ -152,8 +153,8 @@ public class BoardRenderer extends StaticBoardRenderer {
 	}
 
 	public void renderMovingPieceInHomeSquares(float delta) {
-
-		if (moveCount == pieceMove.getSquares() - 1) {
+        ModelInstance pieceInstance = pieceInstMap.get(pieceMove.getPiece());
+		if (moveCount == pieceMove.getSquares()) {
 			
 				
 			Vector3 trans = new Vector3();
@@ -181,7 +182,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 
 		Vector3 currentTranslation = new Vector3();
 		Vector3 finalTranslation = new Vector3();
-		pieceInstance = pieceInstMap.get(pieceMove.getPiece());
+		
 		pieceInstance.transform.getTranslation(currentTranslation);
 
 		if (pieceMove.getPiece().isHomeSq()) {
@@ -208,6 +209,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 	 * @param delta
 	 */
 	public void renderMovingFromRestPiece(float delta) {
+		ModelInstance pieceInstance = pieceInstMap.get(pieceMove.getPiece());
 		if (restMovedToStart) {
 			Vector3 trans = new Vector3();
 			squareInstMap.get(board.getSquares().get(moveFinalIndex)).transform.getTranslation(trans);
@@ -226,7 +228,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 
 		Vector3 currentTranslation = new Vector3();
 		Vector3 finalTranslation = new Vector3();
-		pieceInstance = pieceInstMap.get(pieceMove.getPiece());
+		
 		pieceInstance.transform.getTranslation(currentTranslation);
 		squareInstMap.get(board.getSquares().get(moveFinalIndex)).transform.getTranslation(finalTranslation);
 
@@ -242,6 +244,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 	}
 
 	public void renderMovingToRestSquare(float delta) {
+		ModelInstance pieceInstance = pieceInstMap.get(pieceMove.getPiece());
 		if (movedToRest) {
 			Vector3 trans = new Vector3();
 			squareInstMap.get(moveToRestSq).transform.getTranslation(trans);
@@ -261,7 +264,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 		}
 		Vector3 currentTranslation = new Vector3();
 		Vector3 finalTranslation = new Vector3();
-		pieceInstance = pieceInstMap.get(pieceMove.getPiece());
+		
 		pieceInstance.transform.getTranslation(currentTranslation);
 		squareInstMap.get(moveToRestSq).transform.getTranslation(finalTranslation);
 
@@ -277,6 +280,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 	}
 
 	public void renderMovingToHome(float delta) {
+		ModelInstance pieceInstance = pieceInstMap.get(pieceMove.getPiece());
 		if (homeSqMovedToHome) {
 			Vector3 trans = new Vector3();
 			squareInstMap.get(moveToHome).transform.getTranslation(trans);
@@ -297,7 +301,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 
 		Vector3 currentTranslation = new Vector3();
 		Vector3 finalTranslation = new Vector3();
-		pieceInstance = pieceInstMap.get(pieceMove.getPiece());
+		
 		pieceInstance.transform.getTranslation(currentTranslation);
 		squareInstMap.get(moveToHome).transform.getTranslation(finalTranslation);
 

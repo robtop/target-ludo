@@ -108,7 +108,7 @@ public class HumanPlayer extends Player {
 
 			// assuming single dice
 			// check if valid move and move
-			System.out.println("Touched: " + piece);
+			//System.out.println("Touched: " + piece);
 
 			if (diceList.size() == 1 ) {
 

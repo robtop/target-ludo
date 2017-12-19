@@ -12,14 +12,14 @@ public class LudoUtil {
 		Board.COLOR color = move.getPiece().getColor();
 
 		int sittingIndex = move.getPiece().getSittingSuare().getIndex();
-		int dest = sittingIndex + move.getSquares();
+		int dest = getStartIndex(color) + sittingIndex + move.getSquares();
 		// System.out.println("sittingIndex: " + sittingIndex);
 		// if (move.getSquares() + sittingIndex == Board.TOTAL_NUM_SQUARES - 1)
 		// {
 		// // move to home square
 		// } else
 		if (dest >= Board.TOTAL_NUM_SQUARES) {
-			return (move.getSquares() + sittingIndex) % Board.TOTAL_NUM_SQUARES;
+			return (dest) % Board.TOTAL_NUM_SQUARES;
 		}
 
 		// System.out.println("calulateDestIndex: " + dest);

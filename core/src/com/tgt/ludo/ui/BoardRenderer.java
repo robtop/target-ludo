@@ -36,7 +36,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 	private Square moveToHome;
 	private boolean killMovedToRest;
 
-	protected static final int MOVE_SPEED = 10;
+	protected static final int MOVE_SPEED = 50;
 	//protected ModelInstance pieceInstance;
 	private List<Dice> diceList;
 	protected Model diceModel;
@@ -193,6 +193,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 		Vector3 diff = finalTranslation.sub(currentTranslation);
 		modelBatch.render(pieceInstance, environment);
 		if (diff.len() < .1f) {
+			pieceMove.getPiece().setMoveCount(pieceMove.getPiece().getMoveCount()+1);
 			moveTempIndex += 1;
 			moveCount++;
 		} else {

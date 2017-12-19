@@ -123,6 +123,36 @@ public class LudoUtilTests {
 		assert(move.getPiece().isHomeSq());
 		assert(next==0);
 	}
+	
+	@Test
+	public void getIntoHomeforRed() {
 
+		testPiece.setColor(Board.COLOR.RED);
+
+		sittingSquare.setIndex(34);
+		testPiece.setMoveCount(68);
+		testPiece.setSittingSuare(sittingSquare);
+		
+		move = new Move(testPiece, 6);
+		int next =LudoUtil.calulateNextIndex(move, 0);
+		System.out.println(next);
+		//not on home square
+		assert(move.getPiece().isHomeSq());
+		assert(next==0);
+	}
+	
+	@Test
+	public void destforRedAtOuterTrackEnd() {
+		assertEquals(1, 1);
+	
+		testPiece.setColor(Board.COLOR.RED);
+		sittingSquare.setIndex(34);
+		testPiece.setSittingSuare(sittingSquare);
+
+		move = new Move(testPiece, 6);
+		int dest =LudoUtil.calulateDestIndex(move);
+		System.out.println(dest);
+		assert(dest==6);
+	}
 
 }

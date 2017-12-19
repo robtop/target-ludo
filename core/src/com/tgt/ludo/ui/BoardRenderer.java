@@ -44,7 +44,13 @@ public class BoardRenderer extends StaticBoardRenderer {
 
 	public BoardRenderer(Board board, RenderContext renderContext, PerspectiveCamera cam, Environment environment) {
 		super(board, renderContext, cam, environment);
-		assetsManager.load("meshes/dice.g3db", Model.class);
+		assetsManager.load("meshes/dice1.g3dj", Model.class);
+		assetsManager.load("meshes/dice2.g3dj", Model.class);
+		assetsManager.load("meshes/dice3.g3dj", Model.class);
+		assetsManager.load("meshes/dice4.g3dj", Model.class);
+		assetsManager.load("meshes/dice5.g3dj", Model.class);
+		assetsManager.load("meshes/dice6.g3dj", Model.class);
+		
 		assetsManager.finishLoading();
 
 		diceList = new ArrayList<Dice>();

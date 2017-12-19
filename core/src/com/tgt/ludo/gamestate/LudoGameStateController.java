@@ -45,7 +45,7 @@ public class LudoGameStateController implements GameStateController {
 		// createPlayers();
 		// createRobotPlayers();
 		//players = GameStateUtil.createPlayers(screen, ruleEngine, board);
-		players = GameStateUtil.createMinMaxPlayers(screen, ruleEngine, board);
+		players = GameStateUtil.createRobotPlayers(screen, ruleEngine, board);
 		gameState = GAME_STATE.PROGRESS;
 	}
 

@@ -37,7 +37,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 	private Square moveToHome;
 	private boolean killMovedToRest;
 
-	protected static final int MOVE_SPEED = 20;
+	protected static final int MOVE_SPEED = 10;
 	// protected ModelInstance pieceInstance;
 	private List<Dice> diceList;
 	protected Model diceModel;
@@ -158,26 +158,11 @@ public class BoardRenderer extends StaticBoardRenderer {
 
 	public void renderMovingPieceInHomeSquares(float delta) {
 		ModelInstance pieceInstance = pieceInstMap.get(pieceMove.getPiece());
-		if (moveCount == pieceMove.getSquares() - 1) {
-
-			Square finalSquare = board.getHomeSquaresMap().get(pieceMove.getPiece().getColor())
-					.get(moveCount-moveCountHomeSq);
-			Vector3 trans = new Vector3();
-			squareInstMap.get(finalSquare).transform.getTranslation(trans);
-			// set the destination squares translation to the piece
-			pieceInstance.transform.setTranslation(trans);
 		
-
-			// DO some checks to catch some issues
-			if (pieceMove.getPiece().getSittingSuare().getIndex() + moveCount > finalSquare.getIndex()) {
-				System.out.println("Check!!!");
-			}
-
-			finalSquare.getPieces().add(pieceMove.getPiece());
-			pieceMove.getPiece().getSittingSuare().getPieces().remove(pieceMove.getPiece());
-			pieceMove.getPiece().setSittingSuare(finalSquare);
-			moveCountHomeSq = 0;
-			animationComplete = true;
+		if (moveCount == pieceMove.getSquares() - 1) {
+			//simplify game for testing
+			moveToHome = board.getHomeMap().get(pieceMove.getPiece().getColor());
+			pieceMove.getPiece().setToHome(true);
 			return;
 		}
 		// check if it reached its home square or home etc
@@ -187,14 +172,13 @@ public class BoardRenderer extends StaticBoardRenderer {
 
 		pieceInstance.transform.getTranslation(currentTranslation);
 
-		squareInstMap.get(board.getHomeSquaresMap().get(pieceMove.getPiece().getColor()).get(moveTempIndex)).transform
+		squareInstMap.get(board.getHomeSquaresMap().get(pieceMove.getPiece().getColor()).get(moveCountHomeSq)).transform
 				.getTranslation(finalTranslation);
 
 		Vector3 diff = finalTranslation.sub(currentTranslation);
 		modelBatch.render(pieceInstance, environment);
 		if (diff.len() < .1f) {
-			pieceMove.getPiece().setMoveCount(pieceMove.getPiece().getMoveCount() + 1);
-			moveTempIndex += 1;
+			moveCountHomeSq += 1;
 			moveCount++;
 		} else {
 

@@ -29,7 +29,7 @@ public class Board {
 		GREEN, YELLOW, RED, BLUE
 	}
 
-	public static final  List<Integer> jailIndexes = new ArrayList<Integer>(Arrays.asList(13, 30, 47, 64)); //new ArrayList<Integer>(Arrays.asList(6,9,11,13));
+	public static final  List<Integer> jailIndexes =  new ArrayList<Integer>();//new ArrayList<Integer>(Arrays.asList(13, 30, 47, 64)); //new ArrayList<Integer>(Arrays.asList(6,9,11,13));
 
 	public static final List<Integer> startIndexes = new ArrayList<Integer>(
 			Arrays.asList(0, DIMENSION * 2 + 1, DIMENSION * 4 + 2, DIMENSION * 6 + 3));
@@ -145,7 +145,7 @@ public class Board {
 
 	private List<Piece> createPiecesList(Board.COLOR color) {
 		List<Piece> list = new ArrayList<Piece>();
-		for (int i = 0; i < 1; i++) {
+		for (int i = 0; i < 4; i++) {
 			Piece piece = new Piece();
 			piece.setColor(color);
 			piece.setRest(true);

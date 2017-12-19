@@ -338,13 +338,13 @@ public class StaticBoardRenderer {
 		createHomeSquares(squareGreenModel, COLOR.GREEN, new Vector3(2 * SQUARE_LENGTH, 1, 1 * SQUARE_LENGTH), 1, 0);
 
 		createHomeSquares(squareYellowModel, COLOR.YELLOW,
-				(new Vector3((board.DIMENSION + 2) * SQUARE_LENGTH, 0, (-1) * SQUARE_LENGTH)), 0, -1);
+				(new Vector3((Board.DIMENSION + 2) * SQUARE_LENGTH, 0, (-1) * SQUARE_LENGTH)), 0, -1);
 
 		createHomeSquares(squareBlueModel, COLOR.BLUE,
-				new Vector3((board.DIMENSION + 2) * SQUARE_LENGTH, 0, (3) * SQUARE_LENGTH), 0, 1);
+				new Vector3((Board.DIMENSION + 2) * SQUARE_LENGTH, 0, (3) * SQUARE_LENGTH), 0, 1);
 
 		createHomeSquares(squareRedModel, COLOR.RED,
-				new Vector3((board.DIMENSION + 4) * SQUARE_LENGTH, 0, 1 * SQUARE_LENGTH), 1, 0);
+				new Vector3((Board.DIMENSION + 4) * SQUARE_LENGTH, 0, 1 * SQUARE_LENGTH), 1, 0);
 	}
 
 	private void createHomeSquares(Model squareModel, COLOR color, Vector3 translation, int xControl, int yControl) {

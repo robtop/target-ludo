@@ -146,7 +146,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 		modelBatch.render(pieceInstance, environment);
 		if (diff.len() < .1f) {
 			moveTempIndex = LudoUtil.calulateNextIndex(pieceMove, moveCount);
-			System.out.println(pieceMove.getPiece() + ": " + pieceMove.getPiece().getMoveCount());
+			//System.out.println(pieceMove.getPiece() + ": " + pieceMove.getPiece().getMoveCount());
 			moveCount++;
 			moveCountHomeSq++;
 		} else {

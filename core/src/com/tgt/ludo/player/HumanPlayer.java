@@ -26,7 +26,7 @@ public class HumanPlayer extends Player {
 	List<Dice> diceList;
 
 	public HumanPlayer(LudoScreen screen, RuleEngine ruleEngine) {
-		super(screen, ruleEngine);
+		super(ruleEngine);
 		this.screen = screen;
 		// this.guiCam = screen.getGuiCam();
 		this.cam3D = screen.getCam();

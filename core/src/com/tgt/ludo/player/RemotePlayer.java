@@ -9,7 +9,7 @@ import com.tgt.ludo.ui.LudoScreen;
 public class RemotePlayer extends Player {
 
 	public RemotePlayer(LudoScreen screen,RuleEngine ruleEngine) {
-		super(screen, ruleEngine);
+		super(ruleEngine);
 	}
 
 	@Override

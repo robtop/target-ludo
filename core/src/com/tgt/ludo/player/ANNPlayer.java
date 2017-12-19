@@ -2,54 +2,58 @@ package com.tgt.ludo.player;
 
 import java.util.List;
 
+import com.tgt.ludo.ai.AIutil;
 import com.tgt.ludo.player.action.Move;
 import com.tgt.ludo.rules.RuleEngine;
 import com.tgt.ludo.ui.LudoScreen;
+import com.tgt.ludo.util.LudoUtil;
 
-public class ANNPlayer extends ComputerPlayer{
-   	
-	public ANNPlayer(LudoScreen screen,RuleEngine ruleEngine) {
+import weka.classifiers.functions.MultilayerPerceptron;
+import weka.core.DenseInstance;
+import weka.core.Instances;
+
+public class ANNPlayer extends ComputerPlayer {
+
+	MultilayerPerceptron mlp = null;
+	double[] instanceValue = null;
+	Instances trainingset;
+
+	public ANNPlayer(LudoScreen screen, RuleEngine ruleEngine) {
 		super(screen, ruleEngine);
-		// TODO Auto-generated constructor stub
+		mlp = AIutil.readFromFile("/home/robin/");
+		trainingset = LudoUtil.retrieveHistoricalData("arff");
 	}
 
 	@Override
 	protected Move selectMove(List<Move> moves) {
-	  
-			for (Move move : moves) {
-				int[] arr = createInput(move);
-	           }
-			
-			return super.selectMove(moves);
+		Move bestMove = new Move(true);
+		float prevBestWt = 0;
+		for (Move move : moves) {
+			//
+			float newWt = 0;
+			try {
+				DenseInstance d = (DenseInstance) trainingset.instance(0);
+				double[] input = AIutil.createNNinput(ruleEngine, move);
+				for (int i = 0; i < 7; i++) {
+					d.setValue(i, input[i]);
+					System.out.print(input[i]+",");
+				}
+				// prediction
+				newWt = (float) mlp.distributionForInstance(d)[0];
+				// min max
+				float val = AIutil.analyzeMove(ruleEngine, move);
+				System.out.println(val);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if (newWt > prevBestWt) {
+				prevBestWt = newWt;
+				bestMove = move;
+			}
 		}
 
-	
-	public int[] createInput(Move move) {
-
-	   int[] input = new int[7];
-		
-	   //first three are mutually exclusive
-		if (ruleEngine.goToJail(move)) {
-			input[0]=1;
-		} else if (ruleEngine.goToHomeSquare(move)) {
-			input[0]=1;
-		} if (ruleEngine.reachHome(move)) {
-			input[0]=1;
-		} 
-		
-		if (ruleEngine.makeAkill(move)) {
-			input[0]=1;
-		}    
-		if (ruleEngine.jumpJail(move)) {
-			input[0]=1;
-		}
-		if (ruleEngine.escapeKill(move)) {
-			input[0]=1;
-		}
-		if (ruleEngine.closeToKill(move)) {
-			input[0]=1;
-		} 
-	
-		return input;
+		return bestMove;
 	}
+
 }

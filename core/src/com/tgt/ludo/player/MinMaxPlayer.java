@@ -2,6 +2,7 @@ package com.tgt.ludo.player;
 
 import java.util.List;
 
+import com.tgt.ludo.ai.AIutil;
 import com.tgt.ludo.player.action.Move;
 import com.tgt.ludo.rules.RuleEngine;
 import com.tgt.ludo.ui.LudoScreen;
@@ -18,7 +19,7 @@ public class MinMaxPlayer extends ComputerPlayer {
       Move bestMove = new Move(true);
       float prevBestWt =0;
 		for (Move move : moves) {
-			float newWt = analyzeMove(move);
+			float newWt = AIutil.analyzeMove(ruleEngine,move);
            if(newWt>prevBestWt){
         	   prevBestWt = newWt;
         	   bestMove = move;
@@ -28,32 +29,5 @@ public class MinMaxPlayer extends ComputerPlayer {
 		return bestMove;
 	}
 
-	public float analyzeMove(Move move) {
-
-		float weight = 5;
-		// give a 1 - 10 range for each scenario
-		 //first three are mutually exclusive
-		if (ruleEngine.goToJail(move)) {
-			weight = 1;
-		} else if (ruleEngine.goToHomeSquare(move)) {
-			weight = 10;
-		} if (ruleEngine.reachHome(move)) {
-			weight = 8;
-		} 
-		
-		if (ruleEngine.makeAkill(move)) {
-			weight = 7;
-		}    
-		if (ruleEngine.jumpJail(move)) {
-			weight = 6;
-		}
-		if (ruleEngine.escapeKill(move)) {
-			weight = 5;
-		}
-		if (ruleEngine.closeToKill(move)) {
-			weight = 5;
-		}
-		
-		return weight / 10;
-	}
+	
 }

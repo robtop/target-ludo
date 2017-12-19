@@ -46,7 +46,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 		super(board, renderContext, cam, environment);
 		assetsManager.load("meshes/dice.g3db", Model.class);
 		assetsManager.finishLoading();
-	
+
 		diceList = new ArrayList<Dice>();
 		Dice newDice = createDiceInstance();
 		newDice.setShake(true);
@@ -271,7 +271,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 			Vector3 translation = new Vector3();
 			ModelInstance inst = dice.getDiceInstance(dice.getDiceValue());
 			inst.transform.getTranslation(translation);
-			
+
 			dice.getDiceInstance(dice.getDiceValue()).transform.setTranslation(
 					(selectedPlayer.getLocX() * Board.DIMENSION * 2 * SQUARE_LENGTH * 1.4f), translation.y,
 					(selectedPlayer.getLocY() * Board.DIMENSION * SQUARE_LENGTH * 2 + count * SQUARE_LENGTH * 1.5f)
@@ -288,8 +288,8 @@ public class BoardRenderer extends StaticBoardRenderer {
 					translation.y = 2.1f;
 					inst.transform.setTranslation(translation);
 				}
-			}  
-			//inst.transform.setToRotation(new Vector3(1,0,1),180);
+			}
+			// inst.transform.setToRotation(new Vector3(1,0,1),180);
 		}
 
 	}
@@ -332,8 +332,8 @@ public class BoardRenderer extends StaticBoardRenderer {
 			// moveFinalIndex =
 			// getFreeSquare(board.getHomeSquaresMap().get(player.getColor());
 		} else if (move.getPiece().isHomeSq()) {
-			moveFinalIndex = move.getPiece().getSittingSuare().getIndex()+move.getSquares();
-			moveTempIndex = moveCount+1;
+			moveFinalIndex = move.getPiece().getSittingSuare().getIndex() + move.getSquares();
+			moveTempIndex = moveCount + 1;
 		} else {
 			moveFinalIndex = 0;
 			moveFinalIndex = LudoUtil.calulateDestIndex(move);
@@ -357,12 +357,14 @@ public class BoardRenderer extends StaticBoardRenderer {
 	}
 
 	public Dice createDiceInstance() {
-		//create 6 diff dice to avoid rotation complication
-		diceModel = (Model) assetsManager.get("meshes/dice.g3db");
-		ModelInstance instance = new ModelInstance(diceModel);
-		//diceModel.getNode("dice_root").
-		Map<Integer,ModelInstance> map = new HashMap<Integer,ModelInstance>();
-		instance.transform.scale(2.5f, 2.5f, 2.5f);
+		Map<Integer, ModelInstance> map =  new HashMap<Integer, ModelInstance>();
+		// create 6 diff dice to avoid rotation complication
+		for (int i = 1; i < 7; i++) {
+			diceModel = (Model) assetsManager.get("meshes/dice"+i+".g3dj");
+			ModelInstance instance = new ModelInstance(diceModel);
+			map.put(i, instance);
+			instance.transform.scale(2.5f, 2.5f, 2.5f);
+		}
 		Dice dice = new Dice();
 		dice.setDiceInstanceMap(map);
 		return dice;

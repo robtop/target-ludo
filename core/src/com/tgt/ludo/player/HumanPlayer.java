@@ -192,7 +192,7 @@ public class HumanPlayer extends Player {
 						Gdx.app.getGraphics().getHeight());
 				Vector3 intersection = new Vector3();
 				Vector3 tran = new Vector3();
-				dice.getDiceInstance().transform.getTranslation(tran);
+				dice.getDiceInstance(1).transform.getTranslation(tran);
 				if (Intersector.intersectRaySphere(pickRay, tran, BoardRenderer.SQUARE_LENGTH, intersection)) {
 					return dice;
 				}
@@ -216,7 +216,7 @@ public class HumanPlayer extends Player {
 					Gdx.app.getGraphics().getHeight());
 			Vector3 intersection = new Vector3();
 			Vector3 tran = new Vector3();
-			dice.getDiceInstance().transform.getTranslation(tran);
+			dice.getDiceInstance(1).transform.getTranslation(tran);
 			if (Intersector.intersectRaySphere(pickRay, tran, BoardRenderer.SQUARE_LENGTH, intersection)) {
 				return super.rollDice(dice, screen.getBoardRenderer());
 			}

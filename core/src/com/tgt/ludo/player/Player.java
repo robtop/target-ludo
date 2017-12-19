@@ -70,7 +70,7 @@ public abstract class Player {
 		} else {
 			List<Integer> list = new ArrayList<Integer>();
 			for (Dice diceTemp : diceList) {
-				list.add(dice.getDiceValue());
+				list.add(diceTemp.getDiceValue());
 			}
 			return list;
 		}

@@ -45,6 +45,14 @@ public class LudoUtil {
 		return startIndex;
 	}
 
+	/**
+	 * Calculates the next square index. If track end is reached, we get back zero the start of the track.
+	 * If the piece has finished his track we get back zero the start of the home squares (the isHomeSq property is set)
+	 * 
+	 * @param pieceMove
+	 * @param moveCount - the count of steps already taken by the piece from the sitting square position
+	 * @return
+	 */
 	public static int calulateNextIndex(Move pieceMove, int moveCount) {
 
 		// shouldnt come here
@@ -53,7 +61,7 @@ public class LudoUtil {
 		}
 		int newMoveTempIndex = 0;
 
-		int currentIndex = (pieceMove.getPiece().getSittingSuare().getIndex() + moveCount) % 68;
+		int currentIndex = (pieceMove.getPiece().getSittingSuare().getIndex() + moveCount) % Board.TOTAL_NUM_SQUARES;
 
 		newMoveTempIndex = currentIndex;
 		if (pieceMove.getPiece().getMoveCount() ==  Board.TOTAL_NUM_SQUARES) {
@@ -91,7 +99,7 @@ public class LudoUtil {
 		}
 		// System.out.println("calulateNextIndex: " + moveTempIndex);
 
-		pieceMove.getPiece().setMoveCount(pieceMove.getPiece().getMoveCount() + 1);
+		//pieceMove.getPiece().setMoveCount(pieceMove.getPiece().getMoveCount() + 1);
 		// System.out.println(
 		// "total moves: " +pieceMove.getPiece().getMoveCount());
 		return newMoveTempIndex;

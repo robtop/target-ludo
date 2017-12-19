@@ -44,12 +44,12 @@ public class LudoGameStateController implements GameStateController {
 		this.screen = (LudoScreen) screen;
 		// createPlayers();
 		// createRobotPlayers();
-		players = GameStateUtil.createMinMaxPlayers(screen, ruleEngine, board);
-
+		//players = GameStateUtil.createPlayers(screen, ruleEngine, board);
+		players = GameStateUtil.createRobotPlayers(screen, ruleEngine, board);
 		gameState = GAME_STATE.PROGRESS;
 	}
 
-	protected Move move;
+	//protected Move move;
 
 	/***
 	 * Main game loop to update the backend and allow play
@@ -80,7 +80,7 @@ public class LudoGameStateController implements GameStateController {
 	}
 
 	protected void play(Player player, int playerIndex) {
-		move = player.play();
+		 Move move = player.play();
 		if (move != null) {
 
 			if (move.isSkipTurn()) {
@@ -97,7 +97,7 @@ public class LudoGameStateController implements GameStateController {
 			}
 
 			// do the actual move in the board backend
-			movePieceInTrack(player);
+			movePieceInTrack(player, move);
 
 			// check game state for win etc after the animation completes
 		}
@@ -109,12 +109,12 @@ public class LudoGameStateController implements GameStateController {
 		}
 	}
 
-	protected void movePieceInTrack(Player player) {
+	protected void movePieceInTrack(Player player, Move move) {
 		if (move == null || move.getPiece() == null) {
 			return;
 		}
 		((LudoScreen) screen).getBoardRenderer().setPieceMovingInTrack(player, move);
-		move.getPiece().getSittingSuare().getPieces().remove(move.getPiece());
+		//move.getPiece().getSittingSuare().getPieces().remove(move.getPiece());
 		move.getPiece().setShake(false);
 		shakeDice(false);
 	}
@@ -128,15 +128,10 @@ public class LudoGameStateController implements GameStateController {
 		} else {
 			selectedPlayer = players.get(0);
 		}
+		
 		selectedPlayer.setTurn(true);
-		List<Dice> diceList = ((LudoScreen) screen).getBoardRenderer().getDiceList();
-		diceList.clear();
 
-		for (int d = 0; d < ruleEngine.dicePerGame(); d++) {
-			Dice newDice = ((LudoScreen) screen).getBoardRenderer().createDiceInstance();
-			newDice.setShake(true);
-			diceList.add(newDice);
-		}
+		((LudoScreen) screen).getBoardRenderer().resetRenderer();
 		((LudoScreen) screen).getBoardRenderer().setSelectedPlayer(selectedPlayer);
 	}
 

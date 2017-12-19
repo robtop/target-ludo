@@ -19,7 +19,7 @@ public class ComputerPlayer extends Player{
 		super.play();
 		//System.out.println("Turn: "+this.color);
 		List<Integer> list = rollDice();
-		
+		//System.out.println("Dice "+list.size());
 		List<Move> moves = new ArrayList<Move>();
 		for (Integer integer : list) {
 			moves.addAll(ruleEngine.getValidMoves(this, integer));
@@ -35,7 +35,7 @@ public class ComputerPlayer extends Player{
 
 	protected Move selectMove(List<Move> moves){
 		int move = (int) Math.floor(Math.random()*moves.size());
-		//give first valid move
+	
 		return moves.get(move);
 	}
 	protected  List<Integer> rollDice() {
@@ -45,7 +45,7 @@ public class ComputerPlayer extends Player{
 		rolls.add(diceRole);
 		
 		if(diceRole==6){
-			System.out.println("Got 6 ");
+			//System.out.println("Got 6 ");
 			rolls.addAll(rollDice());
 		}
 		return rolls;

@@ -23,7 +23,7 @@ public class Board {
 	// index from start point of each color
 	// public static final int JAIL_INDEX = 12;
 	// special home square
-	public static final int HOME_INDEX = 7;
+	public static final int HOME_INDEX = 60;
 
 	public static enum COLOR {
 		GREEN, YELLOW, RED, BLUE
@@ -172,25 +172,6 @@ public class Board {
 				return;
 			}
 		}
-	}
-
-	public void movePiece(Move move) {
-		Piece piece = move.getPiece();
-
-		if (piece.getSittingSuare().isRestSquare()) {
-
-			// get stat of this color
-			Square startSquare = squares.get(0);
-			if (startSquare.getPieces() == null) {
-				startSquare.setPieces(new ArrayList<Piece>());
-			}
-			startSquare.getPieces().add(piece);
-			return;
-		}
-
-		int index = piece.getSittingSuare().getIndex();
-		piece.getSittingSuare().getPieces().remove(piece);
-		squares.get(index).getPieces().add(piece);
 	}
 
 	private void createHomeMap(){

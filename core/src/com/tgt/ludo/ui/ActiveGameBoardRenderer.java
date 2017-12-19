@@ -2,6 +2,7 @@ package com.tgt.ludo.ui;
 
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.Environment;
+import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
 import com.badlogic.gdx.math.Vector3;
 import com.tgt.ludo.board.Board;
@@ -26,6 +27,7 @@ public class ActiveGameBoardRenderer extends BoardRenderer {
 	}
 
 	public void renderMovingJailPiece(float delta) {
+		ModelInstance pieceInstance = pieceInstMap.get(pieceMove.getPiece());
 		if (restMovedToStart) {
 			Vector3 trans = new Vector3();
 			squareInstMap.get(board.getSquares().get(moveFinalIndex)).transform.getTranslation(trans);
@@ -55,6 +57,7 @@ public class ActiveGameBoardRenderer extends BoardRenderer {
 	
 
 	public void renderMovingKilledPiece(float delta) {
+		ModelInstance pieceInstance = pieceInstMap.get(pieceMove.getPiece());
 		if (restMovedToStart) {
 			Vector3 trans = new Vector3();
 			squareInstMap.get(board.getSquares().get(moveFinalIndex)).transform.getTranslation(trans);

@@ -1,7 +1,9 @@
 package com.tgt.ludo.board;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
-import com.badlogic.gdx.math.Vector3;
 
 /**
  * Use this only by the Human player - the other types of playes can just
@@ -10,25 +12,17 @@ import com.badlogic.gdx.math.Vector3;
  *
  */
 public class Dice {
-   private ModelInstance diceInstance;
+   private Map<Integer,ModelInstance> diceInstanceMap = new HashMap<Integer, ModelInstance>();
    int diceValue = 1;
    //is this rolled or waiting to be rolled by the player
    boolean rolled=false;
    boolean shake = false;
   
 public ModelInstance getDiceInstance() {
-	
-	//rotate to display in value in board
-	if(!rolled){
-		//funny position
-		//diceInstance.transform.rotate(new Vector3(),3);
-	}
-	return diceInstance;
+		return diceInstanceMap.get(diceValue);
 }
 
-public void setDiceInstance(ModelInstance diceInstance) {
-	this.diceInstance = diceInstance;
-}
+
 
 public int getDiceValue() {
 	return diceValue;
@@ -53,10 +47,17 @@ public boolean isShake() {
 public void setShake(boolean shake) {
 	this.shake = shake;
 }
-   @Override
+
+   public void setDiceInstanceMap(Map<Integer, ModelInstance> diceInstanceMap) {
+	this.diceInstanceMap = diceInstanceMap;
+}
+
+
+
+@Override
 	protected void finalize() throws Throwable {
 		super.finalize();
-		diceInstance.model.dispose();
+		//diceInstance.model.dispose();
 	}
    
 }

@@ -74,7 +74,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 		moveFinalIndex = -999;
 		moveTempIndex = -999;
 		moveCount = -999;
-		moveCountHomeSq = -999;
+		moveCountHomeSq = 0;
 		restMovedToStart = false;
 		movedToRest = false;
 		homeSqMovedToHome = false;
@@ -176,7 +176,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 			finalSquare.getPieces().add(pieceMove.getPiece());
 			pieceMove.getPiece().getSittingSuare().getPieces().remove(pieceMove.getPiece());
 			pieceMove.getPiece().setSittingSuare(finalSquare);
-
+			moveCountHomeSq = 0;
 			animationComplete = true;
 			return;
 		}

@@ -161,6 +161,9 @@ public class HumanPlayer extends Player {
 		if (dice == null) {
 			return null;
 		}
+		if(!ruleEngine.validMove(selectedPiece, dice.getDiceValue())){
+			return null;
+		}
 		diceList.remove(dice);
 
 		if (diceList.isEmpty()) {

@@ -31,12 +31,12 @@ public static  List<Player> createPlayers(Screen screen,RuleEngine ruleEngine,Bo
 		greenPlayer.setPieces(board.getPiecesMap().get(greenPlayer.getColor()));
 		players.add(greenPlayer);
 
-//		Player yellowPlayer = new HumanPlayer(((LudoScreen) screen), ruleEngine);
-//		yellowPlayer.setColor(COLOR.YELLOW);
-//		yellowPlayer.setTurn(false);
-//		yellowPlayer.setStartIndex(Board.DIMENSION * 2 + 1);
-//		yellowPlayer.setPieces(board.getPiecesMap().get(yellowPlayer.getColor()));
-//		players.add(yellowPlayer);
+		Player yellowPlayer = new HumanPlayer(((LudoScreen) screen), ruleEngine);
+		yellowPlayer.setColor(COLOR.YELLOW);
+		yellowPlayer.setTurn(false);
+		yellowPlayer.setStartIndex(Board.DIMENSION * 2 + 1);
+		yellowPlayer.setPieces(board.getPiecesMap().get(yellowPlayer.getColor()));
+		players.add(yellowPlayer);
 //
 		Player redPlayer = new HumanPlayer(((LudoScreen) screen), ruleEngine);
 		redPlayer.setColor(COLOR.RED);
@@ -44,19 +44,24 @@ public static  List<Player> createPlayers(Screen screen,RuleEngine ruleEngine,Bo
 		redPlayer.setStartIndex(Board.DIMENSION * 4 + 2);
 		redPlayer.setPieces(board.getPiecesMap().get(redPlayer.getColor()));
 		players.add(redPlayer);
-//
-//		Player bluePlayer = new HumanPlayer(((LudoScreen) screen), ruleEngine);
-//		bluePlayer.setColor(COLOR.BLUE);
-//		bluePlayer.setTurn(false);
-//		bluePlayer.setStartIndex(Board.DIMENSION * 6 + 3);
-//		bluePlayer.setPieces(board.getPiecesMap().get(bluePlayer.getColor()));
-//		players.add(bluePlayer);
+
+		Player bluePlayer = new HumanPlayer(((LudoScreen) screen), ruleEngine);
+		bluePlayer.setColor(COLOR.BLUE);
+		bluePlayer.setTurn(false);
+		bluePlayer.setStartIndex(Board.DIMENSION * 6 + 3);
+		bluePlayer.setPieces(board.getPiecesMap().get(bluePlayer.getColor()));
+		players.add(bluePlayer);
 		return players;
 	}
 
 	public static  List<Player> createRobotPlayers(Screen screen,RuleEngine ruleEngine,Board board) {
 		List<Player> players = new ArrayList<Player>();
 
+//		Player greenPlayer = new HumanPlayer(((LudoScreen) screen), ruleEngine);
+//		greenPlayer.setColor(COLOR.GREEN);
+//		greenPlayer.setPieces(board.getPiecesMap().get(greenPlayer.getColor()));
+//		players.add(greenPlayer);
+		
 		Player greenPlayer = new ComputerPlayer(((LudoScreen) screen), ruleEngine);
 		greenPlayer.setColor(COLOR.GREEN);
 		greenPlayer.setPieces(board.getPiecesMap().get(greenPlayer.getColor()));

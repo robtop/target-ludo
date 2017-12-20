@@ -44,6 +44,10 @@ public class AdvancedLudoGameStateController extends LudoGameStateController {
 		if (homeCheck())
 			return true;
 
+		if(winCheck()){
+			gameState = GAME_STATE.COMPLETE;
+			return true;
+		}
 		return false;
 	}
 
@@ -87,6 +91,15 @@ public class AdvancedLudoGameStateController extends LudoGameStateController {
 		if (homePiece != null) {
 			homePiece.setToHome(true);
 			sendToHome(homePiece);
+			return true;
+		}
+		return false;
+	}
+	
+	private boolean winCheck() {
+		Board.COLOR color = ruleEngine.getWinner();
+		if (color != null) {
+            System.out.println(color + " WON!!!");
 			return true;
 		}
 		return false;

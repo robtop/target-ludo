@@ -32,12 +32,11 @@ public class BasicRuleEngine implements RuleEngine {
 		} else if (piece.isHomeSq()) {
 			if (piece.getSittingSuare().getIndex() + diceVal <= Board.DIMENSION) {
 				return true;
-			}else {
+			} else {
 				return false;
 			}
 
-		} else
-		{
+		} else {
 			return true;
 		}
 
@@ -207,4 +206,14 @@ public class BasicRuleEngine implements RuleEngine {
 	public int dicePerGame() {
 		return 1;
 	}
-}
+
+	@Override
+	public Board.COLOR getWinner() {
+		for(Board.COLOR color:board.getHomeMap().keySet()) {
+			Square square = board.getHomeMap().get(color);
+				if(square.getPieces().size()==4){
+					return color;
+				}
+			}
+		return null;
+}}

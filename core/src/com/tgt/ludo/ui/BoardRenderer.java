@@ -37,7 +37,7 @@ public class BoardRenderer extends StaticBoardRenderer {
 	private Square moveToHome;
 	private boolean killMovedToRest;
 
-	protected static final int MOVE_SPEED = 10;
+	protected static final int MOVE_SPEED = 50;
 	// protected ModelInstance pieceInstance;
 	private List<Dice> diceList;
 	protected Model diceModel;

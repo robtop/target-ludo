@@ -29,7 +29,7 @@ public class LudoGameStateController implements GameStateController {
 
 	// TODO: used in games supporting remote players
 	private UUID gameID;
-	private GAME_STATE gameState;
+	protected GAME_STATE gameState;
 	private Player winner;
 	protected RuleEngine ruleEngine;
 	protected Player player;
@@ -55,6 +55,9 @@ public class LudoGameStateController implements GameStateController {
 	 * Main game loop to update the backend and allow play
 	 */
 	public void update() {
+		if(gameState.equals(GAME_STATE.COMPLETE)){
+			return;
+		}
 		// wait for piece motion animation to complete
 		if (!((LudoScreen) screen).getBoardRenderer().isAnimationComplete()) {
 			return;

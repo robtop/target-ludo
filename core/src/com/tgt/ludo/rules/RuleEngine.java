@@ -47,4 +47,6 @@ public interface RuleEngine {
 	//how many dice to give for a throw
 	public int dicePerGame();
 	
+	public Board.COLOR getWinner();
+	
 }

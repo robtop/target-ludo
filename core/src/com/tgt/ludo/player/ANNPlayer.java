@@ -20,7 +20,7 @@ public class ANNPlayer extends ComputerPlayer {
 
 	public ANNPlayer(LudoScreen screen, RuleEngine ruleEngine) {
 		super(screen, ruleEngine);
-		mlp = AIutil.readFromFile("/home/robin/");
+		mlp = AIutil.readFromFile("/Users/z062260/");
 		trainingset = LudoUtil.retrieveHistoricalData("arff");
 	}
 

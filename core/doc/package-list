@@ -1,6 +1,6 @@
 com.tgt.ludo
+com.tgt.ludo.ai
 com.tgt.ludo.board
-com.tgt.ludo.desktop
 com.tgt.ludo.gamestate
 com.tgt.ludo.gamestate.util
 com.tgt.ludo.net
